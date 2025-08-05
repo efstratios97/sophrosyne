@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Control Panel Dashboard Service API
+  description: |-
+    This API document describes the available Sophrosyne Control Panel Dashboard Service APIs
+  termsOfService: TBD
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne Core docs
+  url: TBD
+tags:
+  - name: control_panel_dashboard
+    description: Sophrosyne control panel dashboard operation
+paths:
+  /int/user/controlpaneldashboard:
+    post:
+      tags:
+        - control_panel_dashboard
+      summary: Create control panel dashboard
+      description: This can only be done by the logged in user with user rights or higher.
+      operationId: createControlPanelDashboard
+      requestBody:
+        description: Creates control panel dashboard
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlPanelDashboard'
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Unauthorized
+  /int/user/controlpaneldashboards:
+    get:
+      tags:
+        - control_panel_dashboard
+      summary: Get all control panel dashboards
+      description: ''
+      operationId: getControlPanelDashboards
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ControlPanelDashboard'
+        '401':
+          description: Unauthorized
+  /int/user/controlpaneldashboard/{id}:
+    get:
+      tags:
+        - control_panel_dashboard
+      summary: Get Control Panel Dashboard by control panel dashboard id
+      description: ''
+      operationId: getControlPanelDashboardById
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPanelDashboard'
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Control Panel Dashboard not found
+    put:
+      tags:
+        - control_panel_dashboard
+      summary: Update Control Panel Dashboard
+      operationId: updateControlPanelDashboard
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlPanelDashboard'
+      responses:
+        default:
+          description: successful operation
+        '401':
+          description: Unauthorized
+        '404':
+          description: Control Panel Dashboard not found
+    delete:
+      tags:
+        - control_panel_dashboard
+      summary: Delete Control Panel Dashboard
+      operationId: deleteControlPanelDashboard
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Control Panel Dashboard not found
+components:
+  schemas:
+    ControlPanelDashboard:
+      type: object
+      properties:
+        id:
+          type: string
+          example: id_1
+        name:
+          type: string
+          example: Control Panel Dashboard 1
+        description:
+          type: string
+          example: All Deployment related Actions bundled
+        associatedControlPanelDashboardGroups:
+          type: array
+          items:
+            type: string
+            example: control_panel_dashboard_group_id_1
+        associatedControlPanelDashboardGroupObjects:
+          type: array
+          items:
+            type: object
+        position:
+          type: int
+      required:
+        - name

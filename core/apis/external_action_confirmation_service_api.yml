@@ -1,0 +1,125 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Action Confirmation Service API
+  description: |-
+    This API document describes the available Sophrosyne Action Confirmation Service APIs
+  license:
+    name: GNU Affero General Public License 3.0
+    url: https://www.gnu.org/licenses/
+  version: 1.0.0
+tags:
+  - name: Action Confirmation API
+    description: Sophrosyne action confirmation operation
+paths:
+  /api/v1/actionconfirmations:
+    get:
+      tags:
+        - Action Confirmation API
+      summary: Get all outstanding action confirmations
+      description: 'Returns all outstanding action confirmations associated to the passed apikey'
+      operationId: getAllActionConfirmations
+      parameters:
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './action_confirmation_service_api.yml#/components/schemas/Confirmation'
+        '401':
+          description: Unauthorized
+  /api/v1/actionconfirmation/{id}:
+    get:
+      tags:
+        - Action Confirmation API
+      summary: Get action confirmation by ID
+      description: 'Returns an outstanding action confirmation by the passed id and associated to the passed apikey'
+      operationId: getActionConfirmationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the action confirmation to retrieve. However, for DynamicActions the id is not corresponding the DynamicAction's id.
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: './action_confirmation_service_api.yml#/components/schemas/Confirmation'
+        '401':
+          description: Unauthorized
+  /api/v1/actionconfirmation/anyaction/{id}/confirm:
+    post:
+      tags:
+        - Action Confirmation API
+      summary: Confirm any action by id
+      description: "Use this endpoint to confirm any type of Action"
+      operationId: confirmAnyAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action Confirmation's ID (for simple Action equal to Action's ID)"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /api/v1/actionconfirmation/anyaction/{id}/reject:
+    post:
+      tags:
+        - Action Confirmation API
+      summary: Reject any action by id
+      description: "Use this endpoint to reject any type of Action"
+      operationId: rejectAnyAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action Confirmation's ID (for simple Action equal to Action's ID)"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found

@@ -1,0 +1,114 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="15" author="Efstratios Pahis">
+        <createTable tableName="sophrosyne_control_panel_dashboard_group">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="control_panel_dashboard_control_panel_dashboard_group">
+            <column name="control_panel_dashboard_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+            <column name="control_panel_dashboard_group_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_control_panel_dashboard_group"
+                constraintName="CONTROL_PANEL_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"/>
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_control_panel_dashboard"
+                constraintName="CONTROL_PANEL_DASHBOARD_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_DASHBOARD_GROUP_ID_CONTROL_PANEL_DASHBOARD_ID"
+                referencedTableName="sophrosyne_control_panel_dashboard_group"
+                baseColumnNames="control_panel_dashboard_group_id"
+                baseTableName="control_panel_dashboard_control_panel_dashboard_group" referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_DASHBOARD_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"
+                referencedTableName="sophrosyne_control_panel_dashboard"
+                baseColumnNames="control_panel_dashboard_id"
+                baseTableName="control_panel_dashboard_control_panel_dashboard_group" referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+
+        <createTable tableName="control_panel_dashboard_group_actions">
+            <column name="control_panel_dashboard_group_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+            <column name="action_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_control_panel_dashboard_group"
+                constraintName="CONTROL_PANEL_DASHBOARD_GROUP_ID_ACTION_ID"/>
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_action"
+                constraintName="ACTION_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_DASHBOARD_GROUP_ID_ACTION_ID"
+                referencedTableName="sophrosyne_control_panel_dashboard_group"
+                baseColumnNames="control_panel_dashboard_group_id"
+                baseTableName="control_panel_dashboard_group_actions" referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+        <addForeignKeyConstraint
+                constraintName="FK_ACTION_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"
+                referencedTableName="sophrosyne_action"
+                baseColumnNames="action_id"
+                baseTableName="control_panel_dashboard_group_actions" referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <createTable tableName="control_panel_dashboard_group_dynamic_actions">
+            <column name="control_panel_dashboard_group_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+            <column name="dynamic_action_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_control_panel_dashboard_group"
+                constraintName="CONTROL_PANEL_DASHBOARD_GROUP_ID_DYNAMIC_ACTION_ID"/>
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_dynamic_action"
+                constraintName="DYNAMIC_ACTION_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_DASHBOARD_GROUP_ID_DYNAMIC_ACTION_ID"
+                referencedTableName="sophrosyne_control_panel_dashboard_group"
+                baseColumnNames="control_panel_dashboard_group_id"
+                baseTableName="control_panel_dashboard_group_dynamic_actions" referencedColumnNames="id"
+                onUpdate="CASCADE"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_DYNAMIC_ACTION_ID_CONTROL_PANEL_DASHBOARD_GROUP_ID"
+                referencedTableName="sophrosyne_dynamic_action"
+                baseColumnNames="dynamic_action_id"
+                baseTableName="control_panel_dashboard_group_dynamic_actions" referencedColumnNames="id"
+                onUpdate="CASCADE"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,50 @@
+{
+  "name": "sophrosyne_ui",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.6",
+    "@primeuix/themes": "^1.1.2",
+    "@stomp/stompjs": "^7.1.1",
+    "@vueuse/core": "^13.4.0",
+    "ansi_up": "^6.0.6",
+    "axios": "^1.10.0",
+    "chart.js": "^4.5.0",
+    "express": "^5.1.0",
+    "pinia": "^3.0.3",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.3.5",
+    "sass": "^1.89.2",
+    "vue": "^3.5.17",
+    "vue-i18n": "^11.1.7",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.11.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/test-utils": "^2.4.1",
+    "cypress": "^13.2.0",
+    "eslint": "^9.29.0",
+    "eslint-plugin-cypress": "^5.1.0",
+    "eslint-plugin-vue": "^10.2.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.0",
+    "sass-loader": "^16.0.5",
+    "scss": "^0.2.4",
+    "start-server-and-test": "^2.0.12",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  }
+}

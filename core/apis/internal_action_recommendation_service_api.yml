@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Internal Recommender Service API
+  description: |-
+    This API document describes the available Sophrosyne Internal Recommender Service APIs
+  license:
+    name: GNU Affero General Public License 3.0
+    url: https://www.gnu.org/licenses/
+  version: 1.0.0
+tags:
+  - name: internal_recommender
+    description: Sophrosyne's Internal Recommender Service API
+paths:
+  /int/client/actionrecommendation/{id}/deactivate:
+    post:
+      tags:
+        - internal_recommender
+      summary: Deactivate an active action recommendation by id
+      description: "Use this endpoint to trigger a Action Recommendation"
+      operationId: deactivateActionRecommendationById
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action Recommendation's ID"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Recommendation not found
+  /int/client/actionrecommendations/active:
+    get:
+      tags:
+        - internal_recommender
+      summary: Get all active action recommendations by id
+      description: "Use this endpoint to get all active Action Recommendations"
+      operationId: getActiveActionRecommendations
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'action_recommendation_service_api.yml#/components/schemas/ActionRecommendation'
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Unauthorized
+  /pull/user/actionrecommendation/{id}/status:
+    get:
+      tags:
+        - internal_recommender
+      summary: Get status info of action recommendation by id
+      description: ''
+      operationId: getStatusOfActionRecommendation
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionRecommendationStatusInfo'
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Recommendation not found
+components:
+  schemas:
+    ActionRecommendationStatusInfo:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+          example: true

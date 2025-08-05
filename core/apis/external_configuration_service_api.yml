@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Configuration Service API
+  description: |
+    This API document describes the available Sophrosyne Configuration Service APIs
+  license:
+    name: GNU Affero General Public License 3.0
+    url: https://www.gnu.org/licenses/
+  version: 1.0.0
+tags:
+  - name: configuration
+    description: Sophrosyne configuration operations
+paths:
+  /api/v1/configuration/import_from_config_file:
+    post:
+      tags:
+        - configuration
+      summary: Triggers the import of the sophrosyne.json configuration without erasing the previous imported configuration
+      description: 'Conflicting entries between config sophrosyne.json and current sophrosyne instance configuration may lead to the skipping of entries import. Use /import/force endpoint to force the configuration import'
+      operationId: importSophrosyneConfigurationFromFile
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '207':
+          description: partially successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+  /api/v1/configuration/import_from_config_file/force:
+    post:
+      tags:
+        - configuration
+      summary: Triggers the import of the sophrosyne.json configuration with erasing the previous imported configuration
+      description: 'Ensures the import of the complete sophrosyne.json config at the risk of loosing local changes. Export and backup the current sophrosyne config beforehand to eliminate the risk'
+      operationId: importSophrosyneConfigurationFromFileForce
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '207':
+          description: partially successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+  /api/v1/configuration/import:
+    post:
+      tags:
+        - configuration
+      summary: Triggers the import of the sophrosyne configuration without erasing the previous imported configuration
+      description: 'Conflicting entries between config sophrosyne.json and current sophrosyne instance configuration may lead to the skipping of entries import. Use /import/force endpoint to force the configuration import'
+      operationId: importSophrosyneConfiguration
+      requestBody:
+        description: The sophrosyne config as JSON Object. Please use an exporterd sophrosyne.json config file as base
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '207':
+          description: partially successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+
+        '401':
+          description: Unauthorized
+  /api/v1/configuration/import/force:
+    post:
+      tags:
+        - configuration
+      summary: Triggers the import of the sophrosyne configuration with erasing the previous imported configuration
+      description: 'Ensures the import of the complete sophrosyne config at the risk of loosing local changes. Export and backup the current sophrosyne config beforehand to eliminate the risk'
+      operationId: importSophrosyneConfigurationForce
+      requestBody:
+        description: The sophrosyne config as JSON Object. Please use an exporterd sophrosyne.json config file as base
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '207':
+          description: partially successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized

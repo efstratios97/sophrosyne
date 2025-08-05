@@ -1,0 +1,34 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="13" author="Efstratios Pahis">
+        <createTable tableName="sophrosyne_control_panel">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addColumn tableName="sophrosyne_user">
+            <column name="control_panel_id" type="varchar" defaultValue="null">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_ID_USER_ID"
+                referencedTableName="sophrosyne_control_panel"
+                baseColumnNames="control_panel_id"
+                baseTableName="sophrosyne_user" referencedColumnNames="id"
+                onUpdate="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>

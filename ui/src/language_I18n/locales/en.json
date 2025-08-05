@@ -1,0 +1,1108 @@
+{
+  "notification": {
+    "action_confirmation": {
+      "button": "Pending Action Confirmations"
+    },
+    "active_recommendations": {
+      "button": "Active Recommendations"
+    }
+  },
+  "login": {
+    "main_text": "Sophrosyne - Elevate your Alert Reacting",
+    "sub_text": "Don't have an account?",
+    "sub_text_link_text": "Contact your Admin!",
+    "form_username": "Username",
+    "form_password": "Password",
+    "forgot_password_link_text": "Forgot Password?",
+    "button_sign_in": "Sign In",
+    "toast": {
+      "success": {
+        "message": "Logged in",
+        "detail": "You have successfully logged in"
+      },
+      "info": {
+        "message": "You are being logged in",
+        "detail": "Please wait. Your token is being generated"
+      },
+      "error": {
+        "message": "Can not Log in",
+        "detail": "Please check your credentials"
+      }
+    },
+    "forgot_passwd": {
+      "title": "Password Recovery",
+      "text": "For safety reasons only your admins can recover your password or create a new one. Please contact one of your admins."
+    },
+    "create_account": {
+      "title": "Account Creation",
+      "text": "For safety reasons only your admins can create an account for you. Please contact one of your admins."
+    }
+  },
+  "logout": {
+    "toast": {
+      "success": {
+        "message": "Logged out",
+        "detail": "You have successfully logged out"
+      },
+      "error": {
+        "message": "Can not Log out",
+        "detail": "Please try again"
+      }
+    }
+  },
+  "userprofile": {
+    "title": "Your Profile",
+    "sub_title": "Manage here your personal data",
+    "form": { "new_password": "Choose a new password" },
+    "toast": {
+      "success": {
+        "message": "Updated your Data",
+        "detail": "You have successfully updated your User Profile"
+      },
+      "error": {
+        "message": "Can not update your Data",
+        "detail": "Please check again your inputs: Duplicate usernames and emails are not allowed"
+      }
+    }
+  },
+  "settings": {
+    "tab_menu_options": {
+      "tab_menu_apikeys": "Apikeys",
+      "tab_menu_users": "Users",
+      "tab_menu_config": "Configuration",
+      "tab_menu_general": "General"
+    },
+    "users": {
+      "users_display": {
+        "title": "Manage Users"
+      },
+      "user_add_modal": {
+        "title": "Create User",
+        "form": {
+          "fields": {
+            "username": "Username",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "password": "Password",
+            "role": "Role"
+          },
+          "dropdown": { "placeholder": "Select a Role" },
+          "btn": "Add User"
+        },
+        "toast": {
+          "success": {
+            "message": "Created User",
+            "detail": "You have successfully created a new User"
+          },
+          "error": {
+            "message": "Can not create new User",
+            "detail": "Please check again your inputs: Duplicate usernames and emails are not allowed"
+          }
+        },
+        "response_modal": {
+          "title": "Initial Password",
+          "panel_title": "Reveal initial password",
+          "description": "Please provide the newly created User with the following initial password and urge him to change it"
+        }
+      },
+      "users_delete_dialog": {
+        "title": "User Deletion",
+        "message": "Please confirm the deletion of the following user(s):",
+        "delete_toast": {
+          "success": {
+            "message": "Deleted User(s)",
+            "detail": "You have successfully deleted the user(s)"
+          },
+          "error": {
+            "message": "Can not delete your User(s)",
+            "detail": "Please try again later"
+          }
+        },
+        "delete_toast_406": {
+          "success": {
+            "message": "Deleted User(s)",
+            "detail": "You have successfully deleted the user(s)"
+          },
+          "error": {
+            "message": "Can not delete your User(s)",
+            "detail": "The selected User is the last available admin. Deleting this user may lock you out of Sophrosyne"
+          }
+        }
+      }
+    },
+    "apikeysdisplay": {
+      "title": "Your Apikeys",
+      "sub_title": "Apikeys function as safeguards for triggering Actions. They have to be part of any Request for Action reaching Sophrosyne.",
+      "deactivate_toast": {
+        "success": {
+          "message": "Deactivated Apikey",
+          "detail": "You have successfully deactivated your Apikey"
+        },
+        "error": {
+          "message": "Can not deactivate your Apikey",
+          "detail": "Please try again later"
+        }
+      },
+      "activate_toast": {
+        "success": {
+          "message": "Activated Apikey",
+          "detail": "You have successfully activated your Apikey"
+        },
+        "error": {
+          "message": "Can not activate your Apikey",
+          "detail": "Please try again later"
+        }
+      },
+      "delete_toast": {
+        "success": {
+          "message": "Deleted Apikey",
+          "detail": "You have successfully deleted your Apikey"
+        },
+        "error": {
+          "message": "Can not delete your Apikey",
+          "detail": "Please try again later"
+        }
+      }
+    },
+    "apikey_reveal": {
+      "title": "Your Apikey",
+      "fieldset_header": "Reveal the Apikey to pass in your Action-Request"
+    },
+    "apikeyscreation": {
+      "title": "Create Apikeys",
+      "sub_title": "Create an Apikey for safeguarding your Actions"
+    },
+    "apikeysnuke": {
+      "title": "Deactivate all Apikeys",
+      "sub_title": "Deactivate all your Apikeys at once",
+      "toast": {
+        "success": {
+          "message": "Deactivated all your Apikeys",
+          "detail": "You have successfully nuked all your Apikeys"
+        },
+        "error": {
+          "message": "Can not deactivate all your Apikeys",
+          "detail": "Please try to nuke your Apikeys again later"
+        }
+      }
+    },
+    "apikeyscreationaddform": {
+      "modal_header": "Create Apikey",
+      "input_text_apikeyname": "Apikey Name",
+      "input_text_apikeydescription": "Apikey description",
+      "input_text_apikeyactive": "Apikey activated",
+      "toast": {
+        "success": {
+          "message": "Created Apikey",
+          "detail": "You have successfully created an Apikey"
+        },
+        "error": {
+          "message": "Can not create Apikey",
+          "detail": "Please check again your inputs"
+        }
+      }
+    },
+    "configuration": {
+      "export_config_data": {
+        "title": "Export your Sophrosyne-Instance",
+        "sub_title": "You can export the complete Sophrosyne Configuration as JSON-File. This JSON-File, sophrosyne.json (name-pattern must be maintained), can be placed in your `Sophrosyne` binaries directory inside the `config` directory.\n When Sophrosyne start-ups again, it will automatically retrieve the config-file and instantiate your Sophrosyne-Instance with the current configuration and data.\n Above-others, this feature helps you create different Sophrosyne-configuration for your different projects and ship/deploy them accordingly without the need of manual re-configuration and data-insertation",
+        "toast": {
+          "success": {
+            "message": "Downloaded Sophrosyne Configuration successfully",
+            "detail": "The downloaded sophrosyne.json file can now be placed in your `Sophrosyne` binaries directory inside the `config` directory.\n When Sophrosyne start-ups again it will automatically retrieve the config-file"
+          },
+          "error": {
+            "message": "Can not download Sophrosyne Configuration",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "import_config_data": {
+        "title": "Import your Sophrosyne Config from sophrosyne.json",
+        "sub_title": "This will import the sophrosyne.json configuration. It might override existent configuration if the impacted configuration is part of the sophrosyne.json config. However, this will not delete/alter any configurations NOT part of the sophrosyne.json (hence, locally done in Sophrosyne)",
+        "toast": {
+          "success": {
+            "message": "Imported Sophrosyne Configuration successfully",
+            "detail": "Imported your Sophrosyne configuration from the sophrosyne.json file"
+          },
+          "error": {
+            "message": "Can not import Sophrosyne Configuration",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "import_config_data_force": {
+        "title": "Force import of your Sophrosyne Config from sophrosyne.json",
+        "sub_title": "This will import the sophrosyne.json configuration. It will override all existent configuration and replace it only with configuration from sophrosyne.json. Please use with care and backup/export your Sophrosyne instance before",
+        "toast": {
+          "success": {
+            "message": "Imported Sophrosyne Configuration successfully",
+            "detail": "Imported your Sophrosyne configuration from the sophrosyne.json file"
+          },
+          "error": {
+            "message": "Can not import Sophrosyne Configuration",
+            "detail": "Please try again later"
+          }
+        }
+      }
+    },
+    "administration": {
+      "general": {
+        "purge_action_archive": {
+          "title": "Delete Action Archive",
+          "sub_title": "Will purge complete Action Archive",
+          "confirmation_dialog": {
+            "title": "Permanently delete complete Action Archive",
+            "confirmation": {
+              "message": "Do you want to purge the complete Action Archive?",
+              "toast": {
+                "success": {
+                  "message": "Purged Action Archive",
+                  "detail": "Action Archive successfully deleted"
+                },
+                "error": {
+                  "message": "Purging Action Archive Unsuccessful",
+                  "detail": "Please try again"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "actions_archive": {
+    "tab_menu_options": {
+      "tab_menu_actions_archive": "Action Archive"
+    },
+    "datatable": {
+      "title": "Action Archive",
+      "sub_title": "Find all your past executed Actions",
+      "column_header": {
+        "id": "Action ID",
+        "name": "Action Name",
+        "command": "Executed command",
+        "version": "Action's Version",
+        "execution_start_time": "Action's Execution Start time",
+        "execution_end_time": "Action's Execution End time",
+        "exit_code": "Action's Exit code",
+        "type": "Origin"
+      }
+    },
+    "file_display": {
+      "empty_post_log_file": "No post-Logs provided / Empty post-Logs"
+    },
+    "toolbar": {
+      "clipboard": {
+        "btn": "Copy",
+        "toast": {
+          "success": {
+            "message": "Saved Logs to Clipboard",
+            "detail": "You can now paste the complete Logs"
+          },
+          "error": {
+            "message": "Can not save Logs to Clipboard",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "download": {
+        "btn": "Download",
+        "toast": {
+          "success": {
+            "message": "Downloaded Logs",
+            "detail": "You can now find the complete Logs downloaded in your Download-Folder"
+          },
+          "error": {
+            "message": "Can not download Logs",
+            "detail": "Please try again later"
+          }
+        }
+      }
+    }
+  },
+  "actions": {
+    "action": {
+      "tab_menu_options": {
+        "tab_menu_action": "Action"
+      },
+      "action_menu": {
+        "datatable": {
+          "column_header": {
+            "id": "Action ID",
+            "name": "Action Name",
+            "description": "Action Description",
+            "version": "Action Version",
+            "command": "Action Command",
+            "post_execution_log_file_path": "Action Post Execution Log-File-Path",
+            "allowed_apikeys": "Action Allowed Apikeys",
+            "action_status": "Action Status",
+            "requires_confirmation": "Requires confirmation",
+            "muted": "Muted"
+          },
+          "column_tooltip": {
+            "command": "Action Command represents a base command for example: `ansible-playbook`, `bash` or `/bin/my_executable`.\nIt can be even a simpler command like `tasklist` or `echo Hello World`",
+            "post_execution_log_file_path": "A post execution log file is an optional way to pass a log file path location to retrieve the logs after execution",
+            "allowed_apikeys": "Only the specified Apikeys can execute an Action"
+          }
+        }
+      },
+      "action_deletion": {
+        "title": "Action Deletion",
+        "message": "Please confirm the deletion of the following Action(s):",
+        "toast": {
+          "success": {
+            "message": "Deleted Action(s)",
+            "detail": "You have successfully deleted the Actions(s)"
+          },
+          "error": {
+            "message": "Can not delete your Action(s)",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "action_creation_form": {
+        "modal_header": "Create Action",
+        "modal_header_update": "Update Action",
+        "fields": {
+          "name": "Action Name",
+          "description": "Action Description",
+          "command": "Action Command",
+          "version": "Action Version",
+          "post_execution_log_file_path": "Action's post execution log file (Optional)",
+          "allowed_apikeys": "Allowed Apikeys",
+          "requires_confirmation_on": "Requires Confirmation",
+          "requires_confirmation_off": "No Confirmation Required",
+          "muted_on": "Muted",
+          "muted_off": "Active"
+        },
+        "command_dialog": {
+          "header": "Enter the Action's Command",
+          "btn": {
+            "save": "Save",
+            "cancel": "Cancel"
+          }
+        },
+        "tooltip": {
+          "command": "Action Command represents the command you want to execute for example: `ansible-playbook -i ./inventory example.yml`, `bash myFile.sh` or `/bin/my_executable --example=hi`.\nIt can be even a simpler command like `tasklist` or `echo Hello World`",
+          "post_execution_log_file_path": "A post execution log file is an optional way to pass a log file path location to retrieve the logs after execution",
+          "allowed_apikeys": "Only the specified Apikeys can execute an Action",
+          "requires_confirmation": "A triggered Action will require an additional confirmation before it can be executed",
+          "muted": "A triggered Action will be instantly rejected if muted"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Action",
+            "toast": {
+              "success": {
+                "message": "Created Action",
+                "detail": "You have successfully created an Action"
+              },
+              "error": {
+                "message": "Can not create Action",
+                "detail": "Please check again your inputs"
+              }
+            }
+          },
+          "update": {
+            "label": "Submit Action",
+            "toast": {
+              "success": {
+                "message": "Updated Action",
+                "detail": "You have successfully updated a Action"
+              },
+              "error": {
+                "message": "Can not update Action",
+                "detail": "Please check again your inputs"
+              }
+            }
+          }
+        }
+      },
+      "action_control": {
+        "btn": {
+          "execute_action": {
+            "label": "Execute Action",
+            "toast": {
+              "success": {
+                "message": "Executed Action",
+                "detail": "The outcome of your Action will be displayed shortly"
+              },
+              "error": {
+                "message": "Can not execute your selected Action",
+                "detail": "Please try again later"
+              }
+            }
+          },
+          "stop_action": {
+            "label": "Stop Action",
+            "toast": {
+              "success": {
+                "message": "Stopped Action",
+                "detail": "Your action was terminated prematurely"
+              },
+              "error": {
+                "message": "Can not stop your selected Action",
+                "detail": "Please try again"
+              }
+            }
+          }
+        },
+        "last_action_card": {
+          "header": "Last Action Status",
+          "execution_start_time": "Last Run",
+          "execution_exit_code": "Last Run Status",
+          "tooltip": {
+            "execution_exit_code_success": "Last Run succeeded",
+            "execution_exit_code_error": "Last Run failed with Exit-Code: ",
+            "execution_exit_code_never_run": "This action was never triggered"
+          }
+        }
+      }
+    },
+    "dynamic_action": {
+      "tab_menu_options": {
+        "tab_menu_action": "Dynamic Action"
+      },
+      "action_menu": {
+        "datatable": {
+          "column_header": {
+            "id": "Dynamic Action ID",
+            "name": "Dynamic Action Name",
+            "description": "Dynamic Action Description",
+            "version": "Dynamic Action Version",
+            "command": "Dynamic Action Command",
+            "dynamic_parameters": "Dynamic Parameters",
+            "post_execution_log_file_path": "Dynamic Action Post Execution Log-File-Path",
+            "allowed_apikeys": "Dynamic Action Allowed Apikeys",
+            "action_status": "Dynamic Action Status",
+            "requires_confirmation": "Requires confirmation",
+            "muted": "Muted"
+          },
+          "column_tooltip": {
+            "command": "Action Command represents a base command for example: `ansible-playbook`, `bash` or `/bin/my_executable`.\nIt can be even a simpler command like `tasklist` or `echo Hello World`",
+            "dynamic_parameters": "Dynamic Parameters are the ones the have to be passed at execution time. For sophrosyne to recognize dynamic parameters you have to interpollate the parameters: -i {{inventory}} {{playbook}}.yml\nIn this case invetory and playbook will be asked by the user to be provided before execution",
+            "post_execution_log_file_path": "A post execution log file is an optional way to pass a log file path location to retrieve the logs after execution",
+            "allowed_apikeys": "Only the specified Apikeys can execute an Action"
+          }
+        }
+      },
+      "action_deletion": {
+        "title": "Action Deletion",
+        "message": "Please confirm the deletion of the following Action(s):",
+        "toast": {
+          "success": {
+            "message": "Deleted Action(s)",
+            "detail": "You have successfully deleted the Actions(s)"
+          },
+          "error": {
+            "message": "Can not delete your Action(s)",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "action_creation_form": {
+        "modal_header": "Create Dynamic Action",
+        "modal_header_update": "Update Dynamic Action",
+        "fields": {
+          "name": "Dynamic Action Name",
+          "description": "Dynamic Action Description",
+          "version": "Dynamic Action Version",
+          "command": "Dynamic Action Command",
+          "dynamic_parameters": "Dynamic Parameters",
+          "post_execution_log_file_path": "Dynamic Action's post execution log file (Optional)",
+          "allowed_apikeys": "Allowed Apikeys",
+          "requires_confirmation_on": "Requires Confirmation",
+          "requires_confirmation_off": "No Confirmation Required",
+          "keep_latest_confirmation_on": "Override existing Confirmation requests",
+          "keep_latest_confirmation_off": "Add to existing Confirmation requests",
+          "muted_on": "Muted",
+          "muted_off": "Active"
+        },
+        "command_dialog": {
+          "header": "Enter the Dynamic Action's STATIC Command part (e.g: sudo /bin/bash)",
+          "btn": {
+            "save": "Save",
+            "cancel": "Cancel"
+          }
+        },
+        "command_parameter_dialog": {
+          "header": "Enter the dynamic command part that shall be interpolated",
+          "btn": {
+            "save": "Save",
+            "cancel": "Cancel"
+          }
+        },
+        "tooltip": {
+          "command": "Action Command represents a base command for example: `ansible-playbook`, `bash` or `/bin/my_executable`.\nIt can be even a simpler command like `tasklist` or `echo Hello World`",
+          "dynamic_parameters": "Dynamic Parameters are the ones that have to be passed at execution time. For sophrosyne to recognize dynamic parameters you have to interpolate the parameters: -i &#123;&#123;inventory&#125;&#125; &#123;&#123;playbook&#125;&#125;.yml. In this case inventory and playbook will be asked by the user to be provided before execution",
+          "post_execution_log_file_path": "A post execution log file is an optional way to pass a log file path location to retrieve the logs after execution",
+          "allowed_apikeys": "Only the specified Apikeys can execute an Action",
+          "requires_confirmation": "A triggered Action will require an additional confirmation before it can be executed",
+          "keep_latest_confirmation": "If the same Action is waiting to be confirmed but with different parameters choose to override it or add to the existing confirmation request",
+          "muted": "A triggered Action will be instantly rejected if muted"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Dynamic Action",
+            "toast": {
+              "success": {
+                "message": "Created Dynamic Action",
+                "detail": "You have successfully created a Dynamic Action"
+              },
+              "error": {
+                "message": "Can not create Dynamic Action",
+                "detail": "Please check again your inputs"
+              }
+            }
+          },
+          "update": {
+            "label": "Submit Dynamic Action",
+            "toast": {
+              "success": {
+                "message": "Updated Dynamic Action",
+                "detail": "You have successfully updated a Dynamic Action"
+              },
+              "error": {
+                "message": "Can not update Dynamic Action",
+                "detail": "Please check again your inputs"
+              }
+            }
+          }
+        }
+      },
+      "action_running_selection": {
+        "title": "Select a running Action",
+        "fields": {
+          "running_action_selection": "Select an Action"
+        },
+        "btn": {
+          "submit": {
+            "label": "Submit"
+          }
+        }
+      },
+      "action_dynamic_parameters_modal": {
+        "title": "Execute Dynamic Action",
+        "command_preview": "Command Preview"
+      },
+      "action_control": {
+        "btn": {
+          "execute_action": {
+            "label": "Execute Action",
+            "toast": {
+              "success": {
+                "message": "Executed Action",
+                "detail": "The outcome of your Action will be displayed shortly"
+              },
+              "error": {
+                "message": "Can not execute your selected Action",
+                "detail": "Please try again later"
+              }
+            }
+          },
+          "save_as_action": {
+            "label": "Save as Action"
+          },
+          "stop_action": {
+            "label": "Stop Action",
+            "toast": {
+              "success": {
+                "message": "Stopped Action",
+                "detail": "Your action was terminated prematurely"
+              },
+              "error": {
+                "message": "Can not stop your selected Action",
+                "detail": "Please try again"
+              }
+            }
+          }
+        },
+        "last_action_card": {
+          "header": "Last Action Status",
+          "execution_start_time": "Last Run",
+          "execution_exit_code": "Last Run Status",
+          "tooltip": {
+            "execution_exit_code_success": "Last Run succeeded",
+            "execution_exit_code_error": "Last Run failed with Exit-Code: ",
+            "execution_exit_code_never_run": "This action was never triggered"
+          }
+        }
+      }
+    }
+  },
+  "dashboard": {
+    "tab_menu_options": {
+      "tab_menu_dashboard": "Dashboard"
+    },
+    "stats": {
+      "current": {
+        "title": "Now Running",
+        "subtitle_text": "Total count/not distinguished"
+      },
+      "last": {
+        "title": "Last executed Action",
+        "subtitle_text_1": "Time:"
+      },
+      "total": {
+        "title": "Total Run",
+        "subtitle_text_1": "Auto by API",
+        "subtitle_text_2": "Manually by GUI"
+      },
+      "success": {
+        "title": "Success Rate",
+        "subtitle_text_1": "succeeded",
+        "subtitle_text_2": "failed"
+      }
+    },
+    "timeline": {
+      "title": "Complete Action Timeline",
+      "sub_title": "See all triggered Actions by success and failure on a day",
+      "total_run": "Total Run",
+      "total_succeeded": "Total Succeeded",
+      "total_failed": "Total Failed"
+    },
+    "runningActions": {
+      "title": "View Running Actions",
+      "sub_title": "Dynamic Actions are listed once: Please select View button to see them all"
+    }
+  },
+  "action_confirmation": {
+    "tab_menu_options": {
+      "tab_menu_confirmation_requests": "Confirmation Requests"
+    },
+    "confirmation_card": {
+      "explanation": "The above Action requires confirmation. If you confirm the action, the action will be executed immediately. If you reject the action, the action will be deleted from the execution pipeline. Therefore, it will have to be re-triggered manually or by an Alert",
+      "btn_reject": "Reject",
+      "btn_confirm": "Confirm"
+    },
+    "confirmation_dialog": {
+      "title": "Action Confirmation",
+      "rejection": {
+        "message": "Do you want to cancel the Action execution?",
+        "toast": {
+          "success": {
+            "message": "Rejected Action Execution",
+            "detail": "Action successfully rejected. Execution aborted"
+          },
+          "error": {
+            "message": "Action Rejection Unsuccessful",
+            "detail": "Please try again"
+          }
+        }
+      },
+      "confirmation": {
+        "message": "Do you want to confirm the Action execution?",
+        "toast": {
+          "success": {
+            "message": "Action Execution Confirmed",
+            "detail": "Action successfully confirmed. Execution imminent"
+          },
+          "error": {
+            "message": "Action Confirmation Unsuccessful",
+            "detail": "Please try again"
+          }
+        }
+      }
+    }
+  },
+  "action_recommendations": {
+    "tab_menu_options": {
+      "tab_menu_action_recommendation": "Action Recommendations",
+      "tab_menu_action_recommendation_dashboard": "Active Recommendations"
+    },
+    "action_recommendation_menu": {
+      "datatable": {
+        "column_header": {
+          "id": "ID",
+          "name": "Name",
+          "description": "Description",
+          "additional_documentation": "Additional Documentation",
+          "responsible_entity": "Responsible Entity",
+          "contact_information": "Contact",
+          "allowed_apikeys": "Allowed Apikeys",
+          "action_recommendation_status": "Status"
+        }
+      },
+      "deletion_action_confirmation": {
+        "confirmation_dialog": {
+          "title": "Delete Action Recommendation",
+          "confirmation": {
+            "message": "You are about to delete the following Action Recommendations:",
+            "toast": {
+              "success": {
+                "message": "Action Recommendation Deleted",
+                "detail": "You have successfully deleted the Action Recommendation(s)"
+              },
+              "error": {
+                "message": "Action Recommendation Deletion failed",
+                "detail": "Please try again later"
+              }
+            }
+          }
+        }
+      }
+    },
+    "action_recommendation_additional_documentation": {
+      "download": {
+        "btn": {
+          "available": {
+            "label": "Download Additional Documentation"
+          },
+          "unavailable": {
+            "label": "No Additional Documentation available"
+          }
+        },
+        "toast": {
+          "success": {
+            "message": "Downloaded Additional Documentation",
+            "detail": "You have successfully downloaded the additional documentation"
+          },
+          "info": {
+            "message": "Downloading Additional Documentation",
+            "detail": "Your additional documentations is downloading..."
+          },
+          "error": {
+            "message": "Can not Download Additional Documentation",
+            "detail": "Please try again later"
+          }
+        }
+      }
+    },
+    "action_recommendation_description": {
+      "toggle": {
+        "btn": {
+          "show": "Show",
+          "hide": "Hide"
+        }
+      },
+      "header": "Additional Info"
+    },
+    "action_recommendation_card": {
+      "fields": {
+        "responsible_entity": "Responsible:",
+        "contact_information": "Contact:",
+        "description": "Additional Information:",
+        "additional_description": "Additional Documentation:",
+        "acknowledgement": "Acknowledge"
+      },
+      "confirmation_dialog": {
+        "title": "Acknowledge Recommendation",
+        "confirmation": {
+          "message": "Acknowledge Recommendation?\nThe recommendation will disappear afterwards",
+          "toast": {
+            "success": {
+              "message": "Action Recommendation Acknowledged",
+              "detail": "Action Recommendation will disappear now"
+            },
+            "error": {
+              "message": "Action Recommendation Acknowledgement failed",
+              "detail": "Action Recommendation is still active"
+            }
+          }
+        }
+      }
+    },
+    "action_recommendation_creation_form": {
+      "modal_header": "Create Action Recommendation",
+      "modal_header_update": "Update Action Recommendation",
+      "fields": {
+        "name": "Recommendation Name",
+        "description": "Recommendation Description",
+        "additional_documentation": "Additional Documentation",
+        "responsible_entity": "Responsible entity",
+        "contact_information": "Contact Information",
+        "allowed_apikeys": "Allowed Apikeys",
+        "show_upload": {
+          "keep": "Keep current additional Documentation",
+          "update": "Update current additional Documentation"
+        }
+      },
+      "tooltip": {
+        "description": "A description can be rendered as HTML, for example:\n <strong>DO THIS</strong><br/><p><Thank you/p>",
+        "additional_documentation": "Add an additional File with a max. size of 128MB (Optional)",
+        "allowed_apikeys": "Only the specified Apikeys can execute an Action (Optional)",
+        "responsible_entity": "Name a single responsible person, team or business unit (Optional)",
+        "contact_information": "Provide more elaborate contact possibilities (Optional)"
+      },
+      "btn": {
+        "create": {
+          "label": "Submit Recommendation",
+          "toast": {
+            "success": {
+              "message": "Created Action Recommendation",
+              "detail": "You have successfully created an Action Recommendation"
+            },
+            "error": {
+              "message": "Can not create Action Recommendation",
+              "detail": "Please check again your inputs"
+            }
+          }
+        },
+        "update": {
+          "label": "Submit Recommendation",
+          "toast": {
+            "success": {
+              "message": "Updated Action Recommendation",
+              "detail": "You have successfully updated an Action Recommendation"
+            },
+            "error": {
+              "message": "Can not update Action Recommendation",
+              "detail": "Please check again your inputs"
+            }
+          }
+        }
+      }
+    }
+  },
+  "control_panel_menu": {
+    "tab_menu_options": {
+      "tab_menu_control_panel": "Control Panel Management"
+    },
+    "control_panel": {
+      "menu": {
+        "header": "Control Panels",
+        "title": "A Control Panel is a per user tailored with Actions filled dashboard allowing quick access to certain Actions",
+        "datatable": {
+          "column_header": {
+            "id": "ID",
+            "name": "Name",
+            "description": "Description",
+            "contact_information": "Contact",
+            "associated_users": "Users with Access",
+            "associated_control_panel_dashboard": "Associated Control Panel Dashboard(s)"
+          }
+        }
+      },
+      "creation_form": {
+        "modal_header": "Create Control Panel",
+        "modal_header_update": "Update Control Panel",
+        "fields": {
+          "name": "Control Panel Name",
+          "description": "Control Panel Description",
+          "associated_users": "User Access to Control Panel",
+          "associated_control_panel_dashboard": "Add Dashboard(s)"
+        },
+        "tooltip": {
+          "associated_users": "A user can only have one control panel. If you add a Control Panel to an user with an existing one it will be overwritten",
+          "associated_control_panel_dashboard": "All Dashboards a user shall have access to"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Control Panel",
+            "toast": {
+              "success": {
+                "message": "Created Control Panel",
+                "detail": "You have successfully created a Control Panel"
+              },
+              "error": {
+                "message": "Can not create Control Panel",
+                "detail": "Please check again your inputs"
+              }
+            }
+          },
+          "update": {
+            "label": "Update Control Panel",
+            "toast": {
+              "success": {
+                "message": "Updated Control Panel",
+                "detail": "You have successfully updated your Control Panel"
+              },
+              "error": {
+                "message": "Can not update Control Panel",
+                "detail": "Please check again your inputs"
+              }
+            }
+          }
+        }
+      },
+      "deletion": {
+        "confirmation_dialog": {
+          "title": "Delete Control Panel",
+          "confirmation": {
+            "message": "You are about to delete the following Control Panels:",
+            "toast": {
+              "success": {
+                "message": "Control Panel Deleted",
+                "detail": "You have successfully deleted the Control Panel(s)"
+              },
+              "error": {
+                "message": "Control Panel Deletion failed",
+                "detail": "Please try again later"
+              }
+            }
+          }
+        }
+      }
+    },
+    "control_panel_dashboard": {
+      "menu": {
+        "header": "Control Panel Dashboards",
+        "title": "A Control Panel Dashboard contains multiple Groups of Actions. It serves to visually separate Dashboard in different Tabs",
+        "datatable": {
+          "column_header": {
+            "id": "ID",
+            "name": "Name",
+            "description": "Description",
+            "associated_control_panel_dashboard_groups": "Associated Control Panel Dashboard Group(s)",
+            "position": "Positioning"
+          }
+        }
+      },
+      "creation_form": {
+        "modal_header": "Create Control Panel Dashboard",
+        "modal_header_update": "Update Control Panel Dashboard",
+        "fields": {
+          "name": "Control Panel Dashboard Name",
+          "description": "Control Panel Dashboard Description",
+          "associated_control_panel_dashboard_groups": "Add Dashboard Group(s)",
+          "position": "Positioning"
+        },
+        "tooltip": {
+          "associated_control_panel_dashboard_groups": "All Actions grouped as Dashboard Groups",
+          "position": "Select a positioning priority for displaying to the user while '0' being first"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Control Panel Dashboard",
+            "toast": {
+              "success": {
+                "message": "Created Control Panel Dashboard",
+                "detail": "You have successfully created a Control Panel Dashboard"
+              },
+              "error": {
+                "message": "Can not create Control Panel Dashboard",
+                "detail": "Please check again your inputs"
+              }
+            }
+          },
+          "update": {
+            "label": "Update Control Panel Dashboard",
+            "toast": {
+              "success": {
+                "message": "Updated Control Panel Dashboard",
+                "detail": "You have successfully updated your Control Panel Dashboard"
+              },
+              "error": {
+                "message": "Can not update Control Panel Dashboard",
+                "detail": "Please check again your inputs"
+              }
+            }
+          }
+        }
+      },
+      "deletion": {
+        "confirmation_dialog": {
+          "title": "Delete Control Panel Dashboard",
+          "confirmation": {
+            "message": "You are about to delete the following Control Panel Dashboards:",
+            "toast": {
+              "success": {
+                "message": "Control Panel Dashboard Deleted",
+                "detail": "You have successfully deleted the Control Panel Dashboard(s)"
+              },
+              "error": {
+                "message": "Control Panel Dashboard Deletion failed",
+                "detail": "Please try again later"
+              }
+            }
+          }
+        }
+      }
+    },
+    "control_panel_dashboard_group": {
+      "menu": {
+        "header": "Control Panel Dashboard Groups",
+        "title": "A Control Panel Dashboard Group contains multiple Actions. It serves to visually group Actions in to a group",
+        "datatable": {
+          "column_header": {
+            "id": "ID",
+            "name": "Name",
+            "description": "Description",
+            "associated_actions": "Actions",
+            "associated_dynamic_actions": "Dynamic Actions",
+            "position": "Positioning"
+          }
+        }
+      },
+      "creation_form": {
+        "modal_header": "Create Control Panel Dashboard Group",
+        "modal_header_update": "Update Control Panel Dashboard Group",
+        "fields": {
+          "name": "Control Panel Dashboard Group Name",
+          "description": "Control Panel Dashboard Group Description",
+          "associated_actions": "Add Actions",
+          "associated_dynamic_actions": "Add Dynamic Actions",
+          "position": "Positioning"
+        },
+        "tooltip": {
+          "associated_actions": "Group Actions together",
+          "associated_dynamic_actions": "Group Dynamic Actions together",
+          "position": "Select a positioning priority for displaying to the user while '0' being first"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Control Panel Dashboard Group",
+            "toast": {
+              "success": {
+                "message": "Created Control Panel Dashboard Group",
+                "detail": "You have successfully created a Control Panel Dashboard Group"
+              },
+              "error": {
+                "message": "Can not create Control Panel Dashboard Group",
+                "detail": "Please check again your inputs"
+              }
+            }
+          },
+          "update": {
+            "label": "Update Control Panel Dashboard Group",
+            "toast": {
+              "success": {
+                "message": "Updated Control Panel Dashboard Group",
+                "detail": "You have successfully updated your Control Panel Dashboard Group"
+              },
+              "error": {
+                "message": "Can not update Control Panel Dashboard Group",
+                "detail": "Please check again your inputs"
+              }
+            }
+          }
+        }
+      },
+      "deletion": {
+        "confirmation_dialog": {
+          "title": "Delete Control Panel Dashboard Group",
+          "confirmation": {
+            "message": "You are about to delete the following Control Panel Dashboard Group(s):",
+            "toast": {
+              "success": {
+                "message": "Control Panel Dashboard Group Deleted",
+                "detail": "You have successfully deleted the Control Panel Dashboard Group(s)"
+              },
+              "error": {
+                "message": "Control Panel Dashboard Group Deletion failed",
+                "detail": "Please try again later"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "control_panel_view": {
+    "tab_menu_options": {
+      "tab_menu_control_panel": "Control Panel"
+    },
+    "action_executor": {
+      "rate_limit": {
+        "header": "Limit Line Output",
+        "sub_title": "Type the max lines you want to output before the console resets. Only applies when checked"
+      },
+      "external_stream": {
+        "header": "Display automatically triggered Actions",
+        "tooltip": "May lead to overlap for multiple externally triggered Dynamic Actions"
+      }
+    }
+  }
+}
