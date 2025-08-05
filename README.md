@@ -49,7 +49,7 @@ Some actions may require an additional confirmation before execution.
 These are managed through the **Action Confirmation Menu**, ensuring controlled and safe automation.
 
 <div style="text-align: center"> 
-  <img src="./ui/public/SOPHROSYNE_ACTIONS.pngg" alt="Sophrosyne Actions" style="max-height:50vh"> 
+  <img src="./ui/public/SOPHROSYNE_ACTIONS.png" alt="Sophrosyne Actions" style="max-height:50vh"> 
 </div>
 
 ---
