@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Action Archive Service API
+  description: |-
+    This API document describes the available Sophrosyne Action Archive Service APIs. Using this API you can retrieve all Actions ran on your system
+  license:
+    name: GNU Affero General Public License 3.0
+    url: https://www.gnu.org/licenses/
+  version: 1.0.0
+tags:
+  - name: Action Archive API
+    description: Sophrosyne action confirmation operation
+paths:
+  /api/v1/archive/actions:
+    get:
+      tags:
+        - Action Archive API
+      summary: Get all archived actions (all already executed Actions)
+      description: ''
+      operationId: getArchivedActions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './action_archive_service_api.yml#/components/schemas/ActionArchive'
+        '401':
+          description: Unauthorized
+  /api/v1/archive/action/{actionId}:
+    get:
+      tags:
+        - archive_action
+      summary: Get all archived actions by actionId
+      description: ''
+      operationId: getArchivedActionsByActionId
+      parameters:
+        - name: actionId
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './action_archive_service_api.yml#/components/schemas/ActionArchive'
+        '400':
+          description: Invalid actionId supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Archive not found
+  /api/v1/archive/action/{actionId}/last:
+    get:
+      tags:
+        - archive_action
+      summary: Get the latest archived actions by actionId
+      description: ''
+      operationId: getLastArchivedActionsByActionId
+      parameters:
+        - name: actionId
+          in: path
+          description: 'The actionId that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: './action_archive_service_api.yml#/components/schemas/ActionArchive'
+        '400':
+          description: Invalid actionId supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Archive not found

@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Internal Executor Service API
+  description: |-
+    This API document describes the available Sophrosyne Internal Executor Service APIs
+  termsOfService: TBD
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne Core docs
+  url: TBD
+tags:
+  - name: action
+    description: Sophrosyne executor operation
+paths:
+  /int/client/executor/action/{id}:
+    post:
+      tags:
+        - executor
+      summary: Execute action by id
+      description: ''
+      operationId: executeAction
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /int/client/executor/action/{id}/stop:
+    post:
+      tags:
+        - executor
+      summary: Stop action execution by id
+      description: ''
+      operationId: stopAction
+      parameters:
+        - name: id
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /pull/user/executor/action/{id}/status:
+    get:
+      tags:
+        - executor
+      summary: Get status info of action by id
+      description: ''
+      operationId: getStatusOfAction
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionStatusInfo'
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /int/client/executor/actions:
+    get:
+      tags:
+        - executor
+      summary: Get all current running actions
+      description: ''
+      operationId: getAllCurrentRunningActions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './action_service_api.yml#/components/schemas/Action'
+  /int/client/executor/dynamicaction/{id}:
+    post:
+      tags:
+        - executor
+      summary: Execute dynamic action by id
+      description: ''
+      operationId: executeDynamicAction
+      parameters:
+        - name: id
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: "The parameters are passed as JSON. Use the interpolated string as key and your value as value. For the below example the Dynamic Action commands looks as follows: ping -n {{execution_times}} {{port}}"
+        content:
+          application/json:
+            schema:
+              type: object
+            examples:
+              dynamic_action:
+                value:
+                  execution_times: 5
+                  port: 127.0.0.1
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Dynamic Action not found
+  /int/client/executor/dynamicaction/{id}/stop:
+    post:
+      tags:
+        - executor
+      summary: Stop dynamic action execution by id
+      description: ''
+      operationId: stopDynamicAction
+      parameters:
+        - name: id
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Dynamic Action not found
+  /int/client/executor/running/dynamicaction/{id}:
+    get:
+      tags:
+        - executor
+      summary: Get all current running dynamic actions by Id
+      description: ''
+      operationId: getAllCurrentRunningDynamicActionsById
+      parameters:
+        - name: id
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './dynamic_action_service_api.yml#/components/schemas/DynamicAction'
+  /int/client/executor/dynamicactions:
+    get:
+      tags:
+        - executor
+      summary: Get all current running dynamic actions
+      description: ''
+      operationId: getAllCurrentRunningDynamicActions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './dynamic_action_service_api.yml#/components/schemas/DynamicAction'
+components:
+  schemas:
+    ActionStatusInfo:
+      type: object
+      properties:
+        isRunning:
+          type: boolean
+          example: true

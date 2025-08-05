@@ -1,0 +1,289 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - User Service API
+  description: |-
+    This API document describes the available Sophrosyne User Service APIs
+  termsOfService: TBD
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne Core docs
+  url: TBD
+tags:
+  - name: user
+    description: Sophrosyne user operation
+paths:
+  /int/admin/user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+  /auth/user/:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid username/password supplied
+  /int/client/{username}/logout:
+    post:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: successful operation
+  /int/admin/user/{username}:
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      description: ''
+      operationId: getUserByUserName
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserView'
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+        '401':
+          description: Unauthorized
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+        '406':
+          description: Delete Operation not allowed
+  /int/admin/users:
+    get:
+      tags:
+        - user
+      summary: Get all users
+      description: ''
+      operationId: getUsers
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserView'
+        '401':
+          description: Unauthorized
+  /int/client/self/{username}:
+    get:
+      tags:
+        - user
+      summary: Get user's logged self
+      description: ''
+      operationId: getLoggedUserData
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserView'
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Update logged user
+      description: This can only be done by the logged in user.
+      operationId: updateLoggedUser
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserView'
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+            - CLIENT
+          example: 'ADMIN'
+    UserView:
+      type: object
+      properties:
+        id:
+          type: string
+          example: id_1
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+            - CLIENT
+          example: 'ADMIN'

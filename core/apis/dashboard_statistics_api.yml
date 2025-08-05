@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Dahsboard Service API
+  description: |-
+    This API document describes the available Sophrosyne Dashboard Service APIs
+  termsOfService: TBD
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne Core docs
+  url: TBD
+tags:
+  - name: api
+    description: Sophrosyne dashboard operation
+paths:
+  /pull/user/dashboard/stats/all:
+    get:
+      tags:
+        - dashboard
+      summary: Get all stats
+      description: ''
+      operationId: getAllStats
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    Stats:
+      type: object
+      properties:
+        current_running:
+          type: integer
+          format: int64
+        total_run:
+          type: integer
+          format: int64
+        total_external:
+          type: integer
+          format: int64
+        total_internal:
+          type: integer
+          format: int64
+        total_success:
+          type: integer
+          format: int64
+        total_fail:
+          type: integer
+          format: int64
+        requiring_confirmation:
+          type: integer
+          format: int64
+        active_recommendations:
+          type: integer
+          format: int64
+        timeline:
+          type: object
+          properties:
+            total-x-axis:
+              type: array
+              items:
+                type: string
+            total-y-values:
+              type: array
+              items:
+                type: integer
+                format: int64
+            total-success-y-values:
+              type: array
+              items:
+                type: integer
+                format: int64
+

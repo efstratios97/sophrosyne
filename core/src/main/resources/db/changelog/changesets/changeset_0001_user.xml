@@ -1,0 +1,44 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+  <changeSet author="Efstratios Pahis" id="1">
+    <createTable tableName="sophrosyne_user">
+      <column name="id" type="varchar(255)">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="username" type="varchar">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="firstname" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="lastname" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="varchar">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="role" type="varchar">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="token" type="varchar">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+    <insert tableName="sophrosyne_user">
+      <column name="id" value="sophrosynegenesis1"/>
+      <column name="username" value="admin"/>
+      <column name="firstname" value="admin"/>
+      <column name="lastname" value="admin"/>
+      <column name="email" value="admin@admin.com"/>
+      <column name="password" value="$2a$12$nv1VX1Doqlxj2FPzVmSRz.cQt7c4M2mg3ZUkYMCdr1Dpt3ujdOpqq"/>
+      <column name="role" value="ADMIN"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

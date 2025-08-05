@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Control Panel View Service API
+  description: |-
+    This API document describes the available Sophrosyne Control Panel View Service APIs
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne docs
+  url: TODO
+tags:
+  - name: control_panel_view
+    description: Sophrosyne's Control Panel View Service API
+paths:
+  /int/client/controlpanelview/{userName}:
+    get:
+      tags:
+        - control_panel_view
+      summary: Get the control panel for user
+      description: "Use this endpoint to retrieve a Control Panel for a specific user"
+      operationId: getControlPanelForUser
+      parameters:
+        - name: userName
+          in: path
+          description: 'The user name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlPanelView'
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    ControlPanelView:
+      type: object

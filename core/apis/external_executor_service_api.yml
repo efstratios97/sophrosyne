@@ -1,0 +1,249 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Action API
+  description: |-
+    This API document describes the available Sophrosyne Action APIs.
+    1. Trigger a simple Action without passing any parameters
+    2. Trigger a Dynamic Action passing parameters in the path using interpolation
+    3. Trigger a Dynamic Action passing parameters in the body as JSON
+    
+    Core component of all API - Requests is the Action's ID and a valid Apikey. Both can be obtained from your Sophrosyne Web-UI.
+  version: 1.0.0
+tags:
+  - name: API
+    description: Sophrosyne's API
+paths:
+  /api/v1/action/{id}:
+    post:
+      tags:
+        - API
+      summary: Execute action by id
+      description: "Use this endpoint to execute an Action"
+      operationId: executeAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /api/v1/dynamicaction/{id}/parameters/{parameters}:
+    post:
+      tags:
+        - API
+      summary: Execute dynamic action by id
+      description: "Use this endpoint to execute a Dynamic Action by passing the parameters in the request's path"
+      operationId: executeDynamicAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: parameters
+          in: path
+          description: 'The passed parameters'
+          required: true
+          schema:
+            type: string
+            example: "execution_times:5,port:127.0.0.1"
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      requestBody:
+        required: false
+        description: "Any request-body that might be send with the request. More Info in the official Documentation"
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Dynamic Action not found
+  /api/v1/dynamicaction/{id}:
+    post:
+      tags:
+        - API
+      summary: Execute dynamic action by id
+      description: "Use this endpoint to execute a Dynamic Action by passing the parameters as JSON in the request's body"
+      operationId: executeDynamicActionParamsInBody
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      requestBody:
+        description: "The parameters are passed as JSON. Use the interpolated string as key and your value as value. For the below example the Dynamic Action commands looks as follows: ping -n {{execution_times}} {{port}}"
+        content:
+          application/json:
+            schema:
+              type: object
+            examples:
+              dynamic_action:
+                value:
+                  execution_times: 5
+                  port: 127.0.0.1
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Dynamic Action not found
+  /api/v1/action/{id}/stop:
+    post:
+      tags:
+        - API
+      summary: Stop action execution by id
+      description: 'Use this endpoint to programmatically stop a running Action'
+      operationId: stopAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /api/v1/dynamicaction/{id}/runningid/{runningId}/stop:
+    post:
+      tags:
+        - API
+      summary: Stop dynamic action execution by id
+      description: 'Use this endpoint to programmatically stop a running Dynamic Action'
+      operationId: stopDynamicAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Dynamic Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: runningId
+          in: path
+          description: "Pass the Action's runningID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /api/v1/anyaction/{id}/mute:
+    post:
+      tags:
+        - API
+      summary: Mute any type of action by id
+      description: "Use this endpoint to mute an Action to instantly reject it"
+      operationId: muteAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found
+  /api/v1/anyaction/{id}/unmute:
+    post:
+      tags:
+        - API
+      summary: Unmute (activate) any type of action by id
+      description: "Use this endpoint to unmute (activate) an Action"
+      operationId: unmuteAction
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action not found

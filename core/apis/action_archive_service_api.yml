@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Action Archive Service API
+  description: |-
+    This API document describes the available Sophrosyne Action Archive Service APIs
+  termsOfService: TBD
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne Core docs
+  url: TBD
+tags:
+  - name: archive_action
+    description: Sophrosyne action archive operation
+paths:
+  /int/client/archive/actions:
+    get:
+      tags:
+        - archive_action
+      summary: Get all archived actions
+      description: ''
+      operationId: getArchivedActions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionArchive'
+        '401':
+          description: Unauthorized
+  /int/admin/archive/actions:
+    delete:
+      tags:
+        - archive_action
+      summary: Purge complete Action Archive
+      operationId: purgeActionArchive
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Unauthorized
+  /int/client/archive/actions/metadata:
+    get:
+      tags:
+        - archive_action
+      summary: Get all archived actions' metadata only
+      description: ''
+      operationId: getArchivedActionsMetadata
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionArchiveMetadata'
+        '401':
+          description: Unauthorized
+  /int/client/archive/action/{actionId}/filedata:
+    get:
+      tags:
+        - archive_action
+      summary: Get all archived actions' filedata only
+      description: ''
+      operationId: getArchivedActionsFiledata
+      parameters:
+        - name: actionId
+          in: path
+          description: 'The id that needs to be fetched'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionArchiveFiledata'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Archive not found
+  /int/client/archive/action/{actionId}:
+    get:
+      tags:
+        - archive_action
+      summary: Get all archived actions by actionId
+      description: ''
+      operationId: getArchivedActionsByActionId
+      parameters:
+        - name: actionId
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionArchive'
+        '400':
+          description: Invalid actionId supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Archive not found
+  /pull/user/archive/action/{actionId}/last:
+    get:
+      tags:
+        - archive_action
+      summary: Get the latest archived actions by actionId
+      description: ''
+      operationId: getLastArchivedActionsByActionId
+      parameters:
+        - name: actionId
+          in: path
+          description: 'The name that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionArchive'
+        '400':
+          description: Invalid actionId supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Archive not found
+components:
+  schemas:
+    ActionArchive:
+      type: object
+      properties:
+        actionId:
+          type: string
+          example: id_1
+        actionName:
+          type: string
+          example: AnsibleDeploymentAction
+        actionCommand:
+          type: string
+          example: ansible -i inventory.yml playbook.yml
+        executionStartPoint:
+          type: string
+          format: date-time
+        executionEndPoint:
+          type: string
+          format: date-time
+        exitCode:
+          type: integer
+          example: 1
+        executionLogFileData:
+          type: string
+        postExecutionLogFileData:
+          type: string
+        version:
+          type: string
+          example: v.1.0.0
+        type:
+          type: string
+          enum:
+            - EXTERNAL
+            - INTERNAL
+          example: 'EXTERNAL'
+    ActionArchiveMetadata:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        actionId:
+          type: string
+          example: id_1
+        actionName:
+          type: string
+          example: AnsibleDeploymentAction
+        actionCommand:
+          type: string
+          example: ansible -i inventory.yml playbook.yml
+        executionStartPoint:
+          type: string
+          format: date-time
+        executionEndPoint:
+          type: string
+          format: date-time
+        exitCode:
+          type: integer
+          example: 1
+        version:
+          type: string
+          example: v.1.0.0
+        type:
+          type: string
+          enum:
+            - EXTERNAL
+            - INTERNAL
+          example: 'EXTERNAL'
+    ActionArchiveFiledata:
+      type: object
+      properties:
+        executionLogFileData:
+          type: string
+        postExecutionLogFileData:
+          type: string

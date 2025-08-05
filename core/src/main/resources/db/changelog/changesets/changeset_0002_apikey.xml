@@ -1,0 +1,35 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="2" author="Efstratios Pahis">
+        <createTable tableName="sophrosyne_apikey">
+            <column name="apikey" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="apikeyname" type="varchar">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="apikeydescription" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="apikeyactive" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="privatekey" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="publickey" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint
+                columnNames="apikey" tableName="sophrosyne_apikey"
+                constraintName="APIKEY_ACTION_APIKEY_ID"/>
+        <addUniqueConstraint
+                columnNames="apikey" tableName="sophrosyne_apikey"
+                constraintName="APIKEY_DYNAMIC_ACTION_APIKEY_ID"/>
+    </changeSet>
+
+</databaseChangeLog>

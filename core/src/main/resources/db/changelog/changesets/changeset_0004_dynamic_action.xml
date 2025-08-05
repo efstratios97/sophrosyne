@@ -1,0 +1,56 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="4" author="Efstratios Pahis">
+        <createTable tableName="sophrosyne_dynamic_action">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="command" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dynamic_parameters" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post_execution_log_file_path" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="dynamic_action_apikey">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+            <column name="apikey" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_dynamic_action"
+                constraintName="DYNAMIC_ACTION_ACTION_APIKEY_ID"/>
+        <addForeignKeyConstraint
+                constraintName="FK_DYNAMIC_ACTION_ACTION_APIKEY"
+                referencedTableName="sophrosyne_dynamic_action"
+                baseColumnNames="id"
+                baseTableName="dynamic_action_apikey" referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_APIKEY_DYNAMIC_ACTION_APIKEY"
+                referencedTableName="sophrosyne_apikey"
+                baseColumnNames="apikey"
+                baseTableName="dynamic_action_apikey" referencedColumnNames="apikey"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

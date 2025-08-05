@@ -1,0 +1,32 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="16" author="Efstratios Pahis">
+        <dropForeignKeyConstraint baseTableName="control_panel_control_panel_dashboard"
+                                  constraintName="FK_CONTROL_PANEL_DASHBOARD_ID_CONTROL_PANEL_ID"/>
+        <dropForeignKeyConstraint baseTableName="control_panel_control_panel_dashboard"
+                                  constraintName="FK_CONTROL_PANEL_ID_CONTROL_PANEL_DASHBOARD_ID"/>
+
+        <!-- Add the new foreign key constraints with ON DELETE CASCADE -->
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_DASHBOARD_ID_CONTROL_PANEL_ID"
+                referencedTableName="sophrosyne_control_panel_dashboard"
+                baseColumnNames="control_panel_dashboard_id"
+                baseTableName="control_panel_control_panel_dashboard"
+                referencedColumnNames="id"
+                onUpdate="CASCADE"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_CONTROL_PANEL_ID_CONTROL_PANEL_DASHBOARD_ID"
+                referencedTableName="sophrosyne_control_panel"
+                baseColumnNames="control_panel_id"
+                baseTableName="control_panel_control_panel_dashboard"
+                referencedColumnNames="id"
+                onUpdate="CASCADE"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

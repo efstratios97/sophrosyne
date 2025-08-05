@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Recommendation Service API
+  description: |-
+    This API document describes the available Sophrosyne Recommendation APIs:
+    
+    1. Trigger a Action Recommendation 
+    
+    Core component of all API - Requests is the Action Recommendation's ID and a valid Apikey. Both can be obtained from your Sophrosyne Web-UI.
+  version: 1.0.0
+tags:
+  - name: Action Recommendation API
+    description: Sophrosyne's Action Recommendation API
+paths:
+  /api/v1/actionrecommendations:
+    get:
+      tags:
+        - Action Recommendation API
+      summary: Get all active action recommendations
+      description: 'Returns all active action recommendations associated to the passed Apikey'
+      operationId: getAllActionRecommendationsByApikey
+      parameters:
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './action_recommendation_service_api.yml#/components/schemas/ActionRecommendation'
+        '401':
+          description: Unauthorized
+  /api/v1/actionrecommendation/{id}:
+    get:
+      tags:
+        - Action Recommendation API
+      summary: Get active action recommendation by ID
+      description: 'Returns active action recommendations by the passed id and associated to the passed Apikey'
+      operationId: getActionRecommendationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the action recommendation to retrieve.
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: './action_recommendation_service_api.yml#/components/schemas/ActionRecommendation'
+        '204':
+          description: Action Recommendation is not active
+        '404':
+          description: Invalid ID supplied
+        '401':
+          description: Unauthorized
+  /api/v1/actionrecommendation/{id}/trigger:
+    post:
+      tags:
+        - Recommendation API
+      summary: Trigger an action recommendation by id
+      description: "Use this endpoint to trigger a Action Recommendation"
+      operationId: triggerActionRecommendationById
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action Recommendation's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Recommendation not found
+  /api/v1/actionrecommendation/{id}/acknowledge:
+    post:
+      tags:
+        - Recommendation API
+      summary: Acknowledges Action Recommendation and stops prompting an action recommendation by id
+      description: "Use this endpoint to trigger a Action Recommendation"
+      operationId: stopActionRecommendationById
+      parameters:
+        - name: id
+          in: path
+          description: "Pass the Action Recommendation's ID"
+          required: true
+          schema:
+            type: string
+        - name: apikey
+          in: query
+          required: false
+          description: Apikey for authentication. Can be also passed as Bearer Token in Header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: Action Recommendation not found

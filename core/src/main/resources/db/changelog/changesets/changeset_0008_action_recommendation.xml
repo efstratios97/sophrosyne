@@ -1,0 +1,56 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="8" author="Efstratios Pahis">
+        <createTable tableName="sophrosyne_action_recommendation">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="additional_documentation" type="oid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="responsible_entity" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="contact_information" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="action_recommendation_apikey">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+            <column name="apikey" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                columnNames="id" tableName="sophrosyne_action_recommendation"
+                constraintName="ACTION_RECOMMENDATION_APIKEY_ID"/>
+        <addForeignKeyConstraint
+                constraintName="FK_ACTION_RECOMMENDATION_APIKEY"
+                referencedTableName="sophrosyne_action_recommendation"
+                baseColumnNames="id"
+                baseTableName="action_recommendation_apikey" referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_APIKEY_ACTION_RECOMMENDATION_APIKEY"
+                referencedTableName="sophrosyne_apikey"
+                baseColumnNames="apikey"
+                baseTableName="action_recommendation_apikey" referencedColumnNames="apikey"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

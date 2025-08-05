@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Action Confirmation Service API
+  description: |-
+    This API document describes the available Sophrosyne Action Confirmation Service APIs
+  termsOfService: TBD
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Sophrosyne Core docs
+  url: TBD
+tags:
+  - name: action_confirmation
+    description: Sophrosyne action confirmation operation
+paths:
+  /int/client/confirmation:
+    post:
+      tags:
+        - action_confirmation
+      summary: Confirm/Reject action
+      description: Endpoint handling the confirmation response
+      operationId: handleActionConfirmation
+      requestBody:
+        description: handles action confirmation response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Confirmation'
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Unauthorized
+  /int/client/confirmations:
+    get:
+      tags:
+        - action_confirmation
+      summary: Get all outstanding action confirmations
+      description: ''
+      operationId: getActionConfirmations
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Confirmation'
+        '401':
+          description: Unauthorized
+components:
+  schemas:
+    Confirmation:
+      type: object
+      properties:
+        runningActionId:
+          type: string
+          example: id_1
+        actionName:
+          type: string
+          example: My cool Action
+        actionDescription:
+          type: string
+          example: My cool Action does cool stuff
+        actionCommand:
+          type: string
+          example: ping -n 5 127.0.0.1
+        confirmed:
+          type: int
+          example: 1
+        triggered_time:
+          type: string
+          format: date-time

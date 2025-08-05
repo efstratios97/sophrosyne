@@ -1,0 +1,41 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="5" author="Efstratios Pahis">
+        <createTable tableName="sophrosyne_action_archive">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="action_id" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_command" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="execution_start_point" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="execution_end_point" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="exit_code" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="execution_log_file_data" type="oid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="post_execution_log_file_data" type="oid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
