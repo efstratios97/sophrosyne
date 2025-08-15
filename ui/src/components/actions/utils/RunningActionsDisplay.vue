@@ -122,6 +122,7 @@ const toggleActionExecutor = () => {
 
 const runningAnyTypeActions = ref(new Array())
 const getRunningAnyTypeActions = () => {
+  selectedActions.value = []
   runningAnyTypeActions.value = new Array()
   let dynamicActionToAdd = undefined
 
@@ -136,17 +137,21 @@ const getRunningAnyTypeActions = () => {
       getRunningDynamicActions().then(() => {
         runningDynamicActions.value.forEach((dynamicAction) => {
           dynamicAction['actionType'] = 'dynamic'
-          runningAnyTypeActions.value.every((dynamicActionInAnyTypeAction) => {
-            if (dynamicActionInAnyTypeAction.id != dynamicAction.id) {
-              dynamicActionToAdd = dynamicAction
-              return false
-            }
-            return true
-          })
+          if (runningAnyTypeActions.value.length == 0) {
+            dynamicActionToAdd = dynamicAction
+          } else {
+            runningAnyTypeActions.value.every((dynamicActionInAnyTypeAction) => {
+              if (dynamicActionInAnyTypeAction.id != dynamicAction.id) {
+                dynamicActionToAdd = dynamicAction
+                return false
+              }
+              return true
+            })
+          }
+          if (dynamicActionToAdd != undefined) {
+            runningAnyTypeActions.value.push(dynamicActionToAdd)
+          }
         })
-        if (dynamicActionToAdd != undefined) {
-          runningAnyTypeActions.value.push(dynamicActionToAdd)
-        }
       })
     })
 }

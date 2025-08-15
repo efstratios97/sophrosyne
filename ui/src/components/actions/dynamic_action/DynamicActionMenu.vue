@@ -209,6 +209,7 @@
       :id="selectedActions[0].id"
       :action="selectedActions[0]"
       :isDynamicAction="true"
+      :showDefaultDynamicParameters="true"
       v-if="showActionExecutor && selectedActions.length > 0"
       @close="toggleActionExecutor"
     ></ActionExecutor>

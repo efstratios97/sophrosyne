@@ -16,7 +16,7 @@
           <div class="col-12">
             <div class="sophrosyne-text-break sophrosyne-code">
               {{ props.action.command }}
-              {{ props.isDynamicAction ? ' ' + props.action.dynamicParameters : '' }}
+              {{ props.showDefaultDynamicParameters ? ' ' + props.action.dynamicParameters : '' }}
             </div>
           </div>
         </div>
@@ -89,7 +89,14 @@ import { Dialog } from 'primevue'
 
 const { getRunningDynamicActionsById, runningDynamicActionsById } = useDynamicActionComposable()
 
-const props = defineProps(['id', 'action', 'isAction', 'isDynamicAction', 'showActionExecutor'])
+const props = defineProps([
+  'id',
+  'action',
+  'isAction',
+  'isDynamicAction',
+  'showActionExecutor',
+  'showDefaultDynamicParameters'
+])
 
 onMounted(() => {
   selectedRunningAction.value = {}
