@@ -131,22 +131,26 @@ public class Utils {
         .getActionProcessDataShared()
         .forEach(
             (id, actionData) -> {
-              ActionDTO actionDTO = (ActionDTO) actionData.get("actionDTO");
-              if (dynamicActionService.checkActionDTOisDynamicActionDTO(actionDTO)) {
-                DynamicActionDTO dynamicActionDTO = (DynamicActionDTO) actionData.get("actionDTO");
-                dynamicActionDTO.setRunningActionId(id);
-                if (runningDynamicActionData.isEmpty()
-                    || ((LocalDateTime) runningDynamicActionData.getLast().get("triggeredTime"))
-                        .isBefore((LocalDateTime) actionData.get("triggeredTime"))) {
-                  runningDynamicActions.add(dynamicActionDTO);
-                  runningDynamicActionData.add(actionData);
-                } else {
-                  HashMap tmpActionData = runningDynamicActionData.removeLast();
-                  DynamicActionDTO tmpDynamicActionDTO = runningDynamicActions.removeLast();
-                  runningDynamicActions.add(dynamicActionDTO);
-                  runningDynamicActionData.add(actionData);
-                  runningDynamicActions.add(tmpDynamicActionDTO);
-                  runningDynamicActionData.add(tmpActionData);
+              // Only if action is confirmed count as running
+              if ((boolean) actionData.get("confirmed")) {
+                ActionDTO actionDTO = (ActionDTO) actionData.get("actionDTO");
+                if (dynamicActionService.checkActionDTOisDynamicActionDTO(actionDTO)) {
+                  DynamicActionDTO dynamicActionDTO =
+                      (DynamicActionDTO) actionData.get("actionDTO");
+                  dynamicActionDTO.setRunningActionId(id);
+                  if (runningDynamicActionData.isEmpty()
+                      || ((LocalDateTime) runningDynamicActionData.getLast().get("triggeredTime"))
+                          .isBefore((LocalDateTime) actionData.get("triggeredTime"))) {
+                    runningDynamicActions.add(dynamicActionDTO);
+                    runningDynamicActionData.add(actionData);
+                  } else {
+                    HashMap tmpActionData = runningDynamicActionData.removeLast();
+                    DynamicActionDTO tmpDynamicActionDTO = runningDynamicActions.removeLast();
+                    runningDynamicActions.add(dynamicActionDTO);
+                    runningDynamicActionData.add(actionData);
+                    runningDynamicActions.add(tmpDynamicActionDTO);
+                    runningDynamicActionData.add(tmpActionData);
+                  }
                 }
               }
             });
@@ -160,21 +164,24 @@ public class Utils {
         .getActionProcessDataShared()
         .forEach(
             (id, actionData) -> {
-              ActionDTO actionDTO = (ActionDTO) actionData.get("actionDTO");
-              if (!dynamicActionService.checkActionDTOisDynamicActionDTO(actionDTO)) {
-                actionDTO = (ActionDTO) actionData.get("actionDTO");
-                if (runningActionData.isEmpty()
-                    || ((LocalDateTime) runningActionData.getLast().get("triggeredTime"))
-                        .isBefore((LocalDateTime) actionData.get("triggeredTime"))) {
-                  runningActions.add(actionDTO);
-                  runningActionData.add(actionData);
-                } else {
-                  HashMap tmpActionData = runningActionData.removeLast();
-                  ActionDTO tmpActionDTO = runningActions.removeLast();
-                  runningActions.add(actionDTO);
-                  runningActionData.add(actionData);
-                  runningActions.add(tmpActionDTO);
-                  runningActionData.add(tmpActionData);
+              // Only if action is confirmed count as running
+              if ((boolean) actionData.get("confirmed")) {
+                ActionDTO actionDTO = (ActionDTO) actionData.get("actionDTO");
+                if (!dynamicActionService.checkActionDTOisDynamicActionDTO(actionDTO)) {
+                  actionDTO = (ActionDTO) actionData.get("actionDTO");
+                  if (runningActionData.isEmpty()
+                      || ((LocalDateTime) runningActionData.getLast().get("triggeredTime"))
+                          .isBefore((LocalDateTime) actionData.get("triggeredTime"))) {
+                    runningActions.add(actionDTO);
+                    runningActionData.add(actionData);
+                  } else {
+                    HashMap tmpActionData = runningActionData.removeLast();
+                    ActionDTO tmpActionDTO = runningActions.removeLast();
+                    runningActions.add(actionDTO);
+                    runningActionData.add(actionData);
+                    runningActions.add(tmpActionDTO);
+                    runningActionData.add(tmpActionData);
+                  }
                 }
               }
             });
