@@ -15,7 +15,6 @@
       <option name="Make" enabled="true" />
     </method>
   </configuration>
-<<<<<<< HEAD
   <configuration default="false" name="CoreApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="ALTERNATIVE_JRE_PATH" value="21" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -32,6 +31,4 @@
       <option name="Make" enabled="true" />
     </method>
   </configuration>
-=======
->>>>>>> c48174e5cdd7c3da06261dbdd9b7971f63543f98
 </component>
