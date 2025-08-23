@@ -3,12 +3,6 @@ info:
   title: Sophrosyne - User Service API
   description: |-
     This API document describes the available Sophrosyne User Service APIs
-  termsOfService: TBD
-  contact:
-    email:
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 externalDocs:
   description: Sophrosyne Core docs

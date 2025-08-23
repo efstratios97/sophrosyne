@@ -53,7 +53,9 @@
             severity="success"
             rounded
             class="w-full"
-            @click="executeAction"
+            @click="
+              executeAction(props.action.id, userPassedParameters) ? emits('close') : undefined
+            "
           />
         </div>
         <div class="col-6">
@@ -82,16 +84,16 @@
 </template>
 <script setup>
 import { ref, inject, defineProps, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useToast } from 'primevue/usetoast'
 import ActionFormCreate from '@/components/actions/action/ActionFormCreate.vue'
 import { Dialog } from 'primevue'
+import { useDynamicActionComposable } from '@/composables/DynamicActionComposable.js'
 
-const toast = useToast()
-const { t } = useI18n()
+const { executeAction } = useDynamicActionComposable()
+
 const axiosCore = inject('axios-core')
+
 const props = defineProps(['action'])
-const emit = defineEmits(['close'])
+const emits = defineEmits(['close'])
 
 const dynamicParameters = ref([])
 const userPassedParameters = ref({})
@@ -129,28 +131,6 @@ const getCommandPreview = () => {
     .then((res) => {
       commandPreview.value = res.data
       newAction.value.command = res.data
-    })
-}
-
-const executeAction = () => {
-  axiosCore
-    .post('/int/client/executor/dynamicaction/' + props.action.id, userPassedParameters.value)
-    .then(() => {
-      toast.add({
-        severity: 'success',
-        summary: t('actions.action.action_control.btn.execute_action.toast.success.message'),
-        detail: t('actions.action.action_control.btn.execute_action.toast.success.detail'),
-        life: 3000
-      })
-      emit('close')
-    })
-    .catch(() => {
-      toast.add({
-        severity: 'error',
-        summary: t('actions.action.action_control.btn.execute_action.toast.error.message'),
-        detail: t('actions.action.action_control.btn.execute_action.toast.error.detail'),
-        life: 3000
-      })
     })
 }
 </script>
