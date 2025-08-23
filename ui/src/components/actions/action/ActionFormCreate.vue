@@ -18,6 +18,6 @@ const { createNewAction, settings } = useActionComposable()
 const emit = defineEmits(['getActions'])
 const props = defineProps(['action'])
 watchEffect(() => {
-  settings.value.succeded ? emit('getActions') : null
+  settings.value.succeeded ? emit('getActions') : null
 })
 </script>

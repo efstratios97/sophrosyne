@@ -66,6 +66,7 @@ public class Utils {
   }
 
   public ResponseEntity<Void> executeActionHelper(ActionDTO actionDTO, String triggerType) {
+    boolean confirmed = true;
     if (actionDTO.getMuted() == 1) {
       return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
@@ -75,13 +76,15 @@ public class Utils {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
     try {
-      actionExecutorService.registerAction(
-          actionDTO, triggerType, setInitialConfirmationStatus(actionDTO));
+      confirmed = setInitialConfirmationStatus(actionDTO);
+      actionExecutorService.registerAction(actionDTO, triggerType, confirmed);
     } catch (Exception e) {
       logger.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-    return ResponseEntity.ok().build();
+    return confirmed
+        ? ResponseEntity.ok().build()
+        : ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   public boolean checkActionWithSameCommandRunning(ActionDTO newActionDTO) {

@@ -429,6 +429,18 @@
                 "message": "Executed Action",
                 "detail": "The outcome of your Action will be displayed shortly"
               },
+              "201": {
+                "message": "Triggered Action awaits Confirmation",
+                "detail": "Your Action was successfully queued for execution. Go to `Action Confirmation` to confirm/reject"
+              },
+              "406": {
+                "message": "Action Execution Rejected: Muted",
+                "detail": "Your Action is muted. Please un-mute in order to execute"
+              },
+              "409": {
+                "message": "Action Execution Rejected: Already running",
+                "detail": "Your Action is already running. Please wait for current execution to finish or stop Action to start it again"
+              },
               "error": {
                 "message": "Can not execute your selected Action",
                 "detail": "Please try again later"
@@ -595,6 +607,18 @@
               "success": {
                 "message": "Executed Action",
                 "detail": "The outcome of your Action will be displayed shortly"
+              },
+              "201": {
+                "message": "Triggered Action awaits Confirmation",
+                "detail": "Your Action was successfully queued for execution. Go to `Action Confirmation` to confirm/reject"
+              },
+              "406": {
+                "message": "Action Execution Rejected: Muted",
+                "detail": "Your Action is muted. Please un-mute in order to execute"
+              },
+              "409": {
+                "message": "Action Execution Rejected: Already running",
+                "detail": "Your Action is already running with the same parameters. Please wait for current execution to finish or stop Action to start it again"
               },
               "error": {
                 "message": "Can not execute your selected Action",

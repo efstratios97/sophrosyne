@@ -8,7 +8,7 @@ info:
     3. Trigger a Dynamic Action passing parameters in the body as JSON
     
     Core component of all API - Requests is the Action's ID and a valid Apikey. Both can be obtained from your Sophrosyne Web-UI.
-  version: 1.0.0
+  version: 1.0.1
 tags:
   - name: API
     description: Sophrosyne's API
@@ -36,12 +36,18 @@ paths:
       responses:
         '200':
           description: successful operation
+        '201':
+          description: Action triggered and awaits confirmation
         '400':
           description: Invalid id supplied
         '401':
           description: Unauthorized
         '404':
           description: Action not found
+        '406':
+          description: Action is muted
+        '409':
+          description: Action is already running
   /api/v1/dynamicaction/{id}/parameters/{parameters}:
     post:
       tags:
@@ -119,12 +125,18 @@ paths:
       responses:
         '200':
           description: successful operation
+        '201':
+          description: Dynamic Action triggered and awaits confirmation
         '400':
           description: Invalid id supplied
         '401':
           description: Unauthorized
         '404':
           description: Dynamic Action not found
+        '406':
+          description: Dynamic Action is muted
+        '409':
+          description: Dynamic Action is already running
   /api/v1/action/{id}/stop:
     post:
       tags:

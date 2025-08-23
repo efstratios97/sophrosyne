@@ -33,6 +33,7 @@
       :action="props.action"
       :isAction="props.isAction"
       :isDynamicAction="props.isDynamicAction"
+      :showDefaultDynamicParameters="props.isDynamicAction"
       @close="toggleShowActionExecutor"
     ></ActionExecutor>
   </div>

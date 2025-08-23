@@ -61,7 +61,7 @@ export const useActionComposable = () => {
       })
   }
 
-  const settings = ref({ submitting: false, succeded: false })
+  const settings = ref({ submitting: false, succeeded: false })
   const createNewAction = async (event) => {
     settings.value.submitting = true
     event.allowedApikeys =
@@ -81,7 +81,7 @@ export const useActionComposable = () => {
           detail: t('actions.action.action_creation_form.btn.create.toast.success.detail'),
           life: 3000
         })
-        settings.value.succeded = true
+        settings.value.succeeded = true
         settings.value.submitting = false
       })
       .catch(() => {
@@ -91,7 +91,7 @@ export const useActionComposable = () => {
           detail: t('actions.action.action_creation_form.btn.create.toast.error.detail'),
           life: 3000
         })
-        settings.value.succeded = false
+        settings.value.succeeded = false
         settings.value.submitting = false
       })
   }
@@ -110,6 +110,56 @@ export const useActionComposable = () => {
     })
   }
 
+  const executeAction = async (actionId) => {
+    return await axiosCore
+      .post('/int/client/executor/action/' + actionId)
+      .then((result) => {
+        const status = result?.status
+        if (status === 200) {
+          toast.add({
+            severity: 'success',
+            summary: t('actions.action.action_control.btn.execute_action.toast.success.message'),
+            detail: t('actions.action.action_control.btn.execute_action.toast.success.detail'),
+            life: 3000
+          })
+        } else if (status === 201) {
+          toast.add({
+            severity: 'warn',
+            summary: t('actions.action.action_control.btn.execute_action.toast.201.message'),
+            detail: t('actions.action.action_control.btn.execute_action.toast.201.detail'),
+            life: 7000
+          })
+        }
+        return true
+      })
+      .catch(error => {
+        const status = error.response?.status
+        if (status === 406) {
+          toast.add({
+            severity: 'warn',
+            summary: t('actions.action.action_control.btn.execute_action.toast.406.message'),
+            detail: t('actions.action.action_control.btn.execute_action.toast.406.detail'),
+            life: 7000
+          })
+        } else if (status === 409) {
+          toast.add({
+            severity: 'warn',
+            summary: t('actions.action.action_control.btn.execute_action.toast.409.message'),
+            detail: t('actions.action.action_control.btn.execute_action.toast.409.detail'),
+            life: 7000
+          })
+        } else {
+          toast.add({
+            severity: 'error',
+            summary: t('actions.action.action_control.btn.execute_action.toast.error.message'),
+            detail: t('actions.action.action_control.btn.execute_action.toast.error.detail'),
+            life: 4000
+          })
+        }
+        return false
+      })
+  }
+
   return {
     getRunningActions,
     runningActions,
@@ -120,6 +170,7 @@ export const useActionComposable = () => {
     createNewAction,
     settings,
     getActions,
-    actions
+    actions,
+    executeAction
   }
 }

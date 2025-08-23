@@ -37,7 +37,7 @@ onMounted(() => {
       },
       {
         type: 'bar',
-        label: 'Total succeded',
+        label: 'Total succeeded',
         backgroundColor: documentStyle.getPropertyValue('--p-green-500'),
         borderColor: 'white',
         borderWidth: 2,

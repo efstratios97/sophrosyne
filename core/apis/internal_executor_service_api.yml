@@ -3,13 +3,7 @@ info:
   title: Sophrosyne - Internal Executor Service API
   description: |-
     This API document describes the available Sophrosyne Internal Executor Service APIs
-  termsOfService: TBD
-  contact:
-    email:
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.0.1
 externalDocs:
   description: Sophrosyne Core docs
   url: TBD
@@ -34,12 +28,18 @@ paths:
       responses:
         '200':
           description: successful operation
+        '201':
+          description: Action triggered and awaits confirmation
         '400':
           description: Invalid id supplied
         '401':
           description: Unauthorized
         '404':
           description: Action not found
+        '406':
+          description: Action is muted
+        '409':
+          description: Action is already running
   /int/client/executor/action/{id}/stop:
     post:
       tags:
@@ -134,12 +134,18 @@ paths:
       responses:
         '200':
           description: successful operation
+        '201':
+          description: Dynamic Action triggered and awaits confirmation
         '400':
           description: Invalid id supplied
         '401':
           description: Unauthorized
         '404':
           description: Dynamic Action not found
+        '406':
+          description: Dynamic Action is muted
+        '409':
+          description: Dynamic Action is already running or awaits confirmation with same parameters
   /int/client/executor/dynamicaction/{id}/stop:
     post:
       tags:

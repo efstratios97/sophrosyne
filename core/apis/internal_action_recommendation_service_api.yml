@@ -3,9 +3,6 @@ info:
   title: Sophrosyne - Internal Recommender Service API
   description: |-
     This API document describes the available Sophrosyne Internal Recommender Service APIs
-  license:
-    name: GNU Affero General Public License 3.0
-    url: https://www.gnu.org/licenses/
   version: 1.0.0
 tags:
   - name: internal_recommender

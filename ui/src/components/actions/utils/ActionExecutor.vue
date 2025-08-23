@@ -15,8 +15,12 @@
           </div>
           <div class="col-12">
             <div class="sophrosyne-text-break sophrosyne-code">
-              {{ props.action.command }}
-              {{ props.showDefaultDynamicParameters ? ' ' + props.action.dynamicParameters : '' }}
+              {{ selectedRunningAction.command }}
+              {{
+                props.showDefaultDynamicParameters && selectedRunningAction.runningId == null
+                  ? ' ' + selectedRunningAction.dynamicParameters
+                  : ''
+              }}
             </div>
           </div>
         </div>
@@ -79,7 +83,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import ActionPromptLiveStream from '@/components/actions/action/ActionPromptLiveStream.vue'
 import ActionControl from '@/components/actions/action/ActionControl.vue'
 import DynamicActionControl from '@/components/actions/dynamic_action/DynamicActionControl.vue'
@@ -99,7 +103,7 @@ const props = defineProps([
 ])
 
 onMounted(() => {
-  selectedRunningAction.value = {}
+  selectedRunningAction.value = props.action
   getRunningDynamicActionsById(props.id).then(() => {
     if (runningDynamicActionsById.value.length > 1) {
       toggleShowRunningActionSelection()
