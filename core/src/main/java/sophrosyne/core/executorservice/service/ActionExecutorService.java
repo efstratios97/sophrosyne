@@ -53,8 +53,7 @@ public class ActionExecutorService {
         try {
           removeDynamicActionFromConfirmationQueueByKeepLatestConfirmationRequest(
               (DynamicActionDTO) actionDTO);
-        } catch (Exception e) {
-          logger.error(e.getMessage());
+        } catch (Exception ignore) {
         }
         runningId = utils.getRunningId(actionDTO);
         ((DynamicActionDTO) actionDTO).setRunningActionId(runningId);

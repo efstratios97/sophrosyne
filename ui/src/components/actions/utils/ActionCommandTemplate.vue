@@ -39,11 +39,8 @@ import { ref, onMounted } from 'vue'
 const visible = ref(true)
 const commandInput = ref('')
 
-// const { getApikeys, apikeys } = useApikeysComposable()
 const props = defineProps(['command', 'isDynamicAction', 'isDynamicActionParameters'])
-// const newAction = ref(props.action)
 const I18nSource = props.isDynamicAction ? ref('dynamic_action') : ref('action')
-// const dynamic_parameters_tooltip = ref('')
 
 const toggleVisible = () => {
   visible.value = !visible.value

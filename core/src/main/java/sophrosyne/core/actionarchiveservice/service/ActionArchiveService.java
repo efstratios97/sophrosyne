@@ -4,6 +4,7 @@ import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.Meter;
 import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -123,15 +124,19 @@ public class ActionArchiveService {
         .actionName(actionArchiveDTO.getActionName())
         .actionCommand(actionArchiveDTO.getActionCommand())
         .executionStartPoint(
-            actionArchiveDTO
-                .getExecutionStartPoint()
-                .atZone(ZoneOffset.systemDefault())
-                .toOffsetDateTime())
+            actionArchiveDTO.getExecutionStartPoint() != null
+                ? actionArchiveDTO
+                    .getExecutionStartPoint()
+                    .atZone(ZoneOffset.systemDefault())
+                    .toOffsetDateTime()
+                : OffsetDateTime.of(LocalDateTime.MIN, ZoneOffset.UTC))
         .executionEndPoint(
-            actionArchiveDTO
-                .getExecutionEndPoint()
-                .atZone(ZoneOffset.systemDefault())
-                .toOffsetDateTime())
+            actionArchiveDTO.getExecutionEndPoint() != null
+                ? actionArchiveDTO
+                    .getExecutionEndPoint()
+                    .atZone(ZoneOffset.systemDefault())
+                    .toOffsetDateTime()
+                : OffsetDateTime.of(LocalDateTime.MAX, ZoneOffset.UTC))
         .exitCode(actionArchiveDTO.getExitCode())
         .executionLogFileData(
             utilService.convertFileDataToString(actionArchiveDTO.getExecutionLogFileData()))
