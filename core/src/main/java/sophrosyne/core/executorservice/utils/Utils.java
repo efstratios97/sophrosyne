@@ -96,8 +96,7 @@ public class Utils {
                   .getActionProcessDataShared()
                   .get(getRunningId(newActionDTO))
                   .get("actionDTO");
-    } catch (Exception e) {
-      logger.error(e.getMessage());
+    } catch (Exception ignored) {
       return false;
     }
     return actionDTORunning.getCommand().equals(newActionDTO.getCommand());
@@ -130,6 +129,10 @@ public class Utils {
   public List<DynamicActionDTO> getAllRunningDynamicActions() {
     List<DynamicActionDTO> runningDynamicActions = new java.util.ArrayList<>(List.of());
     List<HashMap> runningDynamicActionData = new java.util.ArrayList<>(List.of());
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException ignore) {
+    }
     actionExecutorService
         .getActionProcessDataShared()
         .forEach(
