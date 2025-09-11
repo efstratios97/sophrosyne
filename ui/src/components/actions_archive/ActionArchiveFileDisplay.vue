@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="mr-2 ml-2 mt-1 mb-1">
     <ActionArchiveFileToolbar :textData="props.textData"></ActionArchiveFileToolbar>
     <ScrollPanel
-      style="width: 95%; height: 335px; max-height: 335px"
+      class="h-screen"
+      style="width: 99%"
       :pt="{
         root: { class: 'sophrosyne-terminal-box' },
         barY: { class: 'bg-primary' }

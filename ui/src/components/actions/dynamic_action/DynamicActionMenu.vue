@@ -229,16 +229,11 @@ import { useDynamicActionComposable } from '@/composables/DynamicActionComposabl
 import { Dialog } from 'primevue'
 import { FilterMatchMode } from '@primevue/core/api'
 
-const {
-  getDynamicActions,
-  dynamicActions,
-  runningDynamicActionsById,
-  getRunningDynamicActionsById
-} = useDynamicActionComposable()
+const { getDynamicActions, dynamicActions, runningDynamicActionsById } =
+  useDynamicActionComposable()
 const toast = useToast()
 const { t } = useI18n()
 const axiosCore = inject('axios-core')
-const expandedRows = ref([])
 const selectedActions = ref([])
 const selectedRunningAction = ref({})
 
@@ -346,17 +341,5 @@ const setSelectedRunningAction = (selectedAction) => {
 const showRunningActionSelection = ref(false)
 const toggleShowRunningActionSelection = () => {
   showRunningActionSelection.value = !showRunningActionSelection.value
-}
-const toggleRowExpansion = (event) => {
-  expandedRows.value = {}
-  expandedRows.value[event.data.name] = true
-  selectedRunningAction.value = event.data
-  getRunningDynamicActionsById(event.data.id).then(() => {
-    if (runningDynamicActionsById.value.length > 1) {
-      toggleShowRunningActionSelection()
-    } else if (runningDynamicActionsById.value.length == 1) {
-      selectedRunningAction.value = runningDynamicActionsById.value.at(0)
-    }
-  })
 }
 </script>

@@ -1,11 +1,10 @@
 <template>
-  <Toolbar class="mb-4">
+  <Toolbar class="mb-2">
     <template #start>
       <Button
         :label="$t('actions_archive.toolbar.clipboard.btn')"
         icon="pi pi-copy"
         severity="primary"
-        class="mr-2"
         @click="copyTextData"
       />
     </template>
@@ -14,7 +13,6 @@
         :label="$t('actions_archive.toolbar.download.btn')"
         icon="pi pi-download"
         severity="primary"
-        class="mr-2"
         @click="downloadTextData"
       />
     </template>
