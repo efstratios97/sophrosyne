@@ -2,25 +2,21 @@ package sophrosyne.core.actionservice.dto;
 
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Setter
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "sophrosyne_action")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class ActionDTO {
-  @Id private String id;
-  private String name;
-  private String description;
-  private String command;
-  private String postExecutionLogFilePath;
-  private String version;
-  private int requiresConfirmation;
-  private int muted;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+public class ActionDTO extends AbstractActionDTO {
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinTable(

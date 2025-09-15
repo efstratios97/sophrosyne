@@ -4,22 +4,18 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import java.util.Set;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import sophrosyne.core.actionservice.dto.ActionDTO;
 import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
 
-@Data
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Builder
-@Setter
+@Data
+@SuperBuilder
 @JsonSerialize
 @Entity(name = "sophrosyne_control_panel_dashboard_group")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class ControlPanelDashboardGroupDTO {
-  @Id private String id;
-  private String name;
-  private String description;
-  private int position;
+public class ControlPanelDashboardGroupDTO extends AbstractControlPanelDashboardGroupDTO {
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinTable(

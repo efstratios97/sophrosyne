@@ -28,7 +28,8 @@
     "sass": "^1.89.2",
     "vue": "^3.5.17",
     "vue-i18n": "^11.1.7",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.11.0",

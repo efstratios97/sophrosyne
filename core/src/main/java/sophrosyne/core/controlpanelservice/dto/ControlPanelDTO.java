@@ -4,19 +4,17 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import java.util.Set;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import sophrosyne.core.userservice.dto.UserDTO;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Setter
+@SuperBuilder
 @JsonSerialize
 @Entity(name = "sophrosyne_control_panel")
-public class ControlPanelDTO {
-  @Id private String id;
-  private String name;
-  private String description;
+public class ControlPanelDTO extends AbstractControlPanelDTO {
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "controlPanelDTO")
   @ToString.Exclude

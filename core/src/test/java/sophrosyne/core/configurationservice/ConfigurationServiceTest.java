@@ -20,6 +20,9 @@ import sophrosyne.core.actionrecommendationservice.service.ActionRecommendationS
 import sophrosyne.core.actionservice.service.ActionService;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
 import sophrosyne.core.configurationservice.service.ConfigurationService;
+import sophrosyne.core.controlpanelservice.service.ControlPanelDashboardGroupService;
+import sophrosyne.core.controlpanelservice.service.ControlPanelDashboardService;
+import sophrosyne.core.controlpanelservice.service.ControlPanelService;
 import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
 import sophrosyne.core.userservice.service.UserService;
 import sophrosyne_api.core.actionrecommendationservice.model.ActionRecommendation;
@@ -36,8 +39,10 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
   @Autowired private UserService userService;
   @Autowired private ApikeyService apikeyService;
   @Autowired private ActionService actionService;
-
   @Autowired private DynamicActionService dynamicActionService;
+  @Autowired private ControlPanelService controlPanelService;
+  @Autowired private ControlPanelDashboardService controlPanelDashboardService;
+  @Autowired private ControlPanelDashboardGroupService controlPanelDashboardGroupService;
 
   @Autowired private ActionRecommendationService actionRecommendationService;
 
@@ -96,12 +101,6 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
   }
 
   @Test
-  public void test_getConfigurationDataAsJSON() {
-    createTestSophrosyneData();
-    assertThat(sut_configurationService.getConfigurationDataJSON()).isInstanceOf(String.class);
-  }
-
-  @Test
   public void test_createInitConfigurationFromFile() {
     sut_configurationService.importSophrosyneConfigurationFromFile();
 
@@ -110,6 +109,9 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(1);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
   }
 
   @Test
@@ -121,6 +123,9 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(1);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
   }
 
   @Test
@@ -134,6 +139,9 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(1);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
   }
 
   @Test
@@ -147,6 +155,9 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(1);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
   }
 
   private void createTestSophrosyneData() {
