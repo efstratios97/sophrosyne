@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jakarta.annotation.PostConstruct;
 import java.util.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,13 @@ import sophrosyne.core.actionservice.service.ActionService;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 import sophrosyne.core.apikeyservice.repository.ApikeyRepository;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
+import sophrosyne.core.configurationservice.dto.ActionConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.ActionRecommendationConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.ControlPanelConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.ControlPanelDashboardConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.ControlPanelDashboardGroupConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.DynamicActionConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.UserConfigurationDTO;
 import sophrosyne.core.controlpanelservice.dto.ControlPanelDTO;
 import sophrosyne.core.controlpanelservice.repository.ControlPanelDashboardGroupRepository;
 import sophrosyne.core.controlpanelservice.repository.ControlPanelDashboardRepository;
@@ -118,8 +126,16 @@ public class ConfigurationService {
         JsonNode apikeys = sophrosyneConfigJSON.get("apikeys");
         for (JsonNode apikeyJson : apikeys) {
           try {
-            ApikeyDTO apikey = objectMapper.readValue(apikeyJson.asText(), ApikeyDTO.class);
-            apikeyRepository.save(apikey);
+            ApikeyDTO apikeyDTO;
+            if (apikeyJson.isTextual()) {
+              apikeyDTO = objectMapper.readValue(apikeyJson.asText(), ApikeyDTO.class);
+            } else if (apikeyJson.isObject()) {
+              apikeyDTO = objectMapper.treeToValue(apikeyJson, ApikeyDTO.class);
+            } else {
+              logger.warn("Parsed apikey can not be parsed as text, neither as object... skipping");
+              continue;
+            }
+            apikeyRepository.save(apikeyDTO);
           } catch (Exception e) {
             logger.error(e.getMessage());
             status.addError(
@@ -135,27 +151,63 @@ public class ConfigurationService {
         JsonNode users = sophrosyneConfigJSON.get("users");
         for (JsonNode userJson : users) {
           try {
-            user = objectMapper.readValue(userJson.asText(), UserDTO.class);
-            if (!userServiceRepository.findById(user.getId()).isPresent()) {
-              userServiceRepository.save(user);
+            UserConfigurationDTO userConfigurationDTO;
+            if (userJson.isTextual()) {
+              userConfigurationDTO =
+                  objectMapper.readValue(userJson.asText(), UserConfigurationDTO.class);
+            } else if (userJson.isObject()) {
+              userConfigurationDTO = objectMapper.treeToValue(userJson, UserConfigurationDTO.class);
+            } else {
+              logger.warn("Parsed User can not be parsed as text, neither as object... skipping");
+              continue;
             }
-          } catch (Exception e) {
-            logger.error(e.getMessage());
-            status.addError(
-                new ConfigurationStatus.ConfigurationError(
-                    "User configuration error: " + e.getMessage()));
+            user = userConfigurationDTO.toUserDTO();
+          } catch (JsonProcessingException e) {
+            logger.warn(
+                "Parsed Sophrosyne User Config not compatible with v2 schema. Trying v1 schema");
+            try {
+              user = objectMapper.readValue(userJson.asText(), UserDTO.class);
+            } catch (Exception e2) {
+              logger.error(e2.getMessage());
+            }
+          }
+          if (!userServiceRepository.findById(user.getId()).isPresent()) {
+            userServiceRepository.save(user);
           }
         }
       } catch (Exception e) {
         logger.error(e.getMessage());
+        status.addError(
+            new ConfigurationStatus.ConfigurationError(
+                "User configuration error: " + e.getMessage()));
       }
 
       try {
         JsonNode actions = sophrosyneConfigJSON.get("actions");
         for (JsonNode actionJson : actions) {
           try {
-            ActionDTO action = objectMapper.readValue(actionJson.asText(), ActionDTO.class);
-            actionRepository.save(action);
+            ActionDTO actionDTO;
+            try {
+              ActionConfigurationDTO actionConfigurationDTO;
+              if (actionJson.isTextual()) {
+                actionConfigurationDTO =
+                    objectMapper.readValue(actionJson.asText(), ActionConfigurationDTO.class);
+              } else if (actionJson.isObject()) {
+                actionConfigurationDTO =
+                    objectMapper.treeToValue(actionJson, ActionConfigurationDTO.class);
+              } else {
+                logger.warn(
+                    "Parsed Action can not be parsed as text, neither as object... skipping");
+                continue;
+              }
+              actionConfigurationDTO.setApikeyService(apikeyService);
+              actionDTO = actionConfigurationDTO.toActionDTO();
+            } catch (JsonProcessingException e) {
+              logger.warn(
+                  "Parsed Sophrosyne Action Config not compatible with v2 schema. Trying v1 schema");
+              actionDTO = objectMapper.readValue(actionJson.asText(), ActionDTO.class);
+            }
+            actionRepository.save(actionDTO);
           } catch (Exception e) {
             logger.error(e.getMessage());
             status.addError(
@@ -171,9 +223,32 @@ public class ConfigurationService {
         JsonNode dynamicActions = sophrosyneConfigJSON.get("dynamic_actions");
         for (JsonNode dynamicActionJson : dynamicActions) {
           try {
-            DynamicActionDTO dynamicAction =
-                objectMapper.readValue(dynamicActionJson.asText(), DynamicActionDTO.class);
-            dynamicActionRepository.save(dynamicAction);
+            DynamicActionDTO dynamicActionDTO;
+            try {
+              DynamicActionConfigurationDTO dynamicActionConfigurationDTO;
+              if (dynamicActionJson.isTextual()) {
+                dynamicActionConfigurationDTO =
+                    objectMapper.readValue(
+                        dynamicActionJson.asText(), DynamicActionConfigurationDTO.class);
+              } else if (dynamicActionJson.isObject()) {
+                dynamicActionConfigurationDTO =
+                    objectMapper.treeToValue(
+                        dynamicActionJson, DynamicActionConfigurationDTO.class);
+              } else {
+                logger.warn(
+                    "Parsed Dynamic Action can not be parsed as text, neither as object... skipping");
+                continue;
+              }
+
+              dynamicActionConfigurationDTO.setApikeyService(apikeyService);
+              dynamicActionDTO = dynamicActionConfigurationDTO.toDynamicActionDTO();
+            } catch (JsonProcessingException e) {
+              logger.warn(
+                  "Parsed Sophrosyne Config not compatible with v2 schema. Trying v1 schema");
+              dynamicActionDTO =
+                  objectMapper.readValue(dynamicActionJson.asText(), DynamicActionDTO.class);
+            }
+            dynamicActionRepository.save(dynamicActionDTO);
           } catch (Exception e) {
             logger.error(e.getMessage());
             status.addError(
@@ -187,11 +262,33 @@ public class ConfigurationService {
 
       try {
         JsonNode actionRecommendations = sophrosyneConfigJSON.get("action_recommendations");
-        for (JsonNode actionRecommendation : actionRecommendations) {
+        for (JsonNode actionRecommendationJson : actionRecommendations) {
           try {
-            ActionRecommendationDTO actionRecommendationDTO =
-                objectMapper.readValue(
-                    actionRecommendation.asText(), ActionRecommendationDTO.class);
+            ActionRecommendationDTO actionRecommendationDTO;
+            try {
+              ActionRecommendationConfigurationDTO actionRecommendationConfigurationDTO;
+              if (actionRecommendationJson.isTextual()) {
+                actionRecommendationConfigurationDTO =
+                    objectMapper.readValue(
+                        actionRecommendationJson.asText(),
+                        ActionRecommendationConfigurationDTO.class);
+              } else if (actionRecommendationJson.isObject()) {
+                actionRecommendationConfigurationDTO =
+                    objectMapper.treeToValue(
+                        actionRecommendationJson, ActionRecommendationConfigurationDTO.class);
+              } else {
+                logger.warn(
+                    "Parsed ActionRecommendation can not be parsed as text, neither as object... skipping");
+                continue;
+              }
+              actionRecommendationConfigurationDTO.setApikeyService(apikeyService);
+              actionRecommendationDTO =
+                  actionRecommendationConfigurationDTO.toActionRecommendationDTO();
+            } catch (JsonProcessingException e) {
+              actionRecommendationDTO =
+                  objectMapper.readValue(
+                      actionRecommendationJson.asText(), ActionRecommendationDTO.class);
+            }
             actionRecommendationRepository.save(actionRecommendationDTO);
           } catch (Exception e) {
             logger.error(e.getMessage());
@@ -204,51 +301,121 @@ public class ConfigurationService {
         logger.error(e.getMessage());
       }
       try {
-        JsonNode controlPanels = sophrosyneConfigJSON.get("control_panels");
-        for (JsonNode controlPanel : controlPanels) {
+        JsonNode controlPanelDashboardGroupsJson =
+            sophrosyneConfigJSON.get("control_panel_dashboard_groups");
+        for (JsonNode controlPanelDashboardGroupJson : controlPanelDashboardGroupsJson) {
           try {
-            ControlPanelDTO controlPanelDTO =
-                objectMapper.readValue(controlPanel.asText(), ControlPanelDTO.class);
-            controlPanelRepository.save(controlPanelDTO);
-            for (UserDTO userDTO : controlPanelDTO.getAssociatedUsers()) {
-              if (userServiceRepository.findById(userDTO.getId()).isPresent()) {
-                try {
-                  userDTO.setControlPanelDTO(controlPanelDTO);
-                  userServiceRepository.save(userDTO);
-                } catch (Exception e) {
-                  logger.error(e.getMessage());
-                  status.addError(
-                      new ConfigurationStatus.ConfigurationError(
-                          "Control Panel Error configuration error due to User assignment: "
-                              + e.getMessage()));
-                }
-              }
+            ControlPanelDashboardGroupConfigurationDTO controlPanelDashboardGroupConfigurationDTO;
+            if (controlPanelDashboardGroupJson.isTextual()) {
+              controlPanelDashboardGroupConfigurationDTO =
+                  objectMapper.readValue(
+                      controlPanelDashboardGroupJson.asText(),
+                      ControlPanelDashboardGroupConfigurationDTO.class);
+            } else if (controlPanelDashboardGroupJson.isObject()) {
+              controlPanelDashboardGroupConfigurationDTO =
+                  objectMapper.treeToValue(
+                      controlPanelDashboardGroupJson,
+                      ControlPanelDashboardGroupConfigurationDTO.class);
+            } else {
+              logger.warn(
+                  "Parsed ControlPanelDashboardGroup can not be parsed as text, neither as object... skipping");
+              continue;
             }
-          } catch (Exception e) {
-            status.addError(
-                new ConfigurationStatus.ConfigurationError(
-                    "Control Panel Error configuration error: " + e.getMessage()));
+            controlPanelDashboardGroupConfigurationDTO.setActionService(actionService);
+            controlPanelDashboardGroupConfigurationDTO.setDynamicActionService(
+                dynamicActionService);
+            controlPanelDashboardGroupRepository.save(
+                controlPanelDashboardGroupConfigurationDTO.toControlPanelDashboardGroupDTO());
+          } catch (JsonProcessingException e) {
             logger.error(e.getMessage());
           }
         }
       } catch (Exception e) {
         logger.error(e.getMessage());
       }
-    } catch (Exception e) {
+      try {
+        JsonNode controlPanelDashboardsJson = sophrosyneConfigJSON.get("control_panel_dashboards");
+        for (JsonNode controlPanelDashboardJson : controlPanelDashboardsJson) {
+          try {
+            ControlPanelDashboardConfigurationDTO controlPanelDashboardConfigurationDTO;
+            if (controlPanelDashboardJson.isTextual()) {
+              controlPanelDashboardConfigurationDTO =
+                  objectMapper.readValue(
+                      controlPanelDashboardJson.asText(),
+                      ControlPanelDashboardConfigurationDTO.class);
+            } else if (controlPanelDashboardJson.isObject()) {
+              controlPanelDashboardConfigurationDTO =
+                  objectMapper.treeToValue(
+                      controlPanelDashboardJson, ControlPanelDashboardConfigurationDTO.class);
+            } else {
+              logger.warn(
+                  "Parsed ControlPanelDashboard can not be parsed as text, neither as object... skipping");
+              continue;
+            }
+            controlPanelDashboardConfigurationDTO.setControlPanelDashboardGroupService(
+                controlPanelDashboardGroupService);
+            controlPanelDashboardRepository.save(
+                controlPanelDashboardConfigurationDTO.toControlPanelDashboardDTO());
+          } catch (JsonProcessingException e) {
+            logger.error(e.getMessage());
+          }
+        }
+      } catch (Exception e) {
+        logger.error(e.getMessage());
+      }
+
+      JsonNode controlPanels = sophrosyneConfigJSON.get("control_panels");
+      for (JsonNode controlPanelJson : controlPanels) {
+        try {
+          ControlPanelDTO controlPanelDTO;
+          ControlPanelConfigurationDTO controlPanelConfigurationDTO;
+          try {
+            if (controlPanelJson.isTextual()) {
+              controlPanelConfigurationDTO =
+                  objectMapper.readValue(
+                      controlPanelJson.asText(), ControlPanelConfigurationDTO.class);
+            } else if (controlPanelJson.isObject()) {
+              controlPanelConfigurationDTO =
+                  objectMapper.treeToValue(controlPanelJson, ControlPanelConfigurationDTO.class);
+            } else {
+              logger.warn(
+                  "Parsed ControlPanel can not be parsed as text, neither as object... skipping");
+              continue;
+            }
+            controlPanelConfigurationDTO.setUserService(userService);
+            controlPanelConfigurationDTO.setControlPanelDashboardService(
+                controlPanelDashboardService);
+            controlPanelDTO = controlPanelConfigurationDTO.toControlPanelDTO();
+          } catch (JsonProcessingException e) {
+            controlPanelDTO =
+                objectMapper.readValue(controlPanelJson.asText(), ControlPanelDTO.class);
+          }
+          controlPanelRepository.save(controlPanelDTO);
+          for (UserDTO userDTO : controlPanelDTO.getAssociatedUsers()) {
+            if (userServiceRepository.findById(userDTO.getId()).isPresent()) {
+              try {
+                userDTO.setControlPanelDTO(controlPanelDTO);
+                userServiceRepository.save(userDTO);
+              } catch (Exception e) {
+                logger.error(e.getMessage());
+                status.addError(
+                    new ConfigurationStatus.ConfigurationError(
+                        "Control Panel Error configuration error due to User assignment: "
+                            + e.getMessage()));
+              }
+            }
+          }
+        } catch (Exception e) {
+          status.addError(
+              new ConfigurationStatus.ConfigurationError(
+                  "Control Panel Error configuration error: " + e.getMessage()));
+          logger.error(e.getMessage());
+        }
+      }
+    } catch (RuntimeException e) {
       logger.error(e.getMessage());
     }
     return status;
-  }
-
-  public String getConfigurationDataJSON() {
-    String exportDataJSON = "{}";
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-      exportDataJSON = objectMapper.writeValueAsString(getConfigurationData());
-    } catch (JsonProcessingException e) {
-      logger.error(e.getMessage());
-    }
-    return exportDataJSON;
   }
 
   public Map<String, List<String>> getConfigurationData() {
@@ -272,7 +439,9 @@ public class ConfigurationService {
             .map(
                 actionDTO -> {
                   try {
-                    return ow.writeValueAsString(actionDTO);
+                    ActionConfigurationDTO actionConfigurationDTO =
+                        new ActionConfigurationDTO(actionDTO);
+                    return ow.writeValueAsString(actionConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -285,7 +454,9 @@ public class ConfigurationService {
             .map(
                 dynamicActionDTO -> {
                   try {
-                    return ow.writeValueAsString(dynamicActionDTO);
+                    DynamicActionConfigurationDTO dynamicActionConfigurationDTO =
+                        new DynamicActionConfigurationDTO(dynamicActionDTO);
+                    return ow.writeValueAsString(dynamicActionConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -298,7 +469,9 @@ public class ConfigurationService {
             .map(
                 actionRecommendationDTO -> {
                   try {
-                    return ow.writeValueAsString(actionRecommendationDTO);
+                    ActionRecommendationConfigurationDTO actionRecommendationConfigurationDTO =
+                        new ActionRecommendationConfigurationDTO(actionRecommendationDTO);
+                    return ow.writeValueAsString(actionRecommendationConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -309,9 +482,10 @@ public class ConfigurationService {
     List<String> users =
         userService.getUsers().stream()
             .map(
-                user -> {
+                userDTO -> {
                   try {
-                    return ow.writeValueAsString(user);
+                    UserConfigurationDTO userConfigurationDTO = new UserConfigurationDTO(userDTO);
+                    return ow.writeValueAsString(userConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -322,9 +496,11 @@ public class ConfigurationService {
     List<String> controlPanels =
         controlPanelService.getControlPanels().stream()
             .map(
-                controlPanel -> {
+                controlPanelDTO -> {
                   try {
-                    return ow.writeValueAsString(controlPanel);
+                    ControlPanelConfigurationDTO controlPanelConfigurationDTO =
+                        new ControlPanelConfigurationDTO(controlPanelDTO);
+                    return ow.writeValueAsString(controlPanelConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -336,9 +512,11 @@ public class ConfigurationService {
     List<String> controlPanelDashboards =
         controlPanelDashboardService.getControlPanelDashboards().stream()
             .map(
-                controlPanelDashboard -> {
+                controlPanelDashboardDTO -> {
                   try {
-                    return ow.writeValueAsString(controlPanelDashboard);
+                    ControlPanelDashboardConfigurationDTO controlPanelDashboardConfigurationDTO =
+                        new ControlPanelDashboardConfigurationDTO(controlPanelDashboardDTO);
+                    return ow.writeValueAsString(controlPanelDashboardConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -349,9 +527,13 @@ public class ConfigurationService {
     List<String> controlPanelDashboardGroups =
         controlPanelDashboardGroupService.getControlPanelDashboardGroups().stream()
             .map(
-                controlPanelDashboardGroup -> {
+                controlPanelDashboardGroupDTO -> {
                   try {
-                    return ow.writeValueAsString(controlPanelDashboardGroup);
+                    ControlPanelDashboardGroupConfigurationDTO
+                        controlPanelDashboardGroupConfigurationDTO =
+                            new ControlPanelDashboardGroupConfigurationDTO(
+                                controlPanelDashboardGroupDTO);
+                    return ow.writeValueAsString(controlPanelDashboardGroupConfigurationDTO);
                   } catch (JsonProcessingException e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
@@ -377,18 +559,39 @@ public class ConfigurationService {
 
   private Optional<JsonNode> readInitConfig() {
     try {
-      String configFilePath = "";
+      String configFilePathOS = "";
       if (SystemUtils.IS_OS_LINUX) {
-        configFilePath = LINUX_CONFIG_FILE_PATH;
+        configFilePathOS = LINUX_CONFIG_FILE_PATH;
       } else if (SystemUtils.IS_OS_WINDOWS) {
-        configFilePath = WINDOWS_CONFIG_FILE_PATH;
+        configFilePathOS = WINDOWS_CONFIG_FILE_PATH;
       }
-      ObjectMapper mapper = new ObjectMapper();
-      return Optional.of(
-          mapper.readTree(
-              utilService.convertFileDataToString(utilService.readFile(configFilePath))));
-    } catch (Exception ignore) {
 
+      for (String fileType : List.of("yaml", "yml", "json")) {
+        String configFilePath = String.join("", configFilePathOS, fileType);
+        Optional<byte[]> file = utilService.readFile(configFilePath);
+        if (file.isEmpty()) {
+          continue;
+        }
+        // Read once
+        String content = utilService.convertFileDataToString(file.get());
+
+        // Prefer mapper by extension if known
+        if (configFilePath.endsWith(".yml") || configFilePath.endsWith(".yaml")) {
+          return Optional.ofNullable(new ObjectMapper(new YAMLFactory()).readTree(content));
+        }
+        if (configFilePath.endsWith(".json")) {
+          return Optional.ofNullable(new ObjectMapper().readTree(content));
+        }
+
+        // Unknown extension: try YAML first (handles JSON as well), then JSON as fallback
+        try {
+          return Optional.ofNullable(new ObjectMapper(new YAMLFactory()).readTree(content));
+        } catch (Exception yamlEx) {
+          return Optional.ofNullable(new ObjectMapper().readTree(content));
+        }
+      }
+    } catch (Exception ignore) {
+      // swallow and fall through to empty
     }
     return Optional.empty();
   }

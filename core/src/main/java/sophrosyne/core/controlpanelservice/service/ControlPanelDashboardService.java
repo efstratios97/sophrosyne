@@ -25,11 +25,8 @@ public class ControlPanelDashboardService {
 
   public ControlPanelDashboardDTO createControlPanelDashboard(
       ControlPanelDashboard controlPanelDashboard) {
-    ControlPanelDashboardDTO controlPanelDashboardDTO =
-        controlPanelDashboardRepository.save(
-            createControlPanelDTOFromControlPanelDashboard(controlPanelDashboard));
-
-    return controlPanelDashboardDTO;
+    return controlPanelDashboardRepository.save(
+        createControlPanelDTOFromControlPanelDashboard(controlPanelDashboard));
   }
 
   public ControlPanelDashboardDTO updateControlPanelDashboard(

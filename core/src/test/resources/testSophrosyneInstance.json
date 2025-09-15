@@ -1,22 +1,155 @@
 {
   "action_recommendations": [
-    "{\r\n  \"id\" : \"1f8408ea-4053-4283-bbdf-6c9fee2eca1e\",\r\n  \"name\" : \"Test\",\r\n  \"description\" : \"Testing\",\r\n  \"responsibleEntity\" : \"Me\",\r\n  \"contactInformation\" : \"Too\",\r\n  \"additionalDocumentation\" : \"VGVzdC5wZGY=\",\r\n  \"allowedApikeys\" : [ {\r\n    \"apikey\" : \"eyJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJzb3Bocm9zeW5lX2FwaV9rZXlmNGE2OTJkNy1mNTQ5LTRmZDktOTU0OC00MGVhZmQ1ZDYzMmQiLCJzdWIiOiJzb3Bocm9zeW5lX2NvcmUiLCJpc3MiOiJzb3Bocm9zeW5lX2NvcmUiLCJpYXQiOjE3MzQ5MDE2NzMsIm5iZiI6MTczNDkwMTY3MywiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1fQ.MvwpbatPVl3fI6c9Z9ouju2PUpxxOlmjq0imzQUAexD2vlFSDAcLoT8xgJiN1Pf8PWys5GI_ddKbDG2ueJZplw\",\r\n    \"apikeyname\" : \"apikey_fictional\",\r\n    \"apikeydescription\" : \"test\",\r\n    \"apikeyactive\" : 1,\r\n    \"privatekey\" : \"MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCAYo9PW3s+nj6CETTiyLZ31tvDSXuSRq5EoB14M87Q+LQ==\",\r\n    \"publickey\" : \"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbwCawHDgUK8sQBpFuw7TT0iF/El4xiJ4K69b8heSd1hCZOcmkqdej+r+Qqub9VynSVyTJHqZsclT2hikmH5myA==\"\r\n  } ]\r\n}"
+    {
+      "id": "1f8408ea-4053-4283-bbdf-6c9fee2eca1e",
+      "name": "Test",
+      "description": "Testing",
+      "responsibleEntity": "Me",
+      "contactInformation": "Too",
+      "additionalDocumentation": "VGVzdC5wZGY=",
+      "allowedApikeysByName": [
+        "apikey_fictional"
+      ]
+    }
   ],
-  "control_panel_dashboards": [],
+  "control_panel_dashboards": [
+    {
+      "id": "660f11dc-a268-4db6-be5c-0f9830a69828",
+      "name": "test",
+      "description": "",
+      "position": 0,
+      "associatedControlPanelGroupIds": [
+        "a84e3b62-cd16-4318-8e48-6cac9858b630",
+        "c821aa87-d893-45fa-88b3-437dff795026",
+        "fe799bc9-922c-4462-8858-12f33f224d1a"
+      ]
+    }
+  ],
   "dynamic_actions": [
-    "{\r\n  \"id\" : \"19029e50-a547-4307-8e38-5339aea76b1e\",\r\n  \"name\" : \"Test_Action\",\r\n  \"description\" : \"Test_Description\",\r\n  \"command\" : \"ansible-playbook\",\r\n  \"postExecutionLogFilePath\" : \"/etc/file/\",\r\n  \"version\" : \"1.2.3\",\r\n  \"requiresConfirmation\" : 0,\n \"muted\" : 0,\r\n  \"allowedApikeys\" : [ ],\r\n  \"dynamicParameters\" : \"-i {{inventory}} {{playbook}}\",\r\n  \"runningActionId\" : null,\r\n  \"allowedApikeysForDynamicActions\" : [ {\r\n    \"apikey\" : \"eyJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJzb3Bocm9zeW5lX2FwaV9rZXlmNGE2OTJkNy1mNTQ5LTRmZDktOTU0OC00MGVhZmQ1ZDYzMmQiLCJzdWIiOiJzb3Bocm9zeW5lX2NvcmUiLCJpc3MiOiJzb3Bocm9zeW5lX2NvcmUiLCJpYXQiOjE3MzQ5MDE2NzMsIm5iZiI6MTczNDkwMTY3MywiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1fQ.MvwpbatPVl3fI6c9Z9ouju2PUpxxOlmjq0imzQUAexD2vlFSDAcLoT8xgJiN1Pf8PWys5GI_ddKbDG2ueJZplw\",\r\n    \"apikeyname\" : \"apikey_fictional\",\r\n    \"apikeydescription\" : \"test\",\r\n    \"apikeyactive\" : 1,\r\n    \"privatekey\" : \"MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCAYo9PW3s+nj6CETTiyLZ31tvDSXuSRq5EoB14M87Q+LQ==\",\r\n    \"publickey\" : \"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbwCawHDgUK8sQBpFuw7TT0iF/El4xiJ4K69b8heSd1hCZOcmkqdej+r+Qqub9VynSVyTJHqZsclT2hikmH5myA==\"\r\n  } ]\r\n}",
-    "{\r\n  \"id\" : \"93b39ece-22c6-4ae9-a551-df3b3f623b5e\",\r\n  \"name\" : \"Test_Action_2\",\r\n  \"description\" : \"Test_Description\",\r\n  \"command\" : \"ansible-playbook\",\r\n  \"postExecutionLogFilePath\" : \"/etc/file/\",\r\n  \"version\" : \"1.2.3\",\r\n  \"requiresConfirmation\" : 1,\n \"muted\" : 0,\r\n  \"allowedApikeys\" : [ ],\r\n  \"dynamicParameters\" : \"-i {{inventory}} {{playbook}}\",\r\n  \"runningActionId\" : null,\r\n  \"allowedApikeysForDynamicActions\" : [ {\r\n    \"apikey\" : \"eyJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJzb3Bocm9zeW5lX2FwaV9rZXlmNGE2OTJkNy1mNTQ5LTRmZDktOTU0OC00MGVhZmQ1ZDYzMmQiLCJzdWIiOiJzb3Bocm9zeW5lX2NvcmUiLCJpc3MiOiJzb3Bocm9zeW5lX2NvcmUiLCJpYXQiOjE3MzQ5MDE2NzMsIm5iZiI6MTczNDkwMTY3MywiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1fQ.MvwpbatPVl3fI6c9Z9ouju2PUpxxOlmjq0imzQUAexD2vlFSDAcLoT8xgJiN1Pf8PWys5GI_ddKbDG2ueJZplw\",\r\n    \"apikeyname\" : \"apikey_fictional\",\r\n    \"apikeydescription\" : \"test\",\r\n    \"apikeyactive\" : 1,\r\n    \"privatekey\" : \"MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCAYo9PW3s+nj6CETTiyLZ31tvDSXuSRq5EoB14M87Q+LQ==\",\r\n    \"publickey\" : \"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbwCawHDgUK8sQBpFuw7TT0iF/El4xiJ4K69b8heSd1hCZOcmkqdej+r+Qqub9VynSVyTJHqZsclT2hikmH5myA==\"\r\n  } ]\r\n}"
+    {
+      "id": "19029e50-a547-4307-8e38-5339aea76b1e",
+      "name": "Test_Action",
+      "description": "Test_Description",
+      "command": "ansible-playbook",
+      "postExecutionLogFilePath": "/etc/file/",
+      "version": "1.2.3",
+      "requiresConfirmation": 0,
+      "muted": 0,
+      "allowedApikeysByName": [
+        "apikey_fictional"
+      ],
+      "dynamicParameters": "-i {{inventory}} {{playbook}}",
+      "keepLatestConfirmationRequest": 0
+    },
+    {
+      "id": "93b39ece-22c6-4ae9-a551-df3b3f623b5e",
+      "name": "Test_Action_2",
+      "description": "Test_Description",
+      "command": "ansible-playbook",
+      "postExecutionLogFilePath": "/etc/file/",
+      "version": "1.2.3",
+      "requiresConfirmation": 1,
+      "muted": 0,
+      "allowedApikeysByName": [
+        "apikey_fictional"
+      ],
+      "dynamicParameters": "-i {{inventory}} {{playbook}}",
+      "keepLatestConfirmationRequest": 0
+    }
   ],
-  "control_panels": [],
+  "control_panels": [
+    {
+      "id": "08a9d134-4aef-42d7-b18f-5f74b8fc6f60",
+      "name": "test",
+      "description": "",
+      "associatedUserIds": [
+        "008vVvoZLaB99tHHIRhKAg==",
+        "sophrosynegenesis1"
+      ],
+      "associatedControlPanelDashboardIds": [
+        "660f11dc-a268-4db6-be5c-0f9830a69828"
+      ]
+    }
+  ],
   "apikeys": [
-    "{\r\n  \"apikey\" : \"eyJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJzb3Bocm9zeW5lX2FwaV9rZXlmNGE2OTJkNy1mNTQ5LTRmZDktOTU0OC00MGVhZmQ1ZDYzMmQiLCJzdWIiOiJzb3Bocm9zeW5lX2NvcmUiLCJpc3MiOiJzb3Bocm9zeW5lX2NvcmUiLCJpYXQiOjE3MzQ5MDE2NzMsIm5iZiI6MTczNDkwMTY3MywiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1fQ.MvwpbatPVl3fI6c9Z9ouju2PUpxxOlmjq0imzQUAexD2vlFSDAcLoT8xgJiN1Pf8PWys5GI_ddKbDG2ueJZplw\",\r\n  \"apikeyname\" : \"apikey_fictional\",\r\n  \"apikeydescription\" : \"test\",\r\n  \"apikeyactive\" : 1,\r\n  \"privatekey\" : \"MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCAYo9PW3s+nj6CETTiyLZ31tvDSXuSRq5EoB14M87Q+LQ==\",\r\n  \"publickey\" : \"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbwCawHDgUK8sQBpFuw7TT0iF/El4xiJ4K69b8heSd1hCZOcmkqdej+r+Qqub9VynSVyTJHqZsclT2hikmH5myA==\"\r\n}"
+    {
+      "apikey": "eyJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJzb3Bocm9zeW5lX2FwaV9rZXlmNGE2OTJkNy1mNTQ5LTRmZDktOTU0OC00MGVhZmQ1ZDYzMmQiLCJzdWIiOiJzb3Bocm9zeW5lX2NvcmUiLCJpc3MiOiJzb3Bocm9zeW5lX2NvcmUiLCJpYXQiOjE3MzQ5MDE2NzMsIm5iZiI6MTczNDkwMTY3MywiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1fQ.MvwpbatPVl3fI6c9Z9ouju2PUpxxOlmjq0imzQUAexD2vlFSDAcLoT8xgJiN1Pf8PWys5GI_ddKbDG2ueJZplw",
+      "apikeyname": "apikey_fictional",
+      "apikeydescription": "test",
+      "apikeyactive": 1,
+      "privatekey": "MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCAYo9PW3s+nj6CETTiyLZ31tvDSXuSRq5EoB14M87Q+LQ==",
+      "publickey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbwCawHDgUK8sQBpFuw7TT0iF/El4xiJ4K69b8heSd1hCZOcmkqdej+r+Qqub9VynSVyTJHqZsclT2hikmH5myA=="
+    }
   ],
   "actions": [
-    "{\r\n  \"id\" : \"145e898e-4286-46ca-afcf-4cbc1ddd5025\",\r\n  \"name\" : \"Test_Action\",\r\n  \"description\" : \"Test_Description\",\r\n  \"command\" : \"ansible-playbook\",\r\n  \"postExecutionLogFilePath\" : \"/etc/file/\",\r\n  \"version\" : \"1.2.3\",\r\n  \"requiresConfirmation\" : 0,\r\n \"muted\" : 0,\r\n \"allowedApikeys\" : [ {\r\n    \"apikey\" : \"eyJhbGciOiJFUzI1NiJ9.eyJqdGkiOiJzb3Bocm9zeW5lX2FwaV9rZXlmNGE2OTJkNy1mNTQ5LTRmZDktOTU0OC00MGVhZmQ1ZDYzMmQiLCJzdWIiOiJzb3Bocm9zeW5lX2NvcmUiLCJpc3MiOiJzb3Bocm9zeW5lX2NvcmUiLCJpYXQiOjE3MzQ5MDE2NzMsIm5iZiI6MTczNDkwMTY3MywiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1fQ.MvwpbatPVl3fI6c9Z9ouju2PUpxxOlmjq0imzQUAexD2vlFSDAcLoT8xgJiN1Pf8PWys5GI_ddKbDG2ueJZplw\",\r\n    \"apikeyname\" : \"apikey_fictional\",\r\n    \"apikeydescription\" : \"test\",\r\n    \"apikeyactive\" : 1,\r\n    \"privatekey\" : \"MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCAYo9PW3s+nj6CETTiyLZ31tvDSXuSRq5EoB14M87Q+LQ==\",\r\n    \"publickey\" : \"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbwCawHDgUK8sQBpFuw7TT0iF/El4xiJ4K69b8heSd1hCZOcmkqdej+r+Qqub9VynSVyTJHqZsclT2hikmH5myA==\"\r\n  } ]\r\n}"
+    {
+      "id": "145e898e-4286-46ca-afcf-4cbc1ddd5025",
+      "name": "Test_Action",
+      "description": "Test_Description",
+      "command": "ansible-playbook",
+      "postExecutionLogFilePath": "/etc/file/",
+      "version": "1.2.3",
+      "requiresConfirmation": 0,
+      "muted": 0,
+      "allowedApikeysByName": [
+        "apikey_fictional"
+      ]
+    }
   ],
   "users": [
-    "{\r\n  \"id\" : \"sophrosynegenesis1\",\r\n  \"username\" : \"admin\",\r\n  \"firstname\" : \"admin\",\r\n  \"lastname\" : \"admin\",\r\n  \"email\" : \"admin@admin.com\",\r\n  \"role\" : \"ADMIN\",\r\n  \"password\" : \"$2a$12$nv1VX1Doqlxj2FPzVmSRz.cQt7c4M2mg3ZUkYMCdr1Dpt3ujdOpqq\",\r\n  \"token\" : null\r\n}",
-    "{\r\n  \"id\" : \"008vVvoZLaB99tHHIRhKAg==\",\r\n  \"username\" : \"Lschmutzi18\",\r\n  \"firstname\" : \"Lutz\",\r\n  \"lastname\" : \"Schmutzfinger\",\r\n  \"email\" : \"test@test.de\",\r\n  \"role\" : \"ADMIN\",\r\n  \"password\" : \"$2a$12$E2t6VCmeKDT7B43FfY9dCu.BzdhCgKW702mZV6Mu68mKGFr73uDOy\",\r\n  \"token\" : null\r\n}"
+    {
+      "id": "008vVvoZLaB99tHHIRhKAg==",
+      "username": "Lschmutzi18",
+      "firstname": "Lutz",
+      "lastname": "Schmutzfinger",
+      "email": "test@test.de",
+      "role": "ADMIN",
+      "password": "$2a$12$E2t6VCmeKDT7B43FfY9dCu.BzdhCgKW702mZV6Mu68mKGFr73uDOy"
+    },
+    {
+      "id": "sophrosynegenesis1",
+      "username": "admin",
+      "firstname": "admin",
+      "lastname": "admin",
+      "email": "admin@admin.com",
+      "role": "ADMIN",
+      "password": "$2a$12$nv1VX1Doqlxj2FPzVmSRz.cQt7c4M2mg3ZUkYMCdr1Dpt3ujdOpqq"
+    }
   ],
-  "control_panel_dashboard_groups": []
+  "control_panel_dashboard_groups": [
+    {
+      "id": "fe799bc9-922c-4462-8858-12f33f224d1a",
+      "name": "test",
+      "description": "",
+      "position": 0,
+      "associatedActionIds": [
+        "145e898e-4286-46ca-afcf-4cbc1ddd5025"
+      ],
+      "associatedDynamicActionIds": [
+        "93b39ece-22c6-4ae9-a551-df3b3f623b5e",
+        "19029e50-a547-4307-8e38-5339aea76b1e"
+      ]
+    },
+    {
+      "id": "a84e3b62-cd16-4318-8e48-6cac9858b630",
+      "name": "test2",
+      "description": "",
+      "position": 0,
+      "associatedActionIds": [
+        "145e898e-4286-46ca-afcf-4cbc1ddd5025"
+      ],
+      "associatedDynamicActionIds": []
+    },
+    {
+      "id": "c821aa87-d893-45fa-88b3-437dff795026",
+      "name": "test3",
+      "description": "",
+      "position": 0,
+      "associatedActionIds": [],
+      "associatedDynamicActionIds": [
+        "93b39ece-22c6-4ae9-a551-df3b3f623b5e",
+        "19029e50-a547-4307-8e38-5339aea76b1e"
+      ]
+    }
+  ]
 }

@@ -1,26 +1,19 @@
 package sophrosyne.core.actionrecommendationservice.dto;
 
 import jakarta.persistence.*;
+import java.util.Set;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 
-import java.util.Set;
-
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Setter
 @Entity(name = "sophrosyne_action_recommendation")
-public class ActionRecommendationDTO {
-
-  @Id private String id;
-  private String name;
-  private String description;
-  private String responsibleEntity;
-  private String contactInformation;
-
-  @Lob private byte[] additionalDocumentation;
+public class ActionRecommendationDTO extends AbstractActionRecommendationDTO {
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinTable(
