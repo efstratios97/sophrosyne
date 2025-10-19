@@ -1,6 +1,5 @@
 package sophrosyne.core.configurationservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -120,7 +119,6 @@ public class ConfigurationService {
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-      UserDTO user = null;
 
       try {
         JsonNode apikeys = sophrosyneConfigJSON.get("apikeys");
@@ -150,6 +148,7 @@ public class ConfigurationService {
       try {
         JsonNode users = sophrosyneConfigJSON.get("users");
         for (JsonNode userJson : users) {
+          UserDTO user = new UserDTO();
           try {
             UserConfigurationDTO userConfigurationDTO;
             if (userJson.isTextual()) {
@@ -162,7 +161,7 @@ public class ConfigurationService {
               continue;
             }
             user = userConfigurationDTO.toUserDTO();
-          } catch (JsonProcessingException e) {
+          } catch (Exception e) {
             logger.warn(
                 "Parsed Sophrosyne User Config not compatible with v2 schema. Trying v1 schema");
             try {
@@ -202,7 +201,7 @@ public class ConfigurationService {
               }
               actionConfigurationDTO.setApikeyService(apikeyService);
               actionDTO = actionConfigurationDTO.toActionDTO();
-            } catch (JsonProcessingException e) {
+            } catch (Exception e) {
               logger.warn(
                   "Parsed Sophrosyne Action Config not compatible with v2 schema. Trying v1 schema");
               actionDTO = objectMapper.readValue(actionJson.asText(), ActionDTO.class);
@@ -242,7 +241,7 @@ public class ConfigurationService {
 
               dynamicActionConfigurationDTO.setApikeyService(apikeyService);
               dynamicActionDTO = dynamicActionConfigurationDTO.toDynamicActionDTO();
-            } catch (JsonProcessingException e) {
+            } catch (Exception e) {
               logger.warn(
                   "Parsed Sophrosyne Config not compatible with v2 schema. Trying v1 schema");
               dynamicActionDTO =
@@ -284,7 +283,7 @@ public class ConfigurationService {
               actionRecommendationConfigurationDTO.setApikeyService(apikeyService);
               actionRecommendationDTO =
                   actionRecommendationConfigurationDTO.toActionRecommendationDTO();
-            } catch (JsonProcessingException e) {
+            } catch (Exception e) {
               actionRecommendationDTO =
                   objectMapper.readValue(
                       actionRecommendationJson.asText(), ActionRecommendationDTO.class);
@@ -326,7 +325,7 @@ public class ConfigurationService {
                 dynamicActionService);
             controlPanelDashboardGroupRepository.save(
                 controlPanelDashboardGroupConfigurationDTO.toControlPanelDashboardGroupDTO());
-          } catch (JsonProcessingException e) {
+          } catch (Exception e) {
             logger.error(e.getMessage());
           }
         }
@@ -356,7 +355,7 @@ public class ConfigurationService {
                 controlPanelDashboardGroupService);
             controlPanelDashboardRepository.save(
                 controlPanelDashboardConfigurationDTO.toControlPanelDashboardDTO());
-          } catch (JsonProcessingException e) {
+          } catch (Exception e) {
             logger.error(e.getMessage());
           }
         }
@@ -386,7 +385,7 @@ public class ConfigurationService {
             controlPanelConfigurationDTO.setControlPanelDashboardService(
                 controlPanelDashboardService);
             controlPanelDTO = controlPanelConfigurationDTO.toControlPanelDTO();
-          } catch (JsonProcessingException e) {
+          } catch (Exception e) {
             controlPanelDTO =
                 objectMapper.readValue(controlPanelJson.asText(), ControlPanelDTO.class);
           }
@@ -427,7 +426,7 @@ public class ConfigurationService {
                 apikeyDTO -> {
                   try {
                     return ow.writeValueAsString(apikeyDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -442,7 +441,7 @@ public class ConfigurationService {
                     ActionConfigurationDTO actionConfigurationDTO =
                         new ActionConfigurationDTO(actionDTO);
                     return ow.writeValueAsString(actionConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -457,7 +456,7 @@ public class ConfigurationService {
                     DynamicActionConfigurationDTO dynamicActionConfigurationDTO =
                         new DynamicActionConfigurationDTO(dynamicActionDTO);
                     return ow.writeValueAsString(dynamicActionConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -472,7 +471,7 @@ public class ConfigurationService {
                     ActionRecommendationConfigurationDTO actionRecommendationConfigurationDTO =
                         new ActionRecommendationConfigurationDTO(actionRecommendationDTO);
                     return ow.writeValueAsString(actionRecommendationConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -486,7 +485,7 @@ public class ConfigurationService {
                   try {
                     UserConfigurationDTO userConfigurationDTO = new UserConfigurationDTO(userDTO);
                     return ow.writeValueAsString(userConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -501,7 +500,7 @@ public class ConfigurationService {
                     ControlPanelConfigurationDTO controlPanelConfigurationDTO =
                         new ControlPanelConfigurationDTO(controlPanelDTO);
                     return ow.writeValueAsString(controlPanelConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -517,7 +516,7 @@ public class ConfigurationService {
                     ControlPanelDashboardConfigurationDTO controlPanelDashboardConfigurationDTO =
                         new ControlPanelDashboardConfigurationDTO(controlPanelDashboardDTO);
                     return ow.writeValueAsString(controlPanelDashboardConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
@@ -534,7 +533,7 @@ public class ConfigurationService {
                             new ControlPanelDashboardGroupConfigurationDTO(
                                 controlPanelDashboardGroupDTO);
                     return ow.writeValueAsString(controlPanelDashboardGroupConfigurationDTO);
-                  } catch (JsonProcessingException e) {
+                  } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException(e);
                   }
