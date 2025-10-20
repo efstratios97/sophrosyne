@@ -7,15 +7,22 @@
     <plugins>
       <plugin>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>
+          <annotationProcessorPaths>
+            <path>
               <artifactId>lombok</artifactId>
               <groupId>org.projectlombok</groupId>
-            </exclude>
-          </excludes>
+              <version>1.18.42</version>
+            </path>
+          </annotationProcessorPaths>
+          <release>25</release>
         </configuration>
-        <groupId>org.springframework.boot</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.13.0</version>
       </plugin>
       <plugin>
         <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -389,8 +396,6 @@
       </plugin>
     </plugins>
   </build>
-
-  <!--Dependencies starting here-->
   <dependencies>
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -587,13 +592,13 @@
       <artifactId>junit-jupiter</artifactId>
       <groupId>org.testcontainers</groupId>
       <scope>test</scope>
-      <version>1.21.1</version>
+      <version>1.21.3</version>
     </dependency>
     <dependency>
       <artifactId>postgresql</artifactId>
       <groupId>org.testcontainers</groupId>
       <scope>test</scope>
-      <version>1.21.1</version>
+      <version>1.21.3</version>
     </dependency>
 
     <dependency>
@@ -605,9 +610,11 @@
     <dependency>
       <artifactId>junit-jupiter</artifactId>
       <groupId>org.junit.jupiter</groupId>
+      <version>6.0.0</version>
     </dependency>
   </dependencies>
 
+  <!--Dependencies starting here-->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -620,8 +627,9 @@
     </dependencies>
   </dependencyManagement>
 
-
   <description>Sophrosyne Core</description>
+
+
   <groupId>sophrosyne</groupId>
   <modelVersion>4.0.0</modelVersion>
   <name>sophrosyne</name>
@@ -633,6 +641,10 @@
   </parent>
   <properties>
     <java.version>25</java.version>
+    <maven.compiler.release>25</maven.compiler.release>
+    <!-- optionally if using release flag: -->
+    <maven.compiler.source>25</maven.compiler.source>
+    <maven.compiler.target>25</maven.compiler.target>
   </properties>
 
   <version>1.0.0</version>
