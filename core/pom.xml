@@ -7,15 +7,22 @@
     <plugins>
       <plugin>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>
+          <annotationProcessorPaths>
+            <path>
               <artifactId>lombok</artifactId>
               <groupId>org.projectlombok</groupId>
-            </exclude>
-          </excludes>
+              <version>1.18.42</version>
+            </path>
+          </annotationProcessorPaths>
+          <release>25</release>
         </configuration>
-        <groupId>org.springframework.boot</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.13.0</version>
       </plugin>
       <plugin>
         <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -384,34 +391,31 @@
             <id>create-external-action-confirmation-service-api</id>
           </execution>
         </executions>
-
         <groupId>org.openapitools</groupId>
-        <version>7.4.0</version>
+        <version>7.16.0</version>
       </plugin>
     </plugins>
   </build>
-
-  <!--Dependencies starting here-->
   <dependencies>
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
     <dependency>
       <artifactId>spring-boot-starter-websocket</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
     <dependency>
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
     <dependency>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
     <dependency>
       <artifactId>jackson-dataformat-yaml</artifactId>
@@ -426,7 +430,7 @@
     <dependency>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
     <dependency>
       <artifactId>liquibase-core</artifactId>
@@ -454,22 +458,22 @@
     <dependency>
       <artifactId>swagger-core-jakarta</artifactId>
       <groupId>io.swagger.core.v3</groupId>
-      <version>2.2.34</version>
+      <version>2.2.38</version>
     </dependency>
     <dependency>
       <artifactId>swagger-annotations-jakarta</artifactId>
       <groupId>io.swagger.core.v3</groupId>
-      <version>2.2.34</version>
+      <version>2.2.38</version>
     </dependency>
     <dependency>
       <artifactId>swagger-models-jakarta</artifactId>
       <groupId>io.swagger.core.v3</groupId>
-      <version>2.2.34</version>
+      <version>2.2.38</version>
     </dependency>
     <dependency>
       <artifactId>jackson-databind-nullable</artifactId>
       <groupId>org.openapitools</groupId>
-      <version>0.2.6</version>
+      <version>0.2.7</version>
     </dependency>
     <dependency>
       <artifactId>springdoc-openapi-ui</artifactId>
@@ -505,7 +509,7 @@
     <dependency>
       <artifactId>spring-boot-starter-security</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
 
     <dependency>
@@ -574,7 +578,7 @@
     <dependency>
       <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
-      <version>1.18.38</version>
+      <version>1.18.42</version>
     </dependency>
 
     <!-- Test dependencies -->
@@ -582,19 +586,19 @@
       <artifactId>spring-boot-testcontainers</artifactId>
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
-      <version>3.5.3</version>
+      <version>3.5.6</version>
     </dependency>
     <dependency>
       <artifactId>junit-jupiter</artifactId>
       <groupId>org.testcontainers</groupId>
       <scope>test</scope>
-      <version>1.21.1</version>
+      <version>1.21.3</version>
     </dependency>
     <dependency>
       <artifactId>postgresql</artifactId>
       <groupId>org.testcontainers</groupId>
       <scope>test</scope>
-      <version>1.21.1</version>
+      <version>1.21.3</version>
     </dependency>
 
     <dependency>
@@ -606,9 +610,11 @@
     <dependency>
       <artifactId>junit-jupiter</artifactId>
       <groupId>org.junit.jupiter</groupId>
+      <version>6.0.0</version>
     </dependency>
   </dependencies>
 
+  <!--Dependencies starting here-->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -621,8 +627,9 @@
     </dependencies>
   </dependencyManagement>
 
-
   <description>Sophrosyne Core</description>
+
+
   <groupId>sophrosyne</groupId>
   <modelVersion>4.0.0</modelVersion>
   <name>sophrosyne</name>
@@ -630,10 +637,14 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <groupId>org.springframework.boot</groupId>
     <relativePath/>
-    <version>3.5.3</version> <!-- lookup parent from repository -->
+    <version>3.5.6</version> <!-- lookup parent from repository -->
   </parent>
   <properties>
-    <java.version>21</java.version>
+    <java.version>25</java.version>
+    <maven.compiler.release>25</maven.compiler.release>
+    <!-- optionally if using release flag: -->
+    <maven.compiler.source>25</maven.compiler.source>
+    <maven.compiler.target>25</maven.compiler.target>
   </properties>
 
   <version>1.0.0</version>
