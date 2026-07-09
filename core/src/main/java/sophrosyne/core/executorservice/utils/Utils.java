@@ -4,8 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +128,7 @@ public class Utils {
 
   public List<DynamicActionDTO> getAllRunningDynamicActions() {
     List<DynamicActionDTO> runningDynamicActions = new java.util.ArrayList<>(List.of());
-    List<HashMap> runningDynamicActionData = new java.util.ArrayList<>(List.of());
+    List<ConcurrentHashMap> runningDynamicActionData = new java.util.ArrayList<>(List.of());
     try {
       Thread.sleep(500);
     } catch (InterruptedException ignore) {
@@ -150,7 +150,7 @@ public class Utils {
                     runningDynamicActions.add(dynamicActionDTO);
                     runningDynamicActionData.add(actionData);
                   } else {
-                    HashMap tmpActionData = runningDynamicActionData.removeLast();
+                      ConcurrentHashMap tmpActionData = runningDynamicActionData.removeLast();
                     DynamicActionDTO tmpDynamicActionDTO = runningDynamicActions.removeLast();
                     runningDynamicActions.add(dynamicActionDTO);
                     runningDynamicActionData.add(actionData);
@@ -165,7 +165,7 @@ public class Utils {
 
   public List<ActionDTO> getAllRunningActions() {
     List<ActionDTO> runningActions = new java.util.ArrayList<>(List.of());
-    List<HashMap> runningActionData = new java.util.ArrayList<>(List.of());
+    List<ConcurrentHashMap> runningActionData = new java.util.ArrayList<>(List.of());
     actionExecutorService
         .getActionProcessDataShared()
         .forEach(
@@ -181,7 +181,7 @@ public class Utils {
                     runningActions.add(actionDTO);
                     runningActionData.add(actionData);
                   } else {
-                    HashMap tmpActionData = runningActionData.removeLast();
+                    ConcurrentHashMap tmpActionData = runningActionData.removeLast();
                     ActionDTO tmpActionDTO = runningActions.removeLast();
                     runningActions.add(actionDTO);
                     runningActionData.add(actionData);
