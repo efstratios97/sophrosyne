@@ -69,8 +69,9 @@ public class ActionExecutorService {
             {
               put("executionLogFileData", new byte[] {});
               put("postExecutionLogFileData", new byte[] {});
+              put("postExecutionLogFileDataBuffer", new StringBuffer());
               put("exitCode", -1);
-              put("version", actionDTO.getVersion());
+              put("version", (actionDTO.getVersion() == null) ? "0" : actionDTO.getVersion());
               put("type", triggerType);
               put("confirmed", confirmed);
               put("triggeredTime", triggerTime);
@@ -114,7 +115,6 @@ public class ActionExecutorService {
       String runningId,
       ActionDTO actionDTO,
       ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> actionProcessDataShared) {
-    StringBuilder logBuffer = new StringBuilder();
     // Wait until it is confirmed
     while (!((boolean) this.actionProcessDataShared.get(runningId).get("confirmed"))) {
       try {
@@ -131,7 +131,7 @@ public class ActionExecutorService {
       actionProcessDataSharedTmp.put("executionStartPoint", LocalDateTime.now());
       actionProcessDataSharedTmp.put("executionEndPoint", LocalDateTime.now());
       this.actionProcessDataShared.put(runningId, actionProcessDataSharedTmp);
-
+      StringBuffer logBuffer = new StringBuffer();
       try {
         // Wait for UI to connect socket for streaming
         Thread.sleep(750);
@@ -165,31 +165,21 @@ public class ActionExecutorService {
         try (BufferedReader reader =
             new BufferedReader(
                 new InputStreamReader(actionProcess.get(runningId).getInputStream()))) {
-          actionProcessDataShared =
-              executionStreamHandler(
-                  "Sophrosyne Streamer: Starting Action Execution...\n",
-                  runningId,
-                  actionProcessDataShared);
+          executionStreamHandler("Sophrosyne Streamer: Starting Action Execution...\n", runningId);
           String line;
           while ((line = reader.readLine()) != null) {
             logBuffer.append(line);
-            actionProcessDataShared =
-                executionStreamHandler(line, runningId, actionProcessDataShared);
+            logBuffer.append("\n");
+            actionProcessDataShared.get(runningId).put("postExecutionLogFileDataBuffer", logBuffer);
+            executionStreamHandler(line, runningId);
           }
-          actionProcessDataShared =
-              executionStreamHandler(
-                  "\nSophrosyne Streamer: Finished Action Execution...",
-                  runningId,
-                  actionProcessDataShared);
+          executionStreamHandler("\nSophrosyne Streamer: Finished Action Execution...", runningId);
         } catch (Exception e) {
           logger.error(e.getMessage());
-          actionProcessDataShared =
-              executionStreamHandler(
-                  "\nStream interrupted unexpectedly", runningId, actionProcessDataShared);
+          executionStreamHandler("\nStream interrupted unexpectedly", runningId);
         }
       } else {
-        actionProcessDataShared =
-            executionStreamHandler(processExecutionError.get(), runningId, actionProcessDataShared);
+        executionStreamHandler(processExecutionError.get(), runningId);
       }
 
       int exitCode = actionProcess.get(runningId).waitFor();
@@ -214,7 +204,11 @@ public class ActionExecutorService {
               "executionLogFileData",
               ArrayUtils.addAll(
                   (byte[]) actionProcessDataShared.get(runningId).get("executionLogFileData"),
-                  logBuffer.toString().getBytes()));
+                  actionProcessDataShared
+                      .get(runningId)
+                      .get("postExecutionLogFileDataBuffer")
+                      .toString()
+                      .getBytes()));
       actionProcessDataShared.get(runningId).put("executionEndPoint", LocalDateTime.now());
       return actionProcessDataShared;
     }
@@ -224,7 +218,11 @@ public class ActionExecutorService {
             "executionLogFileData",
             ArrayUtils.addAll(
                 (byte[]) actionProcessDataShared.get(runningId).get("executionLogFileData"),
-                logBuffer.toString().getBytes()));
+                actionProcessDataShared
+                    .get(runningId)
+                    .get("postExecutionLogFileDataBuffer")
+                    .toString()
+                    .getBytes()));
     return actionProcessDataShared;
   }
 
@@ -239,12 +237,8 @@ public class ActionExecutorService {
     return true;
   }
 
-  private ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> executionStreamHandler(
-      String text,
-      String runningId,
-      ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> actionProcessDataShared) {
+  private void executionStreamHandler(String text, String runningId) {
     sophrosyneBroadcaster.sendText(runningId, text);
-    return actionProcessDataShared;
   }
 
   private void archiveExecution(ActionDTO actionDTO) {
@@ -260,7 +254,12 @@ public class ActionExecutorService {
       LocalDateTime executionEndPoint =
           (LocalDateTime) actionProcessDataShared.get(id).get("executionEndPoint");
       byte[] executionLogFileData =
-          (byte[]) actionProcessDataShared.get(id).get("executionLogFileData");
+          actionProcessDataShared
+              .get(id)
+              .get("postExecutionLogFileDataBuffer")
+              .toString()
+              .getBytes();
+      actionProcessDataShared.get(id).put("executionLogFileDataBuffer", new StringBuffer());
       byte[] postExecutionLogFileData =
           (byte[]) actionProcessDataShared.get(id).get("postExecutionLogFileData");
       Integer exitCode = (Integer) actionProcessDataShared.get(id).get("exitCode");
