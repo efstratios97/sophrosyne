@@ -13,12 +13,12 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       
-    - name: Set up JDK 21 with OpenJDK
-      uses: actions/setup-java@v2
+    - name: Set up JDK 25 with OpenJDK
+      uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '25'
         distribution: 'adopt'
       
     - name: Build with Maven
