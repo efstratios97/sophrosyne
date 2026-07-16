@@ -137,7 +137,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
   public void test_createInitConfiguration() {
     createTestSophrosyneData();
     Map<String, List<String>> data = sut_configurationService.getConfigurationData();
-    sut_configurationService.importSophrosyneConfiguration(data);
+    sut_configurationService.importSophrosyneConfigurationForce(data);
 
     assertThat(apikeyService.getApiDTOs()).hasSize(1);
     assertThat(userService.getUsers()).hasSize(1);
