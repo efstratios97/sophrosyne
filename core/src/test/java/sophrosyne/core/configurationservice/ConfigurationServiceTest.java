@@ -53,7 +53,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
   @AfterEach
   public void cleanUpEach() {
     try {
-      userService.deleteUserByUsername("Lschmutzi18");
+      userService.deleteAllUsers();
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
@@ -77,6 +77,11 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
+    try {
+      controlPanelDashboardGroupService.deleteAllControlPanelDashboardGroups();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
   }
 
   @Test
@@ -93,7 +98,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
 
     assertThat(res)
         .containsKeys(usersKey, actionsKey, dynamicActionsKey, apikeyKey, actionRecommendationsKey);
-    assertThat(res.get(usersKey)).hasSize(2); // + Standard Admin User
+    assertThat(res.get(usersKey)).hasSize(1); // + Standard Admin User
     assertThat(res.get(apikeyKey)).hasSize(1);
     assertThat(res.get(actionsKey)).hasSize(1);
     assertThat(res.get(dynamicActionsKey)).hasSize(2);
@@ -135,13 +140,13 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     sut_configurationService.importSophrosyneConfiguration(data);
 
     assertThat(apikeyService.getApiDTOs()).hasSize(1);
-    assertThat(userService.getUsers()).hasSize(2);
+    assertThat(userService.getUsers()).hasSize(1);
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
     assertThat(controlPanelService.getControlPanels()).hasSize(1);
     assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
-    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
   @Test
@@ -151,13 +156,13 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     sut_configurationService.importSophrosyneConfigurationForce(data);
 
     assertThat(apikeyService.getApiDTOs()).hasSize(1);
-    assertThat(userService.getUsers()).hasSize(2);
+    assertThat(userService.getUsers()).hasSize(1);
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
     assertThat(controlPanelService.getControlPanels()).hasSize(1);
     assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
-    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
   private void createTestSophrosyneData() {
