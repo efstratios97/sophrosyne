@@ -27,11 +27,13 @@ public class DynamicActionConfigurationDTO extends ActionConfigurationDTO {
 
   private String dynamicParameters;
   private int keepLatestConfirmationRequest;
+  private int onlySingleExecution;
 
   public DynamicActionConfigurationDTO(DynamicActionDTO dynamicActionDTO) {
     super(dynamicActionDTO);
     this.setDynamicParameters(dynamicActionDTO.getDynamicParameters());
     this.setKeepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest());
+    this.setOnlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
     this.setAllowedApikeysByName(
         dynamicActionDTO.getAllowedApikeysForDynamicActions().stream()
             .map(ApikeyDTO::getApikeyname)
@@ -63,6 +65,7 @@ public class DynamicActionConfigurationDTO extends ActionConfigurationDTO {
                 })
             .filter(Objects::nonNull)
             .collect(Collectors.toSet()));
+    dynamicActionDTO.setOnlySingleExecution(this.getOnlySingleExecution());
     return dynamicActionDTO;
   }
 }

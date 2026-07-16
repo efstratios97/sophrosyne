@@ -82,6 +82,16 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
+    try {
+      controlPanelDashboardService.deleteAllControlPanelDashboards();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
+    try {
+      controlPanelService.deleteAllControlPanels();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
   }
 
   @Test
@@ -137,15 +147,15 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
   public void test_createInitConfiguration() {
     createTestSophrosyneData();
     Map<String, List<String>> data = sut_configurationService.getConfigurationData();
-    sut_configurationService.importSophrosyneConfiguration(data);
+    sut_configurationService.importSophrosyneConfigurationForce(data);
 
     assertThat(apikeyService.getApiDTOs()).hasSize(1);
     assertThat(userService.getUsers()).hasSize(1);
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
-    assertThat(controlPanelService.getControlPanels()).hasSize(1);
-    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(0);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(0);
     assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
@@ -160,8 +170,8 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
-    assertThat(controlPanelService.getControlPanels()).hasSize(1);
-    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(0);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(0);
     assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
@@ -189,6 +199,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
               .version("1.2.3")
               .requiresConfirmation(0)
               .muted(0)
+              .onlySingleExecution(1)
               .keepLatestConfirmationRequest(1));
 
       dynamicActionService.createDynamicAction(
@@ -202,6 +213,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
               .version("1.2.3")
               .requiresConfirmation(1)
               .muted(0)
+              .onlySingleExecution(1)
               .keepLatestConfirmationRequest(0));
 
       actionService.createAction(

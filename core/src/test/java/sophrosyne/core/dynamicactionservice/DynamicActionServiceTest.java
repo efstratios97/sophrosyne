@@ -88,6 +88,7 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
             .postExecutionLogFilePath("/etc/file/")
             .requiresConfirmation(0)
             .keepLatestConfirmationRequest(1)
-            .muted(0));
+            .muted(0)
+            .onlySingleExecution(1));
   }
 }

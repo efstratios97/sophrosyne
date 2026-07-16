@@ -223,6 +223,7 @@ public class DynamicActionService {
     dynamicActionDTO.setKeepLatestConfirmationRequest(
         dynamicAction.getKeepLatestConfirmationRequest());
     dynamicActionDTO.setMuted(dynamicAction.getMuted());
+    dynamicActionDTO.setOnlySingleExecution(dynamicAction.getOnlySingleExecution());
     return dynamicActionDTO;
   }
 
@@ -243,7 +244,8 @@ public class DynamicActionService {
         .requiresConfirmation(dynamicActionDTO.getRequiresConfirmation())
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
         .runningId(dynamicActionDTO.getRunningActionId())
-        .muted(dynamicActionDTO.getMuted());
+        .muted(dynamicActionDTO.getMuted())
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
   }
 
   public DynamicAction mapDynamicActionDTOToDynamicActionService(
@@ -262,7 +264,8 @@ public class DynamicActionService {
         .version(dynamicActionDTO.getVersion())
         .requiresConfirmation(dynamicActionDTO.getRequiresConfirmation())
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
-        .muted(dynamicActionDTO.getMuted());
+        .muted(dynamicActionDTO.getMuted())
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
   }
 
   private HashSet<sophrosyne.core.apikeyservice.dto.ApikeyDTO> getAllowedApikeysFromAction(
