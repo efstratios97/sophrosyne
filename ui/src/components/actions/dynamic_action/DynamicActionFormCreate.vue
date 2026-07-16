@@ -34,6 +34,7 @@ const createNewAction = (event) => {
   event.requiresConfirmation = event.requiresConfirmation ? 1 : 0
   event.keepLatestConfirmationRequest = event.keepLatestConfirmationRequest ? 1 : 0
   event.muted = event.muted ? 1 : 0
+  event.onlySingleExecution = event.onlySingleExecution ? 1 : 0
 
   axiosCore
     .post('/int/user/dynamicaction', event)

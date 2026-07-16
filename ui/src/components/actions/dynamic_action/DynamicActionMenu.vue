@@ -136,6 +136,23 @@
           </template>
         </Column>
         <Column
+          field="onlySingleExecution"
+          :header="$t('actions.dynamic_action.action_menu.datatable.column_header.only_single_execution')"
+          sortable
+        >
+          <template #body="slotProps">
+            <ToggleButton
+              v-model="slotProps.data.onlySingleExecution"
+              :onLabel="$t('actions.dynamic_action.action_creation_form.fields.only_single_execution_on')"
+              :offLabel="$t('actions.dynamic_action.action_creation_form.fields.only_single_execution_off')"
+              offIcon="pi pi-angle-double-up"
+              onIcon="pi pi-angle-up"
+              disabled
+              readonly
+            />
+          </template>
+        </Column>
+        <Column
           field="allowedApikeys"
           :header="$t('actions.dynamic_action.action_menu.datatable.column_header.allowed_apikeys')"
         >

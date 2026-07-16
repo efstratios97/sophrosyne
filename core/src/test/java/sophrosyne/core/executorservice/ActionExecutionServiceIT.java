@@ -81,7 +81,7 @@ public class ActionExecutionServiceIT extends PostgresIntegrationTestBase {
     actionDTO.setRequiresConfirmation(1);
     sut_actionExecutorService.registerAction(
         actionDTO, ActionArchiveDTO.TYPES.INTERNAL.name(), false);
-      ConcurrentHashMap<String, Object> confirmedActionProcessDataShared =
+    ConcurrentHashMap<String, Object> confirmedActionProcessDataShared =
         sut_actionExecutorService.actionProcessDataShared.get(actionDTO.getId());
     confirmedActionProcessDataShared.put("confirmed", true);
     sut_actionExecutorService.actionProcessDataShared.put(

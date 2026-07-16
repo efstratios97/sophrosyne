@@ -218,6 +218,9 @@ components:
         muted:
           type: int
           example: 1
+        onlySingleExecution:
+          type: int
+          example: 1
       required:
         - name
         - command

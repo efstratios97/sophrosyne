@@ -19,6 +19,7 @@ public class DynamicActionDTO extends ActionDTO {
   private String dynamicParameters;
   @Transient private String runningActionId;
   private int keepLatestConfirmationRequest;
+  private int onlySingleExecution;
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinTable(

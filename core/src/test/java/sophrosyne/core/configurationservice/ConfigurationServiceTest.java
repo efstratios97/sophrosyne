@@ -189,6 +189,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
               .version("1.2.3")
               .requiresConfirmation(0)
               .muted(0)
+              .onlySingleExecution(1)
               .keepLatestConfirmationRequest(1));
 
       dynamicActionService.createDynamicAction(
@@ -202,6 +203,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
               .version("1.2.3")
               .requiresConfirmation(1)
               .muted(0)
+              .onlySingleExecution(1)
               .keepLatestConfirmationRequest(0));
 
       actionService.createAction(

@@ -163,6 +163,7 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
         .version("v.1.2.3")
         .requiresConfirmation(1)
         .keepLatestConfirmationRequest(1)
-        .muted(0);
+        .muted(0)
+        .onlySingleExecution(1);
   }
 }
