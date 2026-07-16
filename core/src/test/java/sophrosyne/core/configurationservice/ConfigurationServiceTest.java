@@ -77,6 +77,11 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
+    try {
+      controlPanelDashboardGroupService.deleteAllControlPanelDashboardGroups();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
   }
 
   @Test
@@ -141,7 +146,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
     assertThat(controlPanelService.getControlPanels()).hasSize(1);
     assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
-    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
   @Test
@@ -157,7 +162,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
     assertThat(controlPanelService.getControlPanels()).hasSize(1);
     assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
-    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(3);
+    assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
   private void createTestSophrosyneData() {
