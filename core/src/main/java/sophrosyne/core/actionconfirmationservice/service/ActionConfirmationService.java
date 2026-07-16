@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class ActionConfirmationService {
   }
 
   public boolean confirmAction(String id) {
-    HashMap<String, Object> confirmedActionProcessDataShared =
+    ConcurrentHashMap<String, Object> confirmedActionProcessDataShared =
         actionExecutorService.actionProcessDataShared.get(id);
     if (confirmedActionProcessDataShared == null) {
       return false;
@@ -52,7 +53,7 @@ public class ActionConfirmationService {
   }
 
   public boolean rejectAction(String id) {
-    HashMap<String, Object> confirmedActionProcessDataShared =
+    ConcurrentHashMap<String, Object> confirmedActionProcessDataShared =
         actionExecutorService.actionProcessDataShared.get(id);
     if (confirmedActionProcessDataShared == null) {
       return false;

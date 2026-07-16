@@ -1,7 +1,7 @@
 package sophrosyne.core.executorservice.handler;
 
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActionHandler {
 
-  private HashMap<String, CompletableFuture<HashMap<String, HashMap<String, Object>>>>
-      runningActions = new HashMap<>();
+  private ConcurrentHashMap<
+          String, CompletableFuture<ConcurrentHashMap<String, ConcurrentHashMap<String, Object>>>>
+      runningActions = new ConcurrentHashMap<>();
 }

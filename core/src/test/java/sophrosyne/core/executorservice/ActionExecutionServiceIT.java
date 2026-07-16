@@ -2,8 +2,8 @@ package sophrosyne.core.executorservice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -81,7 +81,7 @@ public class ActionExecutionServiceIT extends PostgresIntegrationTestBase {
     actionDTO.setRequiresConfirmation(1);
     sut_actionExecutorService.registerAction(
         actionDTO, ActionArchiveDTO.TYPES.INTERNAL.name(), false);
-    HashMap<String, Object> confirmedActionProcessDataShared =
+      ConcurrentHashMap<String, Object> confirmedActionProcessDataShared =
         sut_actionExecutorService.actionProcessDataShared.get(actionDTO.getId());
     confirmedActionProcessDataShared.put("confirmed", true);
     sut_actionExecutorService.actionProcessDataShared.put(
