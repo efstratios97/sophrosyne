@@ -82,6 +82,16 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
+    try {
+      controlPanelDashboardService.deleteAllControlPanelDashboards();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
+    try {
+      controlPanelService.deleteAllControlPanels();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
   }
 
   @Test
@@ -144,8 +154,8 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
-    assertThat(controlPanelService.getControlPanels()).hasSize(1);
-    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(0);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(0);
     assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
@@ -160,8 +170,8 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     assertThat(actionService.getActions()).hasSize(1);
     assertThat(dynamicActionService.getDynamicActions()).hasSize(2);
     assertThat(actionRecommendationService.getActionRecommendations()).hasSize(1);
-    assertThat(controlPanelService.getControlPanels()).hasSize(1);
-    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(1);
+    assertThat(controlPanelService.getControlPanels()).hasSize(0);
+    assertThat(controlPanelDashboardService.getControlPanelDashboards()).hasSize(0);
     assertThat(controlPanelDashboardGroupService.getControlPanelDashboardGroups()).hasSize(0);
   }
 
