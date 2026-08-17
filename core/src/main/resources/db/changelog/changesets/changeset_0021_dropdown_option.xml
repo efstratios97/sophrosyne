@@ -1,0 +1,59 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet author="efstratios97" id="21">
+        <createTable tableName="sophrosyne_dropdown_option">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="type" type="varchar" defaultValue="static">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="getter_dropdown_option_call_address" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="dynamic_parameter_to_match" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="dropdown_options" type="JSONB">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="dynamic_action_dropdown_option">
+            <column name="dynamic_action_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+            <column name="dropdown_option_id" type="varchar">
+                <constraints primaryKey="true" nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_DYNAMIC_ACTION_ID_DROPDOWN_OPTION_ID"
+                referencedTableName="sophrosyne_dynamic_action"
+                baseColumnNames="dynamic_action_id"
+                baseTableName="dynamic_action_dropdown_option"
+                referencedColumnNames="id"
+                onUpdate="CASCADE"
+        />
+
+        <addForeignKeyConstraint
+                constraintName="FK_DROPDOWN_OPTION_ID_DYNAMIC_ACTION_ID"
+                referencedTableName="sophrosyne_dropdown_option"
+                baseColumnNames="dropdown_option_id"
+                baseTableName="dynamic_action_dropdown_option"
+                referencedColumnNames="id"
+                onUpdate="CASCADE"
+        />
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -57,7 +57,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The name that needs to be fetched'
+          description: 'The id that needs to be fetched'
           required: true
           schema:
             type: string
@@ -82,7 +82,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The name that needs to be fetched'
+          description: 'The id that needs to be fetched'
           required: true
           schema:
             type: string
@@ -97,7 +97,7 @@ paths:
         '401':
           description: Unauthorized
         '404':
-          description: Apikey not found
+          description: DynamicAction not found
     delete:
       tags:
         - dynamic_action
@@ -106,7 +106,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The name that needs to be fetched'
+          description: 'The id that needs to be fetched'
           required: true
           schema:
             type: string
@@ -127,7 +127,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The name that needs to be fetched'
+          description: 'The id that needs to be fetched'
           required: true
           schema:
             type: string
@@ -154,7 +154,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The name that needs to be fetched'
+          description: 'The id that needs to be fetched'
           required: true
           schema:
             type: string
@@ -218,6 +218,14 @@ components:
         muted:
           type: int
           example: 1
+        associatedDropdownOptions:
+          type: array
+          items:
+            type: string
+        associatedDropdownOptionObjects:
+          type: array
+          items:
+            type: object
       required:
         - name
         - command
@@ -228,7 +236,16 @@ components:
         parameters:
           type: array
           items:
-            type: string
+            type: object
+            properties:
+              hasMatchedDropdownOption:
+                type: boolean
+              parameter:
+                type: string
+              dropdownOptions:
+                type: array
+                items:
+                  type: string
     DynamicParametersStringPreview:
       type: object
       properties:

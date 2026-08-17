@@ -5,16 +5,31 @@
       <div v-for="dynamicParameter in dynamicParameters" :key="dynamicParameter">
         <div class="sophrosyne-form-wrapper">
           <form class="sophrosyne-form">
-            <span class="sophrosyne-field-wrapper">
+            <span
+              v-if="!dynamicParameter.hasMatchedDropdownOption"
+              class="sophrosyne-field-wrapper"
+            >
               <FloatLabel>
                 <InputText
-                  :id="dynamicParameter"
-                  v-model="userPassedParameters[dynamicParameter]"
+                  :id="dynamicParameter.parameter"
+                  v-model="userPassedParameters[dynamicParameter.parameter]"
                   type="text"
                   class="sophrosyne-inputtext"
                   @change="getCommandPreview"
                 />
-                <label :for="dynamicParameter">{{ dynamicParameter }}</label>
+                <label :for="dynamicParameter.parameter">{{ dynamicParameter.parameter }}</label>
+              </FloatLabel>
+            </span>
+            <span v-else>
+              <FloatLabel>
+                <Select
+                  v-model="userPassedParameters[dynamicParameter.parameter]"
+                  :options="dynamicParameter.dropdownOptions"
+                  placeholder=""
+                  class="w-full md:w-56"
+                  @change="getCommandPreview"
+                />
+                <label :for="dynamicParameter.parameter">{{ dynamicParameter.parameter }}</label>
               </FloatLabel>
             </span>
           </form>
@@ -109,6 +124,7 @@ const toggleCreateAction = () => {
 
 const getDynamicParameters = () => {
   axiosCore.get('/int/client/dynamicaction/' + props.action.id + '/parameters').then((res) => {
+    console.log(res.data)
     dynamicParameters.value = res.data.parameters
   })
 }
@@ -120,7 +136,10 @@ const getCommandPreview = () => {
   userPassedParametersString.value = ''
   dynamicParameters.value.forEach((dynamicParameter) => {
     userPassedParametersString.value +=
-      dynamicParameter + ':' + userPassedParameters.value[dynamicParameter] + ','
+      dynamicParameter.parameter +
+      ':' +
+      userPassedParameters.value[dynamicParameter.parameter] +
+      ','
   })
   userPassedParametersString.value = userPassedParametersString.value.slice(0, -1)
   axiosCore

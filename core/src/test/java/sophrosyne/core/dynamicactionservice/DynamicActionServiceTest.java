@@ -66,7 +66,7 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
   @Test
   public void test_getParsedParameters() {
     List<String> dynamicParametersExtracted =
-        sut_dynamicActionService.getParsedDynamicParameters(createDynamicAction());
+        (List<String>) sut_dynamicActionService.getParsedDynamicParameters(createDynamicAction());
     assertThat(dynamicParametersExtracted)
         .containsAll(
             new ArrayList<>() {

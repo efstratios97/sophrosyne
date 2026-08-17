@@ -654,6 +654,115 @@
           }
         }
       }
+    },
+    "dropdown_option": {
+      "tab_menu_options": {
+        "tab_menu_action": "Dropdown Option"
+      },
+      "dropdown_option_menu": {
+        "datatable": {
+          "title": "Dropdown Options",
+          "sub_title": "Create, edit or delete your Dropdown Options",
+          "column_header": {
+            "id": "Dropdown Option ID",
+            "name": "Dropdown Option Name",
+            "description": "Dropdown Option Description",
+            "dynamic_parameter_to_match": "Dynamic Parameter for matching",
+            "type": "Dropdown Option Type",
+            "dropdown_options": {
+              "name": "Dropdown Options",
+              "placeholder_dropdown": "Availablle Options"
+            }
+          },
+          "column_tooltip": {
+            "type": "Are dropdown option fields statically defined or dynamically retrieved",
+            "dropdown_options": "Preview dropdown options"
+          }
+        }
+      },
+      "dropdown_option_deletion": {
+        "title": "Delete Dropdown",
+        "message": "Please confirm the deletion of the following Dropdown Option(s):",
+        "toast": {
+          "success": {
+            "message": "Deleted Dropdown Option(s)",
+            "detail": "You have successfully deleted the Dropdown Options(s)"
+          },
+          "error": {
+            "message": "Can not delete your Dropdown Option(s)",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "dropdown_option_template_form": {
+        "modal_header": "Create Dropdown Option",
+        "modal_header_update": "Update Dropdown Option",
+        "fields": {
+          "name": "Dropdown Option Name",
+          "description": "Dropdown Option Description",
+          "dynamic_parameter_to_match": "Dynamic Parameter to interpolate/match",
+          "type": {
+            "field_name": "Dropdown Option Type",
+            "static": {
+              "field_name": "static",
+              "placeholder": "Type Dropdown Option you want to add",
+              "btn": { "add": "Add new option", "remove": "Remove selected option" }
+            },
+            "dynamic": { "field_name": "dynamic", "placeholder": "Type HTTP GET call address" }
+          }
+        },
+        "command_parameter_dialog": {
+          "header": "Enter the dynamic command part that shall be interpolated",
+          "btn": {
+            "save": "Save",
+            "cancel": "Cancel"
+          }
+        },
+        "tooltip": {
+          "type": "Are dropdown option fields statically defined or dynamically retrieved",
+          "dropdown_options": "Enter the dropdown options using the dropdown field"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Dropdown Option",
+            "toast": {
+              "success": {
+                "message": "Created Dropdown Option",
+                "detail": "You have successfully created a Dropdown Option"
+              },
+              "error": {
+                "409": {
+                  "message": "Duplicate Dropdown: Can not create Dropdown Option",
+                  "detail": "Please check again your inputs. Dropdown Option name must be unique"
+                },
+                "other": {
+                  "message": "Can not create Dropdown Option",
+                  "detail": "Please check again your inputs"
+                }
+              }
+            }
+          },
+          "update": {
+            "label": "Submit Dropdown Option",
+            "toast": {
+              "success": {
+                "message": "Updated Dropdown Option",
+                "detail": "You have successfully updated a Dropdown Option"
+              },
+              "error": {
+                "409": {
+                  "message": "Duplicate Dropdown: Can not update Dropdown Option",
+                  "detail": "Please check again your inputs. Dropdown Option name must be unique"
+                },
+                "other": {
+                  "message": "Can not update Dropdown Option",
+                  "detail": "Please check again your inputs"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "dashboard": {

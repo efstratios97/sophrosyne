@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sophrosyne.core.actionservice.dto.ActionDTO;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
+import sophrosyne.core.dropdownoption.dto.DropdownOptionDTO;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +20,13 @@ public class DynamicActionDTO extends ActionDTO {
   private String dynamicParameters;
   @Transient private String runningActionId;
   private int keepLatestConfirmationRequest;
+
+  @OneToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "dynamic_action_dropdown_option",
+      joinColumns = @JoinColumn(name = "dynamic_action_id"),
+      inverseJoinColumns = @JoinColumn(name = "dropdown_option_id"))
+  private Set<DropdownOptionDTO> associatedDropdownOptions;
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinTable(
