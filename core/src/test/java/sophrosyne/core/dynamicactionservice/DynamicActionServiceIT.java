@@ -193,6 +193,7 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
               {
                 add(dropdownOption);
               }
-            });
+            })
+        .onlySingleExecution(1);
   }
 }

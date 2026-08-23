@@ -55,6 +55,7 @@ class ControlPanelDashboardGroupConfigurationDTOTest extends PostgresIntegration
     d.setDynamicParameters("{}");
     d.setKeepLatestConfirmationRequest(0);
     d.setAllowedApikeys(new ArrayList<>());
+    d.onlySingleExecution(0);
     return d;
   }
 

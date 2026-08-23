@@ -37,11 +37,6 @@
         </dependency>
 
         <dependency>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <groupId>org.springframework.boot</groupId>
-        </dependency>
-
-        <dependency>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <groupId>org.springframework.boot</groupId>
         </dependency>
@@ -69,8 +64,14 @@
         </dependency>
 
         <dependency>
-            <artifactId>liquibase-core</artifactId>
-            <groupId>org.liquibase</groupId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-liquibase</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.lbruun.springboot</groupId>
+            <artifactId>preliquibase-spring-boot-starter</artifactId>
+            <version>2.0.0</version>
         </dependency>
 
         <dependency>
@@ -85,11 +86,6 @@
             <version>7.0.3.Final</version>
         </dependency>
 
-        <dependency>
-            <artifactId>preliquibase-spring-boot-starter</artifactId>
-            <groupId>net.lbruun.springboot</groupId>
-            <version>1.6.1</version>
-        </dependency>
         <!--End of Dependencies for DB and ORM-->
 
         <!--Dependencies for Open API Generator-->
@@ -224,45 +220,37 @@
 
         <!-- Test dependencies -->
         <dependency>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <artifactId>spring-boot-testcontainers</artifactId>
             <groupId>org.springframework.boot</groupId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <artifactId>junit-jupiter</artifactId>
             <groupId>org.testcontainers</groupId>
-            <scope>test</scope>
-            <version>1.21.3</version>
-        </dependency>
-
-        <dependency>
             <artifactId>postgresql</artifactId>
+            <version>1.21.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
-            <scope>test</scope>
-            <version>1.21.3</version>
-        </dependency>
-
-        <dependency>
-            <artifactId>spring-test</artifactId>
-            <groupId>org.springframework</groupId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <artifactId>junit-jupiter</artifactId>
-            <groupId>org.junit.jupiter</groupId>
+            <version>1.21.4</version>
+            <scope>test</scope>
         </dependency>
-    </dependencies>
 
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <artifactId>junit-bom</artifactId>
-                <groupId>org.junit</groupId>
-                <scope>import</scope>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>2.0.5</version>
                 <type>pom</type>
-                <version>5.13.1</version>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

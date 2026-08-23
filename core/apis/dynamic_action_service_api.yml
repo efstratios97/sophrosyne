@@ -226,6 +226,9 @@ components:
           type: array
           items:
             type: object
+        onlySingleExecution:
+          type: int
+          example: 1
       required:
         - name
         - command

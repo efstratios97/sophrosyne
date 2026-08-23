@@ -490,7 +490,8 @@
             "allowed_apikeys": "Dynamic Action Allowed Apikeys",
             "action_status": "Dynamic Action Status",
             "requires_confirmation": "Requires confirmation",
-            "muted": "Muted"
+            "muted": "Muted",
+            "only_single_execution": "Allow multiple Execution"
           },
           "column_tooltip": {
             "command": "Action Command represents a base command for example: `ansible-playbook`, `bash` or `/bin/my_executable`.\nIt can be even a simpler command like `tasklist` or `echo Hello World`",
@@ -530,7 +531,9 @@
           "keep_latest_confirmation_on": "Override existing Confirmation requests",
           "keep_latest_confirmation_off": "Add to existing Confirmation requests",
           "muted_on": "Muted",
-          "muted_off": "Active"
+          "muted_off": "Active",
+          "only_single_execution_on": "Only Single Execution",
+          "only_single_execution_off": "Allow multiple Execution"
         },
         "command_dialog": {
           "header": "Enter the Dynamic Action's STATIC Command part (e.g: sudo /bin/bash)",
@@ -553,7 +556,8 @@
           "allowed_apikeys": "Only the specified Apikeys can execute an Action",
           "requires_confirmation": "A triggered Action will require an additional confirmation before it can be executed",
           "keep_latest_confirmation": "If the same Action is waiting to be confirmed but with different parameters choose to override it or add to the existing confirmation request",
-          "muted": "A triggered Action will be instantly rejected if muted"
+          "muted": "A triggered Action will be instantly rejected if muted",
+          "only_single_execution": "A dynamic action will be executed only once even with different parameters"
         },
         "btn": {
           "create": {

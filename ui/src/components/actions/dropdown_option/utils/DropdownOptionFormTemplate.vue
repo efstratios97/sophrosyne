@@ -125,7 +125,7 @@
                     severity="warn"
                     variant="text"
                     size="small"
-                    icon="pi pi-plus"
+                    icon="pi pi-minus"
                     @click="clearNewOption"
                   />
                 </div>

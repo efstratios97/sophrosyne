@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -16,9 +17,14 @@ import org.springframework.test.context.TestPropertySource;
 import sophrosyne.core.PostgresIntegrationTestBase;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
+import sophrosyne.core.dropdownoption.dto.DropdownOptionDTO;
+import sophrosyne.core.dropdownoption.service.DropdownOptionService;
 import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
 import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
+import sophrosyne.core.utils.DropdownOptionUtils;
 import sophrosyne_api.core.dynamicactionservice.model.DynamicAction;
+import sophrosyne_api.core.dynamicactionservice.model.ParsedDynamicParametersParametersInner;
+import sophrosyne_api.core.internaldropdownoptionservice.model.DropdownOption;
 
 @SpringBootTest
 @TestPropertySource(locations = "/application-test.properties")
@@ -29,6 +35,8 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
   @Autowired private DynamicActionService sut_dynamicActionService;
   @Autowired private ApikeyService apikeyService;
   private ApikeyDTO apikeyDTO;
+  @Autowired private DropdownOptionUtils dropdownOptionUtils;
+  @Autowired private DropdownOptionService dropdownOptionService;
 
   @BeforeEach
   public void generateApikey() {
@@ -66,7 +74,12 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
   @Test
   public void test_getParsedParameters() {
     List<String> dynamicParametersExtracted =
-        (List<String>) sut_dynamicActionService.getParsedDynamicParameters(createDynamicAction());
+        sut_dynamicActionService
+            .getParsedDynamicParameters(createDynamicAction())
+            .getParameters()
+            .stream()
+            .map(ParsedDynamicParametersParametersInner::getParameter)
+            .collect(Collectors.toList());
     assertThat(dynamicParametersExtracted)
         .containsAll(
             new ArrayList<>() {
@@ -78,6 +91,15 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
   }
 
   private DynamicActionDTO createDynamicAction() {
+    DropdownOption dropdownOption1 = dropdownOptionUtils.createDropdownOption();
+    dropdownOption1.setDynamicParameterToMatch("inventory");
+    DropdownOptionDTO dropdownOptionDTO1 =
+        dropdownOptionService.createDropdownOptionDTO(dropdownOption1);
+    DropdownOption dropdownOption2 = dropdownOptionUtils.createDropdownOption();
+    dropdownOption2.setDynamicParameterToMatch("playbook");
+    dropdownOption2.setName("playbook_test");
+    DropdownOptionDTO dropdownOptionDTO2 =
+        dropdownOptionService.createDropdownOptionDTO(dropdownOption2);
     return sut_dynamicActionService.createDynamicActionDTOFromDynamicAction(
         new DynamicAction()
             .name("Test_Action")
@@ -88,6 +110,14 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
             .postExecutionLogFilePath("/etc/file/")
             .requiresConfirmation(0)
             .keepLatestConfirmationRequest(1)
-            .muted(0));
+            .muted(0)
+            .onlySingleExecution(1)
+            .associatedDropdownOptions(
+                new ArrayList<>() {
+                  {
+                    add(dropdownOptionDTO1.getId());
+                    add(dropdownOptionDTO2.getId());
+                  }
+                }));
   }
 }

@@ -95,14 +95,15 @@ public class DynamicActionService {
           Optional<DropdownOptionDTO> dropdownOptionDTOOptional =
               matchParsedParameterToDropdownOption(parsedParameter, dynamicActionDTO);
           // Populate inner
-            ParsedDynamicParametersParametersInner parsedDynamicParametersParametersInner =
-                    null;
-            try {
-                parsedDynamicParametersParametersInner = getParsedDynamicParametersParametersInner(parsedParameter, dropdownOptionDTOOptional);
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            // Add ready parsed Parameters to Array
+          ParsedDynamicParametersParametersInner parsedDynamicParametersParametersInner = null;
+          try {
+            parsedDynamicParametersParametersInner =
+                getParsedDynamicParametersParametersInner(
+                    parsedParameter, dropdownOptionDTOOptional);
+          } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+          // Add ready parsed Parameters to Array
           parsedDynamicParameters.addParametersItem(parsedDynamicParametersParametersInner);
         });
 
@@ -110,7 +111,8 @@ public class DynamicActionService {
   }
 
   private ParsedDynamicParametersParametersInner getParsedDynamicParametersParametersInner(
-      String parsedParameter, Optional<DropdownOptionDTO> dropdownOptionDTOOptional) throws IOException, InterruptedException {
+      String parsedParameter, Optional<DropdownOptionDTO> dropdownOptionDTOOptional)
+      throws IOException, InterruptedException {
     ParsedDynamicParametersParametersInner parsedDynamicParametersParametersInner =
         new ParsedDynamicParametersParametersInner();
     parsedDynamicParametersParametersInner.setParameter(parsedParameter);
@@ -126,9 +128,12 @@ public class DynamicActionService {
             dropdownOptionDTOOptional.get().getDropdownOptions());
       }
       // Populate Dynamic dropdown options
-        else if(dropdownOptionDTOOptional.get().getType().equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.DYNAMIC)){
-          dropdownOptionApiService.getDropdownOptions(dropdownOptionDTOOptional.get());
-        }
+      else if (dropdownOptionDTOOptional
+          .get()
+          .getType()
+          .equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.DYNAMIC)) {
+        dropdownOptionApiService.getDropdownOptions(dropdownOptionDTOOptional.get());
+      }
     } else {
       parsedDynamicParametersParametersInner.setDropdownOptions(new ArrayList<>());
     }
@@ -290,7 +295,16 @@ public class DynamicActionService {
     dynamicActionDTO.setKeepLatestConfirmationRequest(
         dynamicAction.getKeepLatestConfirmationRequest());
     dynamicActionDTO.setMuted(dynamicAction.getMuted());
-    dynamicActionDTO.setAssociatedDropdownOptions(getDropdownOptionDTOs(dynamicAction));
+    dynamicActionDTO.setAssociatedDropdownOptions(
+        dynamicAction.getAssociatedDropdownOptions().stream()
+            .map(
+                dropdownOptionId -> {
+                  Optional<DropdownOptionDTO> dropdownOptionDTOTmp =
+                      dropdownOptionService.getDropdownOptionDTO(dropdownOptionId);
+                  return dropdownOptionDTOTmp.orElse(null);
+                })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet()));
     return dynamicActionDTO;
   }
 
@@ -311,7 +325,8 @@ public class DynamicActionService {
         .requiresConfirmation(dynamicActionDTO.getRequiresConfirmation())
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
         .runningId(dynamicActionDTO.getRunningActionId())
-        .muted(dynamicActionDTO.getMuted());
+        .muted(dynamicActionDTO.getMuted())
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
   }
 
   public DynamicAction mapDynamicActionDTOToDynamicActionService(
@@ -330,7 +345,8 @@ public class DynamicActionService {
         .version(dynamicActionDTO.getVersion())
         .requiresConfirmation(dynamicActionDTO.getRequiresConfirmation())
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
-        .muted(dynamicActionDTO.getMuted());
+        .muted(dynamicActionDTO.getMuted())
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
   }
 
   private HashSet<sophrosyne.core.apikeyservice.dto.ApikeyDTO> getAllowedApikeysFromAction(

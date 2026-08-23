@@ -72,6 +72,7 @@ export const useActionComposable = () => {
         : []
     event.requiresConfirmation = event.requiresConfirmation ? 1 : 0
     event.muted = event.muted ? 1 : 0
+    event.onlySingleExecution = event.onlySingleExecution ? 1 : 0
     await axiosCore
       .post('/int/user/action', event)
       .then(() => {
