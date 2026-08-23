@@ -16,6 +16,8 @@
       >
     </div>
 
+    <CopyRight></CopyRight>
+
     <div>
       <label for="username1" class="block text-900 font-medium mb-2">{{
         $t('login.form_username')
@@ -85,6 +87,7 @@ import LoginCreateAccount from '@/components/login/LoginCreateAccount.vue'
 import { useUserComposable } from '@/composables/UserComposable.js'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
+import CopyRight from '@/components/copyright/CopyRight.vue'
 
 const toast = useToast()
 const { t } = useI18n()

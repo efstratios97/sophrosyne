@@ -1,23 +1,42 @@
 <template>
-  <div>
-    <RouterView />
+  <EnterpriseLicenseBanner />
+  <div class="app-wrapper">
+    <main class="main-content">
+      <router-view />
+    </main>
+    <CopyRight />
   </div>
 </template>
-<script setup></script>
+<script setup>
+import CopyRight from '@/components/copyright/CopyRight.vue'
+import EnterpriseLicenseBanner from '@/components/infomercial/EnterpriseLicenseBanner.vue'
+</script>
 
 <style lang="scss">
 @import 'primeflex/primeflex.scss';
 
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1; /* Fills all available empty space */
+}
+
 html {
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+body {
   background:
     linear-gradient(135deg, #e6e8ea, #cfd2d4),
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.2), transparent 80%);
   background-blend-mode: lighten;
-  height: 100vh;
-  width: 100vw;
-}
-
-body {
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
 }

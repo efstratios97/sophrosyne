@@ -8,7 +8,14 @@
     :popup="menuToggle"
   >
     <template #start>
-      <img src="@/assets/images/logos/Sophrosyne_small.png" alt="Image" style="width: 50%" />
+      <div class="flex align-items-center gap-2">
+        <img
+          src="@/assets/images/logos/Sophrosyne_small.png"
+          alt="Image"
+          style="width: 50%; height: auto"
+        />
+        <FreeTierBadge></FreeTierBadge>
+      </div>
     </template>
     <template #submenuheader="{ item }">
       <span class="text-primary font-bold">{{ item.label }}</span>
@@ -56,6 +63,8 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { useLoggedUser } from '@/stores/loggedUser'
 import router from '@/router'
+
+import FreeTierBadge from '@/components/infomercial/FreeTierBadge.vue'
 
 const submenu = ref()
 const toggleSubmenu = (event) => {

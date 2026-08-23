@@ -1,4 +1,50 @@
 {
+  "infomercials": {
+    "enterprise_license_banner": {
+      "header": "🚀 Unlock Enterprise Power",
+      "subtitle": {
+        "text_1": "You are using the",
+        "text_tag_version": "Free Version",
+        "text_2": ". Upgrade to our ",
+        "text_3_strong_tier": "Enterprise Tier",
+        "text_4": " to unlock advanced features for your organization:"
+      },
+      "feature_1": {
+        "main_text": "LDAP Integration",
+        "secondary_text": "(Easy user sync)"
+      },
+      "feature_2": {
+        "main_text": "Certificate Support",
+        "secondary_text": "(Maximum security)"
+      },
+      "feature_3": {
+        "main_text": "Whitelabelling",
+        "secondary_text": "(Your own branding)"
+      },
+      "feature_4": {
+        "main_text": "Advanced Features",
+        "secondary_text": "(Deep analytics & controls)"
+      },
+      "call_to_action": {
+        "email": "sophrosyne@ep-monitoring.com",
+        "call_to_action_text": "📧 Get Your License: ",
+        "contact_text": "Contact us to upgrade today."
+      }
+    },
+    "free_version_banner": {
+      "text_1": "You are currently using the ",
+      "call_to_action_text": "Upgrade Now"
+    },
+    "version": {
+      "tier": "Free tier",
+      "version": "Free Version"
+    }
+  },
+  "copyright": {
+    "company": "Efstratios Pahis",
+    "rights": ". All rights reserved.",
+    "docs": " Docs"
+  },
   "notification": {
     "action_confirmation": {
       "button": "Pending Action Confirmations"
