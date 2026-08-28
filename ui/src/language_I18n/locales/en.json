@@ -22,11 +22,11 @@
         "secondary_text": "(Your own branding)"
       },
       "feature_4": {
-        "main_text": "Advanced Features",
-        "secondary_text": "(Deep analytics & controls)"
+        "main_text": "AI Integration",
+        "secondary_text": "(Let AI Manage your Actions)"
       },
       "call_to_action": {
-        "email": "sophrosyne@ep-monitoring.com",
+        "email": "",
         "call_to_action_text": "📧 Get Your License: ",
         "contact_text": "Contact us to upgrade today."
       }
@@ -43,11 +43,13 @@
   "copyright": {
     "company": "Efstratios Pahis",
     "rights": ". All rights reserved.",
-    "docs": " Docs"
+    "docs": " Docs",
+    "repo": " Github Repo",
+    "github": "Github"
   },
   "notification": {
     "action_confirmation": {
-      "button": "Pending Action Confirmations"
+      "button": "Pending Confirmations"
     },
     "active_recommendations": {
       "button": "Active Recommendations"
@@ -579,7 +581,8 @@
           "muted_on": "Muted",
           "muted_off": "Active",
           "only_single_execution_on": "Only Single Execution",
-          "only_single_execution_off": "Allow multiple Execution"
+          "only_single_execution_off": "Allow multiple Execution",
+          "dropdown_option": "Dropdown Option (Optional)"
         },
         "command_dialog": {
           "header": "Enter the Dynamic Action's STATIC Command part (e.g: sudo /bin/bash)",
@@ -603,7 +606,8 @@
           "requires_confirmation": "A triggered Action will require an additional confirmation before it can be executed",
           "keep_latest_confirmation": "If the same Action is waiting to be confirmed but with different parameters choose to override it or add to the existing confirmation request",
           "muted": "A triggered Action will be instantly rejected if muted",
-          "only_single_execution": "A dynamic action will be executed only once even with different parameters"
+          "only_single_execution": "A dynamic action will be executed only once even with different parameters",
+          "dropdown_option": "Use a dropdown option to select the defined dynamic parameter"
         },
         "btn": {
           "create": {
@@ -703,6 +707,14 @@
             "execution_exit_code_never_run": "This action was never triggered"
           }
         }
+      },
+      "dynamic_action_executor": {
+        "dropdown": {
+          "btn": {
+            "on": "Free Text",
+            "off": "Dropdown"
+          }
+        }
       }
     },
     "dropdown_option": {
@@ -719,6 +731,8 @@
             "description": "Dropdown Option Description",
             "dynamic_parameter_to_match": "Dynamic Parameter for matching",
             "type": "Dropdown Option Type",
+            "multi_select": "Dropdown Multi Select",
+            "delimiter": "Multi Select Delimiter to connect Dropdown Options",
             "dropdown_options": {
               "name": "Dropdown Options",
               "placeholder_dropdown": "Availablle Options"
@@ -759,6 +773,18 @@
               "btn": { "add": "Add new option", "remove": "Remove selected option" }
             },
             "dynamic": { "field_name": "dynamic", "placeholder": "Type HTTP GET call address" }
+          },
+          "multi_select": {
+            "field_name": "Dropdown Option Multi Select",
+            "on": {
+              "field_name": "Multiple Options Allowed"
+            },
+            "off": {
+              "field_name": "Only One Option Selection Allowed"
+            },
+            "delimiter": {
+              "placeholder": "A delimeter to connect multiple selections, e.g.: ; -> opt_1;opt_2"
+            }
           }
         },
         "command_parameter_dialog": {

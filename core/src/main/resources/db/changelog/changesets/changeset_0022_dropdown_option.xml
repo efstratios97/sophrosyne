@@ -23,6 +23,12 @@
             <column name="dynamic_parameter_to_match" type="varchar">
                 <constraints nullable="true"/>
             </column>
+            <column name="multi_select" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="delimiter" type="varchar">
+                <constraints nullable="true"/>
+            </column>
             <column name="dropdown_options" type="JSONB">
                 <constraints nullable="true"/>
             </column>

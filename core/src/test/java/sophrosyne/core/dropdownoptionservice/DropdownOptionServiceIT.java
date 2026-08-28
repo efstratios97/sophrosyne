@@ -47,6 +47,25 @@ public class DropdownOptionServiceIT extends PostgresIntegrationTestBase {
   }
 
   @Test
+  public void test_createDropdownOptionDTOFromDropdownOption_MultiSelect() {
+    DropdownOption dropdownOption = dropdownOptionUtils.createDropdownOption();
+    dropdownOption.setMultiSelect(true);
+    dropdownOption.setDelimiter(";");
+    DropdownOptionDTO dropdownOptionDTO =
+        sut_dropdownOptionService.createDropdownOptionDTO(dropdownOption);
+    // Object Test
+    assertThat(dropdownOptionDTO.getDescription()).isEqualTo(dropdownOption.getDescription());
+    assertThat(dropdownOptionDTO.getName()).isEqualTo(dropdownOption.getName());
+    assertThat(dropdownOptionDTO.getType().name()).isEqualTo(dropdownOption.getType().getValue());
+    assertThat(dropdownOptionDTO.getDropdownOptions())
+        .isEqualTo(dropdownOption.getDropdownOptions());
+    // Object from DB test
+    DropdownOptionDTO sut_dropdownOptionDTO =
+        sut_dropdownOptionService.getDropdownOptionDTO(dropdownOptionDTO.getId()).get();
+    assertThat(dropdownOptionDTO).isEqualTo(sut_dropdownOptionDTO);
+  }
+
+  @Test
   public void test_updateDropdownOptionDTOFromDropdownOption() {
     DropdownOption dropdownOption = dropdownOptionUtils.createDropdownOption();
     DropdownOptionDTO dropdownOptionDTO =

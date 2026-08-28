@@ -26,13 +26,7 @@ import sophrosyne.core.actionservice.service.ActionService;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 import sophrosyne.core.apikeyservice.repository.ApikeyRepository;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
-import sophrosyne.core.configurationservice.dto.ActionConfigurationDTO;
-import sophrosyne.core.configurationservice.dto.ActionRecommendationConfigurationDTO;
-import sophrosyne.core.configurationservice.dto.ControlPanelConfigurationDTO;
-import sophrosyne.core.configurationservice.dto.ControlPanelDashboardConfigurationDTO;
-import sophrosyne.core.configurationservice.dto.ControlPanelDashboardGroupConfigurationDTO;
-import sophrosyne.core.configurationservice.dto.DynamicActionConfigurationDTO;
-import sophrosyne.core.configurationservice.dto.UserConfigurationDTO;
+import sophrosyne.core.configurationservice.dto.*;
 import sophrosyne.core.controlpanelservice.dto.ControlPanelDTO;
 import sophrosyne.core.controlpanelservice.repository.ControlPanelDashboardGroupRepository;
 import sophrosyne.core.controlpanelservice.repository.ControlPanelDashboardRepository;
@@ -40,6 +34,9 @@ import sophrosyne.core.controlpanelservice.repository.ControlPanelRepository;
 import sophrosyne.core.controlpanelservice.service.ControlPanelDashboardGroupService;
 import sophrosyne.core.controlpanelservice.service.ControlPanelDashboardService;
 import sophrosyne.core.controlpanelservice.service.ControlPanelService;
+import sophrosyne.core.dropdownoption.dto.DropdownOptionDTO;
+import sophrosyne.core.dropdownoption.repository.DropdownRepository;
+import sophrosyne.core.dropdownoption.service.DropdownOptionService;
 import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
 import sophrosyne.core.dynamicactionservice.repository.DynamicActionRepository;
 import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
@@ -76,6 +73,8 @@ public class ConfigurationService {
   @Autowired private ControlPanelDashboardGroupService controlPanelDashboardGroupService;
   @Autowired private ControlPanelDashboardGroupRepository controlPanelDashboardGroupRepository;
   @Autowired private UtilService utilService;
+  @Autowired private DropdownOptionService dropdownOptionService;
+  @Autowired private DropdownRepository dropdownRepository;
 
   @PostConstruct
   public ConfigurationStatus importSophrosyneConfigurationFromFile() {
@@ -180,6 +179,45 @@ public class ConfigurationService {
             new ConfigurationStatus.ConfigurationError(
                 "User configuration error: " + e.getMessage()));
       }
+      // DROPDOWN OPTIONS
+      try {
+        JsonNode dropdownOptions = sophrosyneConfigJSON.get("dropdown_options");
+        for (JsonNode dropdownOptionJson : dropdownOptions) {
+          try {
+            DropdownOptionDTO dropdownOptionDTO;
+            try {
+              DropdownOptionConfigurationDTO dropdownOptionConfigurationDTO;
+              if (dropdownOptionJson.isTextual()) {
+                dropdownOptionConfigurationDTO =
+                    objectMapper.readValue(
+                        dropdownOptionJson.asText(), DropdownOptionConfigurationDTO.class);
+              } else if (dropdownOptionJson.isObject()) {
+                dropdownOptionConfigurationDTO =
+                    objectMapper.treeToValue(
+                        dropdownOptionJson, DropdownOptionConfigurationDTO.class);
+              } else {
+                logger.warn(
+                    "Parsed DropdownOption can not be parsed as text, neither as object... skipping");
+                continue;
+              }
+              dropdownOptionDTO = dropdownOptionConfigurationDTO.toDropdownOptionDTO();
+            } catch (Exception e) {
+              logger.warn(
+                  "Parsed Sophrosyne Dropdown Option Config not compatible with v2 schema. Trying v1 schema");
+              dropdownOptionDTO =
+                  objectMapper.readValue(dropdownOptionJson.asText(), DropdownOptionDTO.class);
+            }
+            dropdownRepository.save(dropdownOptionDTO);
+          } catch (Exception e) {
+            logger.error(e.getMessage());
+            status.addError(
+                new ConfigurationStatus.ConfigurationError(
+                    "DropdownOption configuration error: " + e.getMessage()));
+          }
+        }
+      } catch (Exception e) {
+        logger.error(e.getMessage());
+      }
 
       try {
         JsonNode actions = sophrosyneConfigJSON.get("actions");
@@ -240,6 +278,7 @@ public class ConfigurationService {
               }
 
               dynamicActionConfigurationDTO.setApikeyService(apikeyService);
+              dynamicActionConfigurationDTO.setDropdownOptionService(dropdownOptionService);
               dynamicActionDTO = dynamicActionConfigurationDTO.toDynamicActionDTO();
             } catch (Exception e) {
               logger.warn(
@@ -462,6 +501,21 @@ public class ConfigurationService {
                   }
                 })
             .toList();
+    // DropdownOptions
+    List<String> dropdownOptions =
+        dropdownOptionService.getDropdownOptionDTOs().stream()
+            .map(
+                dropdownOptionDTO -> {
+                  try {
+                    DropdownOptionConfigurationDTO dropdownOptionConfigurationDTO =
+                        new DropdownOptionConfigurationDTO(dropdownOptionDTO);
+                    return ow.writeValueAsString(dropdownOptionConfigurationDTO);
+                  } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    throw new RuntimeException(e);
+                  }
+                })
+            .toList();
     // Recommendation
     List<String> actionRecommendations =
         actionRecommendationService.getActionRecommendations().stream()
@@ -545,6 +599,7 @@ public class ConfigurationService {
           {
             put("apikeys", apikeys);
             put("users", users);
+            put("dropdown_options", dropdownOptions);
             put("actions", actions);
             put("dynamic_actions", dynamicActions);
             put("action_recommendations", actionRecommendations);

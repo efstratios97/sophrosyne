@@ -47,6 +47,51 @@
             >
           </span>
 
+          <!-- Multiselect -->
+          <span
+            class="sophrosyne-field-wrapper"
+            v-tooltip="{
+              value: $t(
+                $t(
+                  'actions.dropdown_option.dropdown_option_template_form.fields.multi_select.field_name'
+                )
+              ),
+              showDelay: 100,
+              hideDelay: 300
+            }"
+          >
+            <ToggleButton
+              v-model="newDropdownOption.multiSelect"
+              :onLabel="
+                $t(
+                  'actions.dropdown_option.dropdown_option_template_form.fields.multi_select.on.field_name'
+                )
+              "
+              :offLabel="
+                $t(
+                  'actions.dropdown_option.dropdown_option_template_form.fields.multi_select.off.field_name'
+                )
+              "
+              onIcon="pi pi-list-check"
+              offIcon="pi pi-check"
+            />
+          </span>
+          <span class="sophrosyne-field-wrapper" v-if="newDropdownOption.multiSelect">
+            <FloatLabel>
+              <InputText
+                id="dynamic_input"
+                v-model="newDropdownOption.delimiter"
+                type="text"
+                class="sophrosyne-inputtext"
+              />
+              <label for="dynamic_input">{{
+                $t(
+                  'actions.dropdown_option.dropdown_option_template_form.fields.multi_select.delimiter.placeholder'
+                )
+              }}</label></FloatLabel
+            >
+          </span>
+
           <span
             class="sophrosyne-field-wrapper"
             v-tooltip="{
@@ -151,7 +196,6 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted, defineEmits } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 const props = defineProps(['dropdownOption', 'metadata', 'create'])
 const newDropdownOption = ref(props.dropdownOption)
@@ -186,7 +230,6 @@ const addNewOption = () => {
   }
   newDropdownOption.value.dropdownOptions.push(newOption.value)
 
-  console.log(newDropdownOption.value.dropdownOptions)
   newDropdownOption.value.dropdownOptions
   newOption.value = ''
 }

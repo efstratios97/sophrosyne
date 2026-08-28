@@ -1,22 +1,22 @@
 <template>
-  <div class="grid" style="height: 96vh; overflow: auto">
+  <div class="grid" style="height: 95vh">
     <!-- Navbar/Menu -->
-    <div class="col-fixed" style="height: 95vh">
-      <Menu style="height: 95vh"></Menu>
+    <div class="col-fixed" style="height: 94vh">
+      <Menu style="height: 94vh"></Menu>
     </div>
 
     <div class="col" style="overflow: auto">
       <Card
         class="sophrosyne-card"
-        style="height: 95vh; width: 99%; box-shadow: none !important; text-shadow: none !important"
+        style="height: 94vh; width: 99%; box-shadow: none !important; text-shadow: none !important"
       >
         <template #header>
           <div class="flex align-items-center justify-content-between flex-wrap w-full">
-            <div class="flex align-items-center">
+            <div class="flex align-items-start">
               <FreeVersionBanner></FreeVersionBanner>
             </div>
 
-            <div class="flex justify-content-end flex-wrap mr-3 mt-1">
+            <div class="flex justify-content-end flex-wrap mr-2 mt-1">
               <Button
                 type="button"
                 :label="$t('notification.action_confirmation.button')"
@@ -24,7 +24,7 @@
                 :badge="stats.requiring_confirmation"
                 :severity="stats.requiring_confirmation == 0 ? 'primary' : 'danger'"
                 size="large"
-                class="mr-3"
+                class="mr-2"
                 @click="router.push('/action-confirmation')"
               />
               <Button

@@ -20,6 +20,8 @@ public class DropdownOptionDTO {
   private DROPDOWN_OPTION_TYPE type;
   private String dynamicParameterToMatch;
   private String getterDropdownOptionCallAddress;
+  private boolean multiSelect;
+  private String delimiter;
 
   @Column(name = "dropdown_options", columnDefinition = "jsonb")
   @JdbcTypeCode(SqlTypes.JSON)

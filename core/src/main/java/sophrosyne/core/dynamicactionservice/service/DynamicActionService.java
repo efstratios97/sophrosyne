@@ -119,21 +119,21 @@ public class DynamicActionService {
     parsedDynamicParametersParametersInner.setHasMatchedDropdownOption(
         dropdownOptionDTOOptional.isPresent());
     if (dropdownOptionDTOOptional.isPresent()) {
+      DropdownOptionDTO dropdownOptionDTO = dropdownOptionDTOOptional.get();
       // Populate static dropdown options
-      if (dropdownOptionDTOOptional
-          .get()
-          .getType()
-          .equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.STATIC)) {
+      if (dropdownOptionDTO.getType().equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.STATIC)) {
         parsedDynamicParametersParametersInner.setDropdownOptions(
-            dropdownOptionDTOOptional.get().getDropdownOptions());
+            dropdownOptionDTO.getDropdownOptions());
       }
       // Populate Dynamic dropdown options
-      else if (dropdownOptionDTOOptional
-          .get()
-          .getType()
-          .equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.DYNAMIC)) {
-        dropdownOptionApiService.getDropdownOptions(dropdownOptionDTOOptional.get());
+      else if (dropdownOptionDTO.getType().equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.DYNAMIC)) {
+        dropdownOptionDTO = dropdownOptionApiService.getDropdownOptions(dropdownOptionDTO);
       }
+      parsedDynamicParametersParametersInner.setDropdownOptions(
+          dropdownOptionDTO.getDropdownOptions());
+      parsedDynamicParametersParametersInner.setDelimiter(dropdownOptionDTO.getDelimiter());
+      parsedDynamicParametersParametersInner.setDropdownOptionId(dropdownOptionDTO.getId());
+      parsedDynamicParametersParametersInner.setMultiselect(dropdownOptionDTO.isMultiSelect());
     } else {
       parsedDynamicParametersParametersInner.setDropdownOptions(new ArrayList<>());
     }
@@ -296,11 +296,13 @@ public class DynamicActionService {
         dynamicAction.getKeepLatestConfirmationRequest());
     dynamicActionDTO.setMuted(dynamicAction.getMuted());
     dynamicActionDTO.setAssociatedDropdownOptions(
-        dynamicAction.getAssociatedDropdownOptions().stream()
+        dynamicAction.getAssociatedDropdownOptionObjects().stream()
             .map(
-                dropdownOptionId -> {
+                dropdownOptionObject -> {
+                  LinkedHashMap dropdownOptionObjectTmp = (LinkedHashMap) dropdownOptionObject;
                   Optional<DropdownOptionDTO> dropdownOptionDTOTmp =
-                      dropdownOptionService.getDropdownOptionDTO(dropdownOptionId);
+                      dropdownOptionService.getDropdownOptionDTO(
+                          (String) dropdownOptionObjectTmp.get("id"));
                   return dropdownOptionDTOTmp.orElse(null);
                 })
             .filter(Objects::nonNull)
@@ -326,7 +328,13 @@ public class DynamicActionService {
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
         .runningId(dynamicActionDTO.getRunningActionId())
         .muted(dynamicActionDTO.getMuted())
-        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution())
+        .associatedDropdownOptions(
+            dynamicActionDTO.getAssociatedDropdownOptions().stream()
+                .map(DropdownOptionDTO::getId)
+                .collect(Collectors.toList()))
+        .associatedDropdownOptionObjects(
+            new ArrayList<>(dynamicActionDTO.getAssociatedDropdownOptions()));
   }
 
   public DynamicAction mapDynamicActionDTOToDynamicActionService(
@@ -346,7 +354,13 @@ public class DynamicActionService {
         .requiresConfirmation(dynamicActionDTO.getRequiresConfirmation())
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
         .muted(dynamicActionDTO.getMuted())
-        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution())
+        .associatedDropdownOptions(
+            dynamicActionDTO.getAssociatedDropdownOptions().stream()
+                .map(DropdownOptionDTO::getId)
+                .collect(Collectors.toList()))
+        .associatedDropdownOptionObjects(
+            new ArrayList<>(dynamicActionDTO.getAssociatedDropdownOptions()));
   }
 
   private HashSet<sophrosyne.core.apikeyservice.dto.ApikeyDTO> getAllowedApikeysFromAction(

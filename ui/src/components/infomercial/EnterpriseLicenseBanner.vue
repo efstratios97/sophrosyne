@@ -49,7 +49,7 @@
           </span>
         </div>
         <div class="flex align-items-center gap-2 pb-2">
-          <i class="pi pi-sliders-h text-primary text-xl"></i>
+          <i class="pi pi-microchip-ai text-primary text-xl"></i>
           <span
             ><strong>
               {{ $t('infomercials.enterprise_license_banner.feature_4.main_text') }}
@@ -71,7 +71,7 @@
             href="mailto:sophrosyne@ep-monitoring.com"
             class="font-bold no-underline text-amber-700 hover:underline"
           >
-            {{ $t('infomercials.enterprise_license_banner.call_to_action.email') }}
+            sophrosyne@ep-monitoring.com
           </a>
           <span class="text-sm block w-full mt-1 text-600">
             {{ $t('infomercials.enterprise_license_banner.call_to_action.contact_text') }}

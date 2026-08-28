@@ -116,6 +116,25 @@
                   <InputText :modelValue="slotProps.data['dynamicParameterToMatch']" disabled />
                 </InputGroup>
               </span>
+              <span v-else-if="col.field == 'multiSelect'">
+                <ToggleButton
+                  disabled
+                  :modelValue="slotProps.data[col.field]"
+                  :onLabel="
+                    $t(
+                      'actions.dropdown_option.dropdown_option_template_form.fields.multi_select.on.field_name'
+                    )
+                  "
+                  :offLabel="
+                    $t(
+                      'actions.dropdown_option.dropdown_option_template_form.fields.multi_select.off.field_name'
+                    )
+                  "
+                  onIcon="pi pi-list-check"
+                  offIcon="pi pi-check"
+                />
+              </span>
+              <span v-else-if="col.field == 'delimiter'">{{ slotProps.data[col.field] }}</span>
               <span v-else>{{ slotProps.data[col.field] }}</span>
             </template>
           </Column>
@@ -176,11 +195,8 @@
 import { ref, onMounted } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
-import DropdownOptionFormTemplate from './utils/DropdownOptionFormTemplate.vue'
-import {
-  useDropdownOptionComposable,
-  DropdownOption
-} from '../../../composables/DropdownOptionComposable'
+import DropdownOptionFormTemplate from '@/components/actions/dropdown_option/utils/DropdownOptionFormTemplate.vue'
+import { useDropdownOptionComposable, DropdownOption } from '@/composables/DropdownOptionComposable'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 
@@ -341,6 +357,14 @@ const columns = ref([
     header: t('actions.dropdown_option.dropdown_option_menu.datatable.column_header.type')
   },
   {
+    field: 'multiSelect',
+    header: t('actions.dropdown_option.dropdown_option_menu.datatable.column_header.multi_select')
+  },
+  {
+    field: 'delimiter',
+    header: t('actions.dropdown_option.dropdown_option_menu.datatable.column_header.delimiter')
+  },
+  {
     field: 'dropdownOptions',
     header: t(
       'actions.dropdown_option.dropdown_option_menu.datatable.column_header.dropdown_options.name'
@@ -359,6 +383,8 @@ const filters = ref({
   description: { value: null, matchMode: FilterMatchMode.CONTAINS },
   dynamicParameterToMatch: { value: null, matchMode: FilterMatchMode.CONTAINS },
   type: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  multiSelect: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  delimiter: { value: null, matchMode: FilterMatchMode.CONTAINS },
   dropdownOptions: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 </script>

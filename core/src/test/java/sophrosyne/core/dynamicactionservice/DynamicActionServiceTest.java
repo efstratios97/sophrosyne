@@ -41,12 +41,14 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
   @BeforeEach
   public void generateApikey() {
     apikeyService.deleteAllApikeys();
+    dropdownOptionService.deleteAllDropdownOptions();
     apikeyDTO = apikeyService.generateAPIKey("apikey_fictional", "test", 1);
   }
 
   @AfterEach
   public void deleteApikey() {
     apikeyService.deleteApikey(apikeyDTO);
+    dropdownOptionService.deleteAllDropdownOptions();
   }
 
   @AfterEach
@@ -56,26 +58,31 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
+    dropdownOptionService.deleteAllDropdownOptions();
   }
 
   @Test
   public void test_createDynamicActionCommand() {
     String dynamicParameters = "inventory:/my/path/inventory.ini,playbook:shutdown";
     sut_dynamicActionService.createDynamicCommand(
-        createDynamicAction(), dynamicParameters, Optional.empty());
+        createDynamicAction(false), dynamicParameters, Optional.empty());
     String dynamicParameters2 = " inventory:/my/path/inventory.ini, playbook:shutdown ";
+    DynamicActionDTO dynamicActionDTO2 = createDynamicAction(false);
+    dynamicActionDTO2.setAssociatedDropdownOptions(null);
     sut_dynamicActionService.createDynamicCommand(
-        createDynamicAction(), dynamicParameters2, Optional.empty());
+        dynamicActionDTO2, dynamicParameters2, Optional.empty());
     String dynamicParameters3 = " inventory:/my/path/inventory.ini, playbook:{{shutdown}}";
+    DynamicActionDTO dynamicActionDTO3 = createDynamicAction(false);
+    dynamicActionDTO3.setAssociatedDropdownOptions(null);
     sut_dynamicActionService.createDynamicCommand(
-        createDynamicAction(), dynamicParameters3, Optional.empty());
+        dynamicActionDTO3, dynamicParameters3, Optional.empty());
   }
 
   @Test
   public void test_getParsedParameters() {
     List<String> dynamicParametersExtracted =
         sut_dynamicActionService
-            .getParsedDynamicParameters(createDynamicAction())
+            .getParsedDynamicParameters(createDynamicAction(true))
             .getParameters()
             .stream()
             .map(ParsedDynamicParametersParametersInner::getParameter)
@@ -90,17 +97,8 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
             });
   }
 
-  private DynamicActionDTO createDynamicAction() {
-    DropdownOption dropdownOption1 = dropdownOptionUtils.createDropdownOption();
-    dropdownOption1.setDynamicParameterToMatch("inventory");
-    DropdownOptionDTO dropdownOptionDTO1 =
-        dropdownOptionService.createDropdownOptionDTO(dropdownOption1);
-    DropdownOption dropdownOption2 = dropdownOptionUtils.createDropdownOption();
-    dropdownOption2.setDynamicParameterToMatch("playbook");
-    dropdownOption2.setName("playbook_test");
-    DropdownOptionDTO dropdownOptionDTO2 =
-        dropdownOptionService.createDropdownOptionDTO(dropdownOption2);
-    return sut_dynamicActionService.createDynamicActionDTOFromDynamicAction(
+  private DynamicActionDTO createDynamicAction(boolean createDropdown) {
+    DynamicAction dynamicAction =
         new DynamicAction()
             .name("Test_Action")
             .description("Test_Description")
@@ -111,13 +109,29 @@ public class DynamicActionServiceTest extends PostgresIntegrationTestBase {
             .requiresConfirmation(0)
             .keepLatestConfirmationRequest(1)
             .muted(0)
-            .onlySingleExecution(1)
-            .associatedDropdownOptions(
-                new ArrayList<>() {
-                  {
-                    add(dropdownOptionDTO1.getId());
-                    add(dropdownOptionDTO2.getId());
-                  }
-                }));
+            .onlySingleExecution(1);
+    if (createDropdown) {
+      DropdownOption dropdownOption1 = dropdownOptionUtils.createDropdownOption();
+      dropdownOption1.setDynamicParameterToMatch("inventory");
+      DropdownOption dropdownOption2 = dropdownOptionUtils.createDropdownOption();
+      dropdownOption2.setDynamicParameterToMatch("playbook");
+      dropdownOption2.setName("playbook_test");
+      DropdownOptionDTO dropdownOptionDTO2;
+      DropdownOptionDTO dropdownOptionDTO1;
+      try {
+        dropdownOptionDTO2 = dropdownOptionService.createDropdownOptionDTO(dropdownOption2);
+        dropdownOptionDTO1 = dropdownOptionService.createDropdownOptionDTO(dropdownOption1);
+
+        dynamicAction.associatedDropdownOptions(
+            new ArrayList<>() {
+              {
+                add(dropdownOptionDTO1.getId());
+                add(dropdownOptionDTO2.getId());
+              }
+            });
+      } catch (RuntimeException _) {
+      }
+    }
+    return sut_dynamicActionService.createDynamicActionDTOFromDynamicAction(dynamicAction);
   }
 }

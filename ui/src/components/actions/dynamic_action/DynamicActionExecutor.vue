@@ -5,33 +5,89 @@
       <div v-for="dynamicParameter in dynamicParameters" :key="dynamicParameter">
         <div class="sophrosyne-form-wrapper">
           <form class="sophrosyne-form">
-            <span
-              v-if="!dynamicParameter.hasMatchedDropdownOption"
-              class="sophrosyne-field-wrapper"
+            <div
+              class="grid sophrosyne-field-wrapper"
+              v-if="dynamicParameter.hasMatchedDropdownOption"
             >
-              <FloatLabel>
-                <InputText
-                  :id="dynamicParameter.parameter"
-                  v-model="userPassedParameters[dynamicParameter.parameter]"
-                  type="text"
-                  class="sophrosyne-inputtext"
-                  @change="getCommandPreview"
+              <div class="col-10">
+                <span
+                  v-if="
+                    !dynamicParameter.hasMatchedDropdownOption || dynamicParameter.showTextField
+                  "
+                >
+                  <FloatLabel>
+                    <InputText
+                      :id="dynamicParameter.parameter"
+                      v-model="userPassedParameters[dynamicParameter.parameter]"
+                      type="text"
+                      class="sophrosyne-inputtext"
+                      @change="getCommandPreview"
+                    />
+                    <label :for="dynamicParameter.parameter">{{
+                      dynamicParameter.parameter
+                    }}</label>
+                  </FloatLabel>
+                </span>
+                <span v-else class="sophrosyne-field-wrapper">
+                  <FloatLabel>
+                    <MultiSelect
+                      v-if="
+                        dynamicParameter.multiselect && dynamicParameter.dropdownOptions.length > 0
+                      "
+                      :id="dynamicParameter.dropdownOptionId"
+                      v-model="userPassedParameters[dynamicParameter.dropdownOptionId]"
+                      :options="dynamicParameter.dropdownOptions"
+                      placeholder=""
+                      class="w-full md:w-56"
+                      display="chip"
+                      filter
+                      :maxSelectedLabels="5"
+                      @change="getCommandPreview"
+                    />
+
+                    <Select
+                      v-else
+                      :id="dynamicParameter.dropdownOptionId"
+                      v-model="userPassedParameters[dynamicParameter.parameter]"
+                      :options="dynamicParameter.dropdownOptions"
+                      placeholder=""
+                      class="w-full md:w-56"
+                      display="chip"
+                      filter
+                      :maxSelectedLabels="5"
+                      @change="getCommandPreview"
+                    >
+                    </Select>
+                    <label :for="dynamicParameter.parameter">{{
+                      dynamicParameter.parameter
+                    }}</label>
+                  </FloatLabel>
+                </span>
+              </div>
+              <div class="col-2">
+                <ToggleButton
+                  v-model="dynamicParameter.showTextField"
+                  :onLabel="$t('actions.dynamic_action.dynamic_action_executor.dropdown.btn.on')"
+                  :offLabel="$t('actions.dynamic_action.dynamic_action_executor.dropdown.btn.off')"
+                  onIcon="pi pi-bars"
+                  offIcon="pi pi-list-check"
                 />
-                <label :for="dynamicParameter.parameter">{{ dynamicParameter.parameter }}</label>
-              </FloatLabel>
-            </span>
-            <span v-else>
-              <FloatLabel>
-                <Select
-                  v-model="userPassedParameters[dynamicParameter.parameter]"
-                  :options="dynamicParameter.dropdownOptions"
-                  placeholder=""
-                  class="w-full md:w-56"
-                  @change="getCommandPreview"
-                />
-                <label :for="dynamicParameter.parameter">{{ dynamicParameter.parameter }}</label>
-              </FloatLabel>
-            </span>
+              </div>
+            </div>
+            <div v-if="!dynamicParameter.hasMatchedDropdownOption" class="sophrosyne-field-wrapper">
+              <span class="sophrosyne-field-wrapper">
+                <FloatLabel>
+                  <InputText
+                    :id="dynamicParameter.parameter"
+                    v-model="userPassedParameters[dynamicParameter.parameter]"
+                    type="text"
+                    class="sophrosyne-inputtext"
+                    @change="getCommandPreview"
+                  />
+                  <label :for="dynamicParameter.parameter">{{ dynamicParameter.parameter }}</label>
+                </FloatLabel>
+              </span>
+            </div>
           </form>
         </div>
       </div>
@@ -69,7 +125,9 @@
             rounded
             class="w-full"
             @click="
-              executeAction(props.action.id, userPassedParameters) ? emits('close') : undefined
+              executeAction(props.action.id, getMultiSelectParameters(userPassedParameters))
+                ? emits('close')
+                : undefined
             "
           />
         </div>
@@ -122,10 +180,22 @@ const toggleCreateAction = () => {
   showCreateAction.value = !showCreateAction.value
 }
 
+const getMultiSelectParameters = (userPassedParameters) => {
+  dynamicParameters.value.forEach((dynamicParameter) => {
+    const selected = userPassedParameters?.[dynamicParameter.dropdownOptionId]
+    if (Array.isArray(selected) && selected.length > 0) {
+      const joined = selected.join(dynamicParameter.delimiter ?? '')
+      userPassedParameters[dynamicParameter.parameter] = joined
+      delete userPassedParameters[dynamicParameter.dropdownOptionId]
+    }
+  })
+  return userPassedParameters
+}
+
 const getDynamicParameters = () => {
   axiosCore.get('/int/client/dynamicaction/' + props.action.id + '/parameters').then((res) => {
-    console.log(res.data)
     dynamicParameters.value = res.data.parameters
+    dynamicParameters.value?.forEach((dynamicParameter) => (dynamicParameter.showTextField = false))
   })
 }
 
@@ -140,6 +210,15 @@ const getCommandPreview = () => {
       ':' +
       userPassedParameters.value[dynamicParameter.parameter] +
       ','
+    if (dynamicParameter?.dropdownOptionId != undefined && dynamicParameter?.multiselect && !dynamicParameter.showTextField) {
+      userPassedParametersString.value +=
+        dynamicParameter.parameter +
+        ':' +
+        userPassedParameters.value[dynamicParameter.dropdownOptionId]?.join(
+          dynamicParameter.delimiter ?? ''
+        ) +
+        ','
+    }
   })
   userPassedParametersString.value = userPassedParametersString.value.slice(0, -1)
   axiosCore

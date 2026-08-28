@@ -145,6 +145,10 @@ components:
           example: "{{my-dynamic-parameter}}"
         getterDropdownOptionCallAddress:
           type: string
+        multiSelect:
+          type: boolean
+        delimiter:
+          type: string
         dropdownOptions:
           $ref: '#/components/schemas/DropdownOptions'
       required:

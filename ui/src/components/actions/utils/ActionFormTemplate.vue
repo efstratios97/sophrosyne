@@ -116,7 +116,7 @@
             v-if="props.isDynamicAction"
             class="sophrosyne-field-wrapper"
             v-tooltip="{
-              value: $t('actions.' + I18nSource + '.action_creation_form.tooltip.allowed_apikeys'),
+              value: $t('actions.' + I18nSource + '.action_creation_form.tooltip.dropdown_option'),
               showDelay: 100,
               hideDelay: 300
             }"
@@ -127,7 +127,7 @@
               filter
               optionLabel="name"
               :placeholder="
-                $t('actions.' + I18nSource + '.action_creation_form.fields.allowed_apikeys')
+                $t('actions.' + I18nSource + '.action_creation_form.fields.dropdown_option')
               "
               class="w-full md:w-20rem"
               @change=""
@@ -259,34 +259,6 @@
           <span
             class="sophrosyne-field-wrapper"
             v-tooltip="{
-              value: $t(
-                'actions.' + I18nSource + '.action_creation_form.tooltip.only_single_execution'
-              ),
-              showDelay: 100,
-              hideDelay: 300
-            }"
-          >
-            <ToggleButton
-              v-if="props.isDynamicAction"
-              v-model="newAction.onlySingleExecution"
-              :onLabel="
-                $t(
-                  'actions.' + I18nSource + '.action_creation_form.fields.only_single_execution_on'
-                )
-              "
-              :offLabel="
-                $t(
-                  'actions.' + I18nSource + '.action_creation_form.fields.only_single_execution_off'
-                )
-              "
-              offIcon="pi pi-angle-double-up"
-              onIcon="pi pi-angle-up"
-            />
-          </span>
-
-          <span
-            class="sophrosyne-field-wrapper"
-            v-tooltip="{
               value: $t('actions.' + I18nSource + '.action_creation_form.tooltip.muted'),
               showDelay: 100,
               hideDelay: 300
@@ -321,7 +293,6 @@
               @change="getApikeys"
             />
           </span>
-          {{ newAction }}
           <Button
             :label="$t('actions.' + I18nSource + '.action_creation_form.btn.create.label')"
             @click="emit('submitAction', newAction)"

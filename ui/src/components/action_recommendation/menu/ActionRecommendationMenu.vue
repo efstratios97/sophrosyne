@@ -176,7 +176,6 @@ import ActionRecommendationFormCreate from '@/components/action_recommendation/m
 import ActionRecommendationFormUpdate from '@/components/action_recommendation/menu/ActionRecommendationFormUpdate.vue'
 import DisplayActionRecommendationDescription from '@/components/action_recommendation/utils/DisplayActionRecommendationDescription.vue'
 import DownloadActionRecommendationAdditionalDocumentation from '@/components/action_recommendation/utils/DownloadActionRecommendationAdditionalDocumentation.vue'
-import ActionRecommendationActiveStatus from '@/components/action_recommendation/menu/ActionRecommendationActiveStatus.vue'
 import { Dialog } from 'primevue'
 
 const toast = useToast()

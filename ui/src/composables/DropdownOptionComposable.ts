@@ -1,6 +1,4 @@
 import { Ref, ref, inject } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useToast } from 'primevue/usetoast'
 import type { AxiosInstance } from 'axios'
 
 export interface DropdownOption {
@@ -12,9 +10,6 @@ export interface DropdownOption {
 export const useDropdownOptionComposable = () => {
   const axiosCore = inject<AxiosInstance>('axios-core')
   if (!axiosCore) throw new Error('axios-core injection missing')
-
-  const { t } = useI18n()
-  const toast = useToast()
 
   const dropdownOptions: Ref<object[]> = ref([])
 

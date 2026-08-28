@@ -249,6 +249,12 @@ components:
                 type: array
                 items:
                   type: string
+              delimiter:
+                type: string
+              multiselect:
+                type: boolean
+              dropdownOptionId:
+                type: string
     DynamicParametersStringPreview:
       type: object
       properties:

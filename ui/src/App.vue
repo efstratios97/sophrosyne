@@ -3,8 +3,8 @@
   <div class="app-wrapper">
     <main class="main-content">
       <router-view />
+      <CopyRight />
     </main>
-    <CopyRight />
   </div>
 </template>
 <script setup>
@@ -18,7 +18,6 @@ import EnterpriseLicenseBanner from '@/components/infomercial/EnterpriseLicenseB
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 .main-content {
