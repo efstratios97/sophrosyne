@@ -329,7 +329,7 @@ const dropdownOptions = ref([])
 onMounted(async () => {
   await getApikeys().then(() => {
     newAction.value['allowedApikeysAsObject'] = apikeys.value.filter((apikey) =>
-      newAction.value['allowedApikeys'].includes(apikey.apikeyname)
+      newAction.value?.allowedApikeys?.includes(apikey.apikeyname)
     )
   })
 
@@ -339,8 +339,9 @@ onMounted(async () => {
     .replace(/&#123;/g, '{')
     .replace(/&#125;/g, '}')
 
-  await dropdownComposoble.getDropdownOptions()
-  dropdownOptions.value = dropdownComposoble.dropdownOptions.value
+  await dropdownComposoble.getDropdownOptions().then(() => {
+    dropdownOptions.value = dropdownComposoble.dropdownOptions.value
+  })
 })
 
 const showCommandTerminalDialog = ref(false)

@@ -22,6 +22,10 @@
         "secondary_text": "(Your own branding)"
       },
       "feature_4": {
+        "main_text": "Distributed Operations",
+        "secondary_text": "(Horizontal Scaling)"
+      },
+      "feature_5": {
         "main_text": "AI Integration",
         "secondary_text": "(Let AI Manage your Actions)"
       },
@@ -49,10 +53,10 @@
   },
   "notification": {
     "action_confirmation": {
-      "button": "Pending Confirmations"
+      "button": "Confirmations"
     },
     "active_recommendations": {
-      "button": "Active Recommendations"
+      "button": "Recommendations"
     }
   },
   "login": {

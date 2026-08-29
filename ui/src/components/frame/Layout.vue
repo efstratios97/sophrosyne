@@ -16,7 +16,7 @@
               <FreeVersionBanner></FreeVersionBanner>
             </div>
 
-            <div class="flex justify-content-end flex-wrap mr-2 mt-1">
+            <div class="flex justify-content-end flex-wrap mr-3 mt-1">
               <Button
                 type="button"
                 :label="$t('notification.action_confirmation.button')"
