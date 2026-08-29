@@ -2,17 +2,17 @@ package sophrosyne.core.dynamicactionservice.controller;
 
 import java.util.List;
 import java.util.Optional;
-import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
-import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
-import sophrosyne_api.core.dynamicactionservice.api.IntApi;
-import sophrosyne_api.core.dynamicactionservice.model.DynamicAction;
-import sophrosyne_api.core.dynamicactionservice.model.ParsedDynamicParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
+import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
+import sophrosyne_api.core.dynamicactionservice.api.IntApi;
+import sophrosyne_api.core.dynamicactionservice.model.DynamicAction;
+import sophrosyne_api.core.dynamicactionservice.model.ParsedDynamicParameters;
 
 @RestController
 public class DynamicActionController implements IntApi {
@@ -88,14 +88,11 @@ public class DynamicActionController implements IntApi {
   @Override
   public ResponseEntity<ParsedDynamicParameters> getDynamicActionParsedParameters(String id) {
     Optional<DynamicActionDTO> dynamicActionDTO = dynamicActionService.getDynamicActionDTO(id);
-    if (dynamicActionDTO.isPresent()) {
-      ParsedDynamicParameters parsedDynamicParameters =
-          new ParsedDynamicParameters()
-              .parameters(dynamicActionService.getParsedDynamicParameters(dynamicActionDTO.get()));
-      return ResponseEntity.ok(parsedDynamicParameters);
-    } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+    return dynamicActionDTO
+        .map(
+            actionDTO ->
+                ResponseEntity.ok(dynamicActionService.getParsedDynamicParameters(actionDTO)))
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
   }
 
   @Override

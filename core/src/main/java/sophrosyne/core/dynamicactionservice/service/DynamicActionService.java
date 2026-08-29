@@ -3,9 +3,11 @@ package sophrosyne.core.dynamicactionservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,14 @@ import org.springframework.stereotype.Service;
 import sophrosyne.core.actionservice.dto.ActionDTO;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
 import sophrosyne.core.configurationservice.service.ConfigurationService;
+import sophrosyne.core.dropdownoption.dto.DropdownOptionDTO;
+import sophrosyne.core.dropdownoption.service.DropdownOptionApiService;
+import sophrosyne.core.dropdownoption.service.DropdownOptionService;
 import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
 import sophrosyne.core.dynamicactionservice.repository.DynamicActionRepository;
 import sophrosyne_api.core.dynamicactionservice.model.DynamicAction;
+import sophrosyne_api.core.dynamicactionservice.model.ParsedDynamicParameters;
+import sophrosyne_api.core.dynamicactionservice.model.ParsedDynamicParametersParametersInner;
 
 @Service
 public class DynamicActionService {
@@ -26,6 +33,10 @@ public class DynamicActionService {
   @Autowired private ApikeyService apikeyService;
 
   @Autowired private DynamicActionRepository dynamicActionRepository;
+
+  @Autowired private DropdownOptionService dropdownOptionService;
+
+  @Autowired private DropdownOptionApiService dropdownOptionApiService;
 
   @Autowired @Lazy private ConfigurationService configurationService;
 
@@ -49,6 +60,7 @@ public class DynamicActionService {
   }
 
   public void deleteDynamicAction(DynamicActionDTO dynamicActionDTO) throws NoSuchElementException {
+    unlinkDropdownOptions(dynamicActionDTO);
     dynamicActionRepository.delete(dynamicActionDTO);
   }
 
@@ -56,9 +68,11 @@ public class DynamicActionService {
     dynamicActionRepository.deleteAll();
   }
 
+  // Used only for tests?
   public void updateDynamicAction(String actionnameToUpdate, DynamicAction updatedDynamicAction)
       throws NoSuchElementException {
     Optional<DynamicActionDTO> dynamicActionDTO = getDynamicActionDTO(actionnameToUpdate);
+    unlinkDropdownOptions(dynamicActionDTO.get());
     dynamicActionRepository.save(
         mapDynamicActionToDynamicActionDTO(updatedDynamicAction, dynamicActionDTO.get()));
   }
@@ -68,14 +82,72 @@ public class DynamicActionService {
     dynamicActionRepository.save(updatedDynamicAction);
   }
 
-  public List<String> getParsedDynamicParameters(DynamicActionDTO dynamicActionDTO) {
+  public ParsedDynamicParameters getParsedDynamicParameters(DynamicActionDTO dynamicActionDTO) {
     Pattern pattern = Pattern.compile("\\{\\{(.*?)}}");
     Matcher matcher = pattern.matcher(dynamicActionDTO.getDynamicParameters());
     List<String> parsedParameters = new ArrayList<>() {};
     while (matcher.find()) {
       parsedParameters.add(matcher.group(1).trim());
     }
-    return parsedParameters;
+    ParsedDynamicParameters parsedDynamicParameters = new ParsedDynamicParameters();
+    parsedParameters.forEach(
+        parsedParameter -> {
+          Optional<DropdownOptionDTO> dropdownOptionDTOOptional =
+              matchParsedParameterToDropdownOption(parsedParameter, dynamicActionDTO);
+          // Populate inner
+          ParsedDynamicParametersParametersInner parsedDynamicParametersParametersInner = null;
+          try {
+            parsedDynamicParametersParametersInner =
+                getParsedDynamicParametersParametersInner(
+                    parsedParameter, dropdownOptionDTOOptional);
+          } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+          // Add ready parsed Parameters to Array
+          parsedDynamicParameters.addParametersItem(parsedDynamicParametersParametersInner);
+        });
+
+    return parsedDynamicParameters;
+  }
+
+  private ParsedDynamicParametersParametersInner getParsedDynamicParametersParametersInner(
+      String parsedParameter, Optional<DropdownOptionDTO> dropdownOptionDTOOptional)
+      throws IOException, InterruptedException {
+    ParsedDynamicParametersParametersInner parsedDynamicParametersParametersInner =
+        new ParsedDynamicParametersParametersInner();
+    parsedDynamicParametersParametersInner.setParameter(parsedParameter);
+    parsedDynamicParametersParametersInner.setHasMatchedDropdownOption(
+        dropdownOptionDTOOptional.isPresent());
+    if (dropdownOptionDTOOptional.isPresent()) {
+      DropdownOptionDTO dropdownOptionDTO = dropdownOptionDTOOptional.get();
+      // Populate static dropdown options
+      if (dropdownOptionDTO.getType().equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.STATIC)) {
+        parsedDynamicParametersParametersInner.setDropdownOptions(
+            dropdownOptionDTO.getDropdownOptions());
+      }
+      // Populate Dynamic dropdown options
+      else if (dropdownOptionDTO.getType().equals(DropdownOptionDTO.DROPDOWN_OPTION_TYPE.DYNAMIC)) {
+        dropdownOptionDTO = dropdownOptionApiService.getDropdownOptions(dropdownOptionDTO);
+      }
+      parsedDynamicParametersParametersInner.setDropdownOptions(
+          dropdownOptionDTO.getDropdownOptions());
+      parsedDynamicParametersParametersInner.setDelimiter(dropdownOptionDTO.getDelimiter());
+      parsedDynamicParametersParametersInner.setDropdownOptionId(dropdownOptionDTO.getId());
+      parsedDynamicParametersParametersInner.setMultiselect(dropdownOptionDTO.isMultiSelect());
+    } else {
+      parsedDynamicParametersParametersInner.setDropdownOptions(new ArrayList<>());
+    }
+    return parsedDynamicParametersParametersInner;
+  }
+
+  private Optional<DropdownOptionDTO> matchParsedParameterToDropdownOption(
+      String parameter, DynamicActionDTO dynamicActionDTO) {
+    return dynamicActionDTO.getAssociatedDropdownOptions().stream()
+        .filter(
+            dropdownOptionDTO -> {
+              return dropdownOptionDTO.getDynamicParameterToMatch().equals(parameter);
+            })
+        .findFirst();
   }
 
   public String createDynamicCommand(
@@ -223,7 +295,18 @@ public class DynamicActionService {
     dynamicActionDTO.setKeepLatestConfirmationRequest(
         dynamicAction.getKeepLatestConfirmationRequest());
     dynamicActionDTO.setMuted(dynamicAction.getMuted());
-    dynamicActionDTO.setOnlySingleExecution(dynamicAction.getOnlySingleExecution());
+    dynamicActionDTO.setAssociatedDropdownOptions(
+        dynamicAction.getAssociatedDropdownOptionObjects().stream()
+            .map(
+                dropdownOptionObject -> {
+                  LinkedHashMap dropdownOptionObjectTmp = (LinkedHashMap) dropdownOptionObject;
+                  Optional<DropdownOptionDTO> dropdownOptionDTOTmp =
+                      dropdownOptionService.getDropdownOptionDTO(
+                          (String) dropdownOptionObjectTmp.get("id"));
+                  return dropdownOptionDTOTmp.orElse(null);
+                })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet()));
     return dynamicActionDTO;
   }
 
@@ -245,7 +328,13 @@ public class DynamicActionService {
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
         .runningId(dynamicActionDTO.getRunningActionId())
         .muted(dynamicActionDTO.getMuted())
-        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution())
+        .associatedDropdownOptions(
+            dynamicActionDTO.getAssociatedDropdownOptions().stream()
+                .map(DropdownOptionDTO::getId)
+                .collect(Collectors.toList()))
+        .associatedDropdownOptionObjects(
+            new ArrayList<>(dynamicActionDTO.getAssociatedDropdownOptions()));
   }
 
   public DynamicAction mapDynamicActionDTOToDynamicActionService(
@@ -265,7 +354,13 @@ public class DynamicActionService {
         .requiresConfirmation(dynamicActionDTO.getRequiresConfirmation())
         .keepLatestConfirmationRequest(dynamicActionDTO.getKeepLatestConfirmationRequest())
         .muted(dynamicActionDTO.getMuted())
-        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution());
+        .onlySingleExecution(dynamicActionDTO.getOnlySingleExecution())
+        .associatedDropdownOptions(
+            dynamicActionDTO.getAssociatedDropdownOptions().stream()
+                .map(DropdownOptionDTO::getId)
+                .collect(Collectors.toList()))
+        .associatedDropdownOptionObjects(
+            new ArrayList<>(dynamicActionDTO.getAssociatedDropdownOptions()));
   }
 
   private HashSet<sophrosyne.core.apikeyservice.dto.ApikeyDTO> getAllowedApikeysFromAction(
@@ -279,5 +374,31 @@ public class DynamicActionService {
                       : null;
                 })
             .toList());
+  }
+
+  private void unlinkDropdownOptions(DynamicActionDTO dynamicActionDTO) {
+    dynamicActionDTO.setAssociatedDropdownOptions(null);
+    dynamicActionRepository.save(dynamicActionDTO);
+  }
+
+  private Set<DropdownOptionDTO> getDropdownOptionDTOs(DynamicAction dynamicAction) {
+    return dynamicAction.getAssociatedDropdownOptionObjects().stream()
+        .filter(
+            dropdownOptionObject -> {
+              LinkedHashMap<String, String> dropdownOptionConverted =
+                  (LinkedHashMap) dropdownOptionObject;
+              return dropdownOptionService
+                  .getDropdownOptionDTO(dropdownOptionConverted.get("id"))
+                  .isPresent();
+            })
+        .map(
+            dropdownOptionObject -> {
+              LinkedHashMap<String, String> dropdownOptionConverted =
+                  (LinkedHashMap) dropdownOptionObject;
+              return dropdownOptionService
+                  .getDropdownOptionDTO(dropdownOptionConverted.get("id"))
+                  .get();
+            })
+        .collect(Collectors.toSet());
   }
 }

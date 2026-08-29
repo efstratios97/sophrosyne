@@ -23,6 +23,7 @@ import sophrosyne.core.configurationservice.service.ConfigurationService;
 import sophrosyne.core.controlpanelservice.service.ControlPanelDashboardGroupService;
 import sophrosyne.core.controlpanelservice.service.ControlPanelDashboardService;
 import sophrosyne.core.controlpanelservice.service.ControlPanelService;
+import sophrosyne.core.dropdownoption.service.DropdownOptionService;
 import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
 import sophrosyne.core.userservice.service.UserService;
 import sophrosyne_api.core.actionrecommendationservice.model.ActionRecommendation;
@@ -43,7 +44,7 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
   @Autowired private ControlPanelService controlPanelService;
   @Autowired private ControlPanelDashboardService controlPanelDashboardService;
   @Autowired private ControlPanelDashboardGroupService controlPanelDashboardGroupService;
-
+  @Autowired private DropdownOptionService dropdownOptionService;
   @Autowired private ActionRecommendationService actionRecommendationService;
 
   @Value("${test.actionrecommendation.filepath}")
@@ -89,6 +90,11 @@ public class ConfigurationServiceTest extends PostgresIntegrationTestBase {
     }
     try {
       controlPanelService.deleteAllControlPanels();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+    }
+    try {
+      dropdownOptionService.deleteAllDropdownOptions();
     } catch (Exception e) {
       logger.error(e.getMessage());
     }

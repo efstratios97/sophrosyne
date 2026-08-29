@@ -261,7 +261,7 @@ public class ActionExecutorService {
               .getBytes();
       actionProcessDataShared.get(id).put("executionLogFileDataBuffer", new StringBuffer());
       byte[] postExecutionLogFileData =
-          (byte[]) actionProcessDataShared.get(id).get("postExecutionLogFileData");
+          actionProcessDataShared.get(id).get("postExecutionLogFileData").toString().getBytes();
       Integer exitCode = (Integer) actionProcessDataShared.get(id).get("exitCode");
       String type = (String) actionProcessDataShared.get(id).get("type");
       String version = (String) actionProcessDataShared.get(id).get("version");

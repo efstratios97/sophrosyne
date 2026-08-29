@@ -18,8 +18,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import Dialog from 'primevue/dialog'
-import Tag from 'primevue/tag'
 import Message from 'primevue/message'
 import EnterpriseLicenseBanner from '@/components/infomercial/EnterpriseLicenseBanner.vue'
 
