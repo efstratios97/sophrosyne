@@ -1,5 +1,7 @@
 package sophrosyne.core.configurationservice.dto;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sophrosyne.core.actionservice.dto.ActionDTO;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
+import sophrosyne.core.dropdownoption.dto.DropdownOptionDTO;
+import sophrosyne.core.dropdownoption.service.DropdownOptionService;
 import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
 
 @EqualsAndHashCode(callSuper = true)
@@ -25,9 +29,14 @@ public class DynamicActionConfigurationDTO extends ActionConfigurationDTO {
   @Autowired
   private ApikeyService apikeyService;
 
+  @Getter(AccessLevel.NONE)
+  @Autowired
+  private DropdownOptionService dropdownOptionService;
+
   private String dynamicParameters;
   private int keepLatestConfirmationRequest;
   private int onlySingleExecution;
+  private List<String> dropdownOptionsById;
 
   public DynamicActionConfigurationDTO(DynamicActionDTO dynamicActionDTO) {
     super(dynamicActionDTO);
@@ -38,6 +47,15 @@ public class DynamicActionConfigurationDTO extends ActionConfigurationDTO {
         dynamicActionDTO.getAllowedApikeysForDynamicActions().stream()
             .map(ApikeyDTO::getApikeyname)
             .toList());
+    List<String> dropdownOptions = new ArrayList<>();
+    try {
+      dropdownOptions =
+          dynamicActionDTO.getAssociatedDropdownOptions().stream()
+              .map(DropdownOptionDTO::getId)
+              .toList();
+    } catch (RuntimeException _) {
+    }
+    this.setDropdownOptionsById(dropdownOptions);
   }
 
   public DynamicActionDTO toDynamicActionDTO() {
@@ -66,6 +84,19 @@ public class DynamicActionConfigurationDTO extends ActionConfigurationDTO {
             .filter(Objects::nonNull)
             .collect(Collectors.toSet()));
     dynamicActionDTO.setOnlySingleExecution(this.getOnlySingleExecution());
+    List<String> dropdownOptionIds =
+        this.getDropdownOptionsById() == null ? new ArrayList<>() : this.getDropdownOptionsById();
+
+    dynamicActionDTO.setAssociatedDropdownOptions(
+        dropdownOptionIds.stream()
+            .map(
+                dropdownOptionId -> {
+                  Optional<DropdownOptionDTO> maybe =
+                      this.dropdownOptionService.getDropdownOptionDTO(dropdownOptionId);
+                  return maybe.orElse(null);
+                })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet()));
     return dynamicActionDTO;
   }
 }

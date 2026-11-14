@@ -111,6 +111,36 @@
             </span>
           </InputGroup>
 
+          <!-- Dropdown Option -->
+          <span
+            v-if="props.isDynamicAction"
+            class="sophrosyne-field-wrapper"
+            v-tooltip="{
+              value: $t('actions.' + I18nSource + '.action_creation_form.tooltip.dropdown_option'),
+              showDelay: 100,
+              hideDelay: 300
+            }"
+          >
+            <MultiSelect
+              v-model="newAction.associatedDropdownOptionObjects"
+              :options="dropdownOptions"
+              filter
+              optionLabel="name"
+              :placeholder="
+                $t('actions.' + I18nSource + '.action_creation_form.fields.dropdown_option')
+              "
+              class="w-full md:w-20rem"
+              @change=""
+            >
+              <template #option="slotprops">
+                Name: {{ slotprops.option.name }} | Matching Dynamic Parameter:
+                {{ slotprops.option.dynamicParameterToMatch }}
+              </template>
+            </MultiSelect>
+          </span>
+
+          <!-- End Dropdown Option -->
+
           <span
             class="sophrosyne-field-wrapper"
             v-tooltip="{
@@ -165,7 +195,7 @@
               offIcon="pi pi-lock-open"
             />
           </span>
-          
+
           <span
             class="sophrosyne-field-wrapper"
             v-tooltip="{
@@ -213,16 +243,12 @@
               v-model="newAction.onlySingleExecution"
               :onLabel="
                 $t(
-                  'actions.' +
-                    I18nSource +
-                    '.action_creation_form.fields.only_single_execution_on'
+                  'actions.' + I18nSource + '.action_creation_form.fields.only_single_execution_on'
                 )
               "
               :offLabel="
                 $t(
-                  'actions.' +
-                    I18nSource +
-                    '.action_creation_form.fields.only_single_execution_off'
+                  'actions.' + I18nSource + '.action_creation_form.fields.only_single_execution_off'
                 )
               "
               offIcon="pi pi-angle-double-up"
@@ -286,20 +312,24 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useApikeysComposable } from '@/composables/ApikeysComposable.js'
+import { useDropdownOptionComposable } from '@/composables/DropdownOptionComposable.ts'
 import { useI18n } from 'vue-i18n'
 import ActionCommandTemplate from '@/components/actions/utils/ActionCommandTemplate.vue'
 
 const { t } = useI18n()
+const dropdownComposoble = useDropdownOptionComposable()
 
 const { getApikeys, apikeys } = useApikeysComposable()
 const props = defineProps(['action', 'settings', 'isDynamicAction'])
 const newAction = ref(props.action)
 const I18nSource = props.isDynamicAction ? ref('dynamic_action') : ref('action')
 const dynamic_parameters_tooltip = ref('')
-onMounted(() => {
-  getApikeys().then(() => {
+const dropdownOptions = ref([])
+
+onMounted(async () => {
+  await getApikeys().then(() => {
     newAction.value['allowedApikeysAsObject'] = apikeys.value.filter((apikey) =>
-      newAction.value['allowedApikeys'].includes(apikey.apikeyname)
+      newAction.value?.allowedApikeys?.includes(apikey.apikeyname)
     )
   })
 
@@ -308,6 +338,10 @@ onMounted(() => {
   )
     .replace(/&#123;/g, '{')
     .replace(/&#125;/g, '}')
+
+  await dropdownComposoble.getDropdownOptions().then(() => {
+    dropdownOptions.value = dropdownComposoble.dropdownOptions.value
+  })
 })
 
 const showCommandTerminalDialog = ref(false)

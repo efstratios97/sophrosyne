@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Sophrosyne - Dropdown Service API
+  description: |-
+    This API document describes the available Sophrosyne Dropdown Service APIs
+  version: 1.0.2
+
+tags:
+  - name: dropdown_option
+    description: Sophrosyne internal Dropdown operations
+
+paths:
+  /int/user/dropdownoption:
+    post:
+      tags:
+        - dropdown_option
+      summary: Create dropdown option
+      description: This can only be done by the logged in user with admin rights.
+      operationId: createDropdownOption
+      requestBody:
+        description: Creates dropdown option
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DropdownOption'
+      responses:
+        '201':
+          description: successful dropdownOption creation
+        '401':
+          description: Unauthorized
+
+  /int/user/dropdownoptions:
+    get:
+      tags:
+        - dropdown_option
+      summary: Get all dropdown options
+      description: ''
+      operationId: getDropdownOptions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DropdownOption'
+        '401':
+          description: Unauthorized
+
+  /int/user/dropdownoption/{id}:
+    put:
+      tags:
+        - dropdown_option
+      summary: Update dropdown option
+      operationId: updateDropdownOption
+      parameters:
+        - name: id
+          in: path
+          description: The id of the dropdown option to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DropdownOption'
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Unauthorized
+        '404':
+          description: DropdownOption not found
+    delete:
+      tags:
+        - dropdown_option
+      summary: Delete dropdown option
+      operationId: deleteDropdownOption
+      parameters:
+        - name: id
+          in: path
+          description: The id of the dropdown option to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: successfully deleted
+        '400':
+          description: Invalid id supplied
+        '401':
+          description: Unauthorized
+        '404':
+          description: DropdownOption not found
+
+  /int/client/dropdownoption/{id}:
+    get:
+      tags:
+        - dropdown_option
+      summary: Get all dropdown options from user
+      description: Scrapes user parameter exposed via user API
+      operationId: getDropdownOptionFromUser
+      parameters:
+        - name: id
+          in: path
+          description: The user id to fetch dropdown options for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DropdownOptions'
+        '401':
+          description: Unauthorized
+
+components:
+  schemas:
+    DropdownOption:
+      type: object
+      properties:
+        id:
+          type: string
+          example: id_1
+        description:
+          type: string
+          example: Country options
+        name:
+          type: string
+          example: myDropdownOption
+        type:
+          type: string
+          enum:
+            - STATIC
+            - DYNAMIC
+        dynamicParameterToMatch:
+          type: string
+          example: "{{my-dynamic-parameter}}"
+        getterDropdownOptionCallAddress:
+          type: string
+        multiSelect:
+          type: boolean
+        delimiter:
+          type: string
+        dropdownOptions:
+          $ref: '#/components/schemas/DropdownOptions'
+      required:
+        - name
+        - type
+        - dynamicParameterToMatch
+
+    DropdownOptions:
+      description: string[]
+      type: array
+      items:
+        type: string

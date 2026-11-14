@@ -22,11 +22,15 @@
         "secondary_text": "(Your own branding)"
       },
       "feature_4": {
-        "main_text": "Advanced Features",
-        "secondary_text": "(Deep analytics & controls)"
+        "main_text": "Distributed Operations",
+        "secondary_text": "(Horizontal Scaling)"
+      },
+      "feature_5": {
+        "main_text": "AI Integration",
+        "secondary_text": "(Let AI Manage your Actions)"
       },
       "call_to_action": {
-        "email": "sophrosyne@ep-monitoring.com",
+        "email": "",
         "call_to_action_text": "📧 Get Your License: ",
         "contact_text": "Contact us to upgrade today."
       }
@@ -43,14 +47,16 @@
   "copyright": {
     "company": "Efstratios Pahis",
     "rights": ". All rights reserved.",
-    "docs": " Docs"
+    "docs": " Docs",
+    "repo": " Github Repo",
+    "github": "Github"
   },
   "notification": {
     "action_confirmation": {
-      "button": "Pending Action Confirmations"
+      "button": "Confirmations"
     },
     "active_recommendations": {
-      "button": "Active Recommendations"
+      "button": "Recommendations"
     }
   },
   "login": {
@@ -579,7 +585,8 @@
           "muted_on": "Muted",
           "muted_off": "Active",
           "only_single_execution_on": "Only Single Execution",
-          "only_single_execution_off": "Allow multiple Execution"
+          "only_single_execution_off": "Allow multiple Execution",
+          "dropdown_option": "Dropdown Option (Optional)"
         },
         "command_dialog": {
           "header": "Enter the Dynamic Action's STATIC Command part (e.g: sudo /bin/bash)",
@@ -603,7 +610,8 @@
           "requires_confirmation": "A triggered Action will require an additional confirmation before it can be executed",
           "keep_latest_confirmation": "If the same Action is waiting to be confirmed but with different parameters choose to override it or add to the existing confirmation request",
           "muted": "A triggered Action will be instantly rejected if muted",
-          "only_single_execution": "A dynamic action will be executed only once even with different parameters"
+          "only_single_execution": "A dynamic action will be executed only once even with different parameters",
+          "dropdown_option": "Use a dropdown option to select the defined dynamic parameter"
         },
         "btn": {
           "create": {
@@ -701,6 +709,137 @@
             "execution_exit_code_success": "Last Run succeeded",
             "execution_exit_code_error": "Last Run failed with Exit-Code: ",
             "execution_exit_code_never_run": "This action was never triggered"
+          }
+        }
+      },
+      "dynamic_action_executor": {
+        "dropdown": {
+          "btn": {
+            "on": "Free Text",
+            "off": "Dropdown"
+          }
+        }
+      }
+    },
+    "dropdown_option": {
+      "tab_menu_options": {
+        "tab_menu_action": "Dropdown Option"
+      },
+      "dropdown_option_menu": {
+        "datatable": {
+          "title": "Dropdown Options",
+          "sub_title": "Create, edit or delete your Dropdown Options",
+          "column_header": {
+            "id": "Dropdown Option ID",
+            "name": "Dropdown Option Name",
+            "description": "Dropdown Option Description",
+            "dynamic_parameter_to_match": "Dynamic Parameter for matching",
+            "type": "Dropdown Option Type",
+            "multi_select": "Dropdown Multi Select",
+            "delimiter": "Multi Select Delimiter to connect Dropdown Options",
+            "dropdown_options": {
+              "name": "Dropdown Options",
+              "placeholder_dropdown": "Availablle Options"
+            }
+          },
+          "column_tooltip": {
+            "type": "Are dropdown option fields statically defined or dynamically retrieved",
+            "dropdown_options": "Preview dropdown options"
+          }
+        }
+      },
+      "dropdown_option_deletion": {
+        "title": "Delete Dropdown",
+        "message": "Please confirm the deletion of the following Dropdown Option(s):",
+        "toast": {
+          "success": {
+            "message": "Deleted Dropdown Option(s)",
+            "detail": "You have successfully deleted the Dropdown Options(s)"
+          },
+          "error": {
+            "message": "Can not delete your Dropdown Option(s)",
+            "detail": "Please try again later"
+          }
+        }
+      },
+      "dropdown_option_template_form": {
+        "modal_header": "Create Dropdown Option",
+        "modal_header_update": "Update Dropdown Option",
+        "fields": {
+          "name": "Dropdown Option Name",
+          "description": "Dropdown Option Description",
+          "dynamic_parameter_to_match": "Dynamic Parameter to interpolate/match",
+          "type": {
+            "field_name": "Dropdown Option Type",
+            "static": {
+              "field_name": "static",
+              "placeholder": "Type Dropdown Option you want to add",
+              "btn": { "add": "Add new option", "remove": "Remove selected option" }
+            },
+            "dynamic": { "field_name": "dynamic", "placeholder": "Type HTTP GET call address" }
+          },
+          "multi_select": {
+            "field_name": "Dropdown Option Multi Select",
+            "on": {
+              "field_name": "Multiple Options Allowed"
+            },
+            "off": {
+              "field_name": "Only One Option Selection Allowed"
+            },
+            "delimiter": {
+              "placeholder": "A delimeter to connect multiple selections, e.g.: ; -> opt_1;opt_2"
+            }
+          }
+        },
+        "command_parameter_dialog": {
+          "header": "Enter the dynamic command part that shall be interpolated",
+          "btn": {
+            "save": "Save",
+            "cancel": "Cancel"
+          }
+        },
+        "tooltip": {
+          "type": "Are dropdown option fields statically defined or dynamically retrieved",
+          "dropdown_options": "Enter the dropdown options using the dropdown field"
+        },
+        "btn": {
+          "create": {
+            "label": "Submit Dropdown Option",
+            "toast": {
+              "success": {
+                "message": "Created Dropdown Option",
+                "detail": "You have successfully created a Dropdown Option"
+              },
+              "error": {
+                "409": {
+                  "message": "Duplicate Dropdown: Can not create Dropdown Option",
+                  "detail": "Please check again your inputs. Dropdown Option name must be unique"
+                },
+                "other": {
+                  "message": "Can not create Dropdown Option",
+                  "detail": "Please check again your inputs"
+                }
+              }
+            }
+          },
+          "update": {
+            "label": "Submit Dropdown Option",
+            "toast": {
+              "success": {
+                "message": "Updated Dropdown Option",
+                "detail": "You have successfully updated a Dropdown Option"
+              },
+              "error": {
+                "409": {
+                  "message": "Duplicate Dropdown: Can not update Dropdown Option",
+                  "detail": "Please check again your inputs. Dropdown Option name must be unique"
+                },
+                "other": {
+                  "message": "Can not update Dropdown Option",
+                  "detail": "Please check again your inputs"
+                }
+              }
+            }
           }
         }
       }

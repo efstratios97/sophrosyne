@@ -61,6 +61,8 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import InputNumber from 'primevue/inputnumber'
 import FloatLabel from 'primevue/floatlabel'
 import SelectButton from 'primevue/selectbutton'
+import Select from 'primevue/select'
+
 import App from './App.vue'
 
 const app = createApp(App)
@@ -106,6 +108,7 @@ app.component('InputGroupAddon', InputGroupAddon)
 app.component('InputNumber', InputNumber)
 app.component('FloatLabel', FloatLabel)
 app.component('SelectButton', SelectButton)
+app.component('Select', Select)
 
 app.directive('tooltip', Tooltip)
 

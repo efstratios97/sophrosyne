@@ -3,6 +3,7 @@ package sophrosyne.core.dynamicactionservice;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.apache.logging.log4j.LogManager;
@@ -12,14 +13,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import sophrosyne.core.PostgresIntegrationTestBase;
 import sophrosyne.core.actionservice.dto.ActionDTO;
 import sophrosyne.core.apikeyservice.dto.ApikeyDTO;
 import sophrosyne.core.apikeyservice.service.ApikeyService;
+import sophrosyne.core.dropdownoption.dto.DropdownOptionDTO;
+import sophrosyne.core.dropdownoption.service.DropdownOptionService;
 import sophrosyne.core.dynamicactionservice.dto.DynamicActionDTO;
 import sophrosyne.core.dynamicactionservice.service.DynamicActionService;
+import sophrosyne.core.utils.DropdownOptionUtils;
 import sophrosyne_api.core.dynamicactionservice.model.DynamicAction;
+import sophrosyne_api.core.internaldropdownoptionservice.model.DropdownOption;
 
 @SpringBootTest
 @TestPropertySource(locations = "/application-test.properties")
@@ -30,6 +36,10 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
   @Autowired private DynamicActionService sut_dynamicActionService;
 
   @Autowired private ApikeyService apikeyService;
+
+  @Autowired private DropdownOptionService dropdownOptionService;
+
+  @Autowired private DropdownOptionUtils dropdownOptionUtils;
 
   @BeforeEach
   @AfterEach
@@ -45,6 +55,7 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
     } catch (Exception e) {
       logger.error(e.getMessage());
     }
+    dropdownOptionService.deleteAllDropdownOptions();
   }
 
   @Test
@@ -57,7 +68,7 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
     assertThat(dynamicActionDTO.getDescription()).isEqualTo(dynamicAction.getDescription());
     assertThat(dynamicActionDTO.getPostExecutionLogFilePath())
         .isEqualTo(dynamicAction.getPostExecutionLogFilePath());
-    org.assertj.core.api.Assertions.assertThat(
+    assertThat(
             dynamicActionDTO.getAllowedApikeysForDynamicActions().stream()
                 .map(ApikeyDTO::getApikeyname))
         .containsAll(dynamicAction.getAllowedApikeys());
@@ -153,6 +164,13 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
   }
 
   private DynamicAction createDynamicAction() {
+    DropdownOption dropdownOption = dropdownOptionUtils.createDropdownOption();
+    try {
+      DropdownOptionDTO dropdownOptionDTO =
+          dropdownOptionService.createDropdownOptionDTO(dropdownOption);
+    } catch (DataIntegrityViolationException ignore) {
+      // no need to catch --> all good if exists
+    }
     return new DynamicAction()
         .name("Test_Action")
         .description("Test_Description")
@@ -164,6 +182,18 @@ public class DynamicActionServiceIT extends PostgresIntegrationTestBase {
         .requiresConfirmation(1)
         .keepLatestConfirmationRequest(1)
         .muted(0)
+        .associatedDropdownOptions(
+            new ArrayList<String>() {
+              {
+                add(dropdownOption.getName());
+              }
+            })
+        .associatedDropdownOptionObjects(
+            new ArrayList<Object>() {
+              {
+                add(dropdownOption);
+              }
+            })
         .onlySingleExecution(1);
   }
 }
